@@ -147,4 +147,116 @@ export function registerDefaultCommands(registry: CommandRegistry): void {
 		name: 'xargs',
 		load: () => import('./xargs.js').then((m) => m.xargs),
 	});
+
+	// Data processing commands
+	registry.register({
+		name: 'diff',
+		load: () => import('./diff-cmd.js').then((m) => m.diff),
+	});
+	registry.register({
+		name: 'base64',
+		load: () => import('./base64.js').then((m) => m.base64),
+	});
+	registry.register({
+		name: 'md5sum',
+		load: () => import('./md5sum.js').then((m) => m.md5sum),
+	});
+	registry.register({
+		name: 'sha1sum',
+		load: () => import('./sha1sum.js').then((m) => m.sha1sum),
+	});
+	registry.register({
+		name: 'sha256sum',
+		load: () => import('./sha256sum.js').then((m) => m.sha256sum),
+	});
+	registry.register({
+		name: 'expr',
+		load: () => import('./expr.js').then((m) => m.expr),
+	});
+	registry.register({
+		name: 'od',
+		load: () => import('./od.js').then((m) => m.od),
+	});
+
+	// Navigation / info commands
+	registry.register({
+		name: 'ls',
+		load: () => import('./ls.js').then((m) => m.ls),
+	});
+	registry.register({
+		name: 'pwd',
+		load: () => import('./pwd-cmd.js').then((m) => m.pwd),
+	});
+	registry.register({
+		name: 'tree',
+		load: () => import('./tree.js').then((m) => m.tree),
+	});
+	registry.register({
+		name: 'du',
+		load: () => import('./du.js').then((m) => m.du),
+	});
+	registry.register({
+		name: 'basename',
+		load: () => import('./basename-cmd.js').then((m) => m.basename),
+	});
+	registry.register({
+		name: 'dirname',
+		load: () => import('./dirname-cmd.js').then((m) => m.dirname),
+	});
+	registry.register({
+		name: 'readlink',
+		load: () => import('./readlink.js').then((m) => m.readlink),
+	});
+	registry.register({
+		name: 'realpath',
+		load: () => import('./realpath.js').then((m) => m.realpath),
+	});
+
+	// Environment / utility commands
+	registry.register({
+		name: 'echo',
+		load: () => import('./echo-cmd.js').then((m) => m.echo),
+	});
+	registry.register({
+		name: 'printf',
+		load: () => import('./printf-cmd.js').then((m) => m.printf),
+	});
+	registry.register({
+		name: 'env',
+		load: () => import('./env.js').then((m) => m.env),
+	});
+	registry.register({
+		name: 'printenv',
+		load: () => import('./printenv.js').then((m) => m.printenv),
+	});
+	registry.register({
+		name: 'date',
+		load: () => import('./date.js').then((m) => m.date),
+	});
+	registry.register({
+		name: 'seq',
+		load: () => import('./seq.js').then((m) => m.seq),
+	});
+	registry.register({
+		name: 'hostname',
+		load: () => import('./hostname.js').then((m) => m.hostname),
+	});
+	registry.register({
+		name: 'whoami',
+		load: () => import('./whoami.js').then((m) => m.whoami),
+	});
+	registry.register({
+		name: 'which',
+		load: () => import('./which.js').then((m) => m.which),
+	});
+
+	// Pipeline utilities
+	registry.register({
+		name: 'tee',
+		load: () => import('./tee.js').then((m) => m.tee),
+	});
+	registry.register({
+		name: 'sleep',
+		load: () => import('./sleep.js').then((m) => m.sleep),
+	});
 }
