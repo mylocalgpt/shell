@@ -24,7 +24,8 @@
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
 		"typecheck": "tsc --noEmit",
-		"dev": "tsx watch src/index.ts"
+		"dev": "tsx watch src/index.ts",
+		"bundle-size": "node scripts/check-bundle-size.mjs"
 	},
 	"dependencies": {},
 	"devDependencies": {

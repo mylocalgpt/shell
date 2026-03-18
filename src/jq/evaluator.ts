@@ -83,7 +83,7 @@ export interface JqEnv {
 }
 
 /** Sentinel thrown to represent jq `empty` (zero outputs). */
-export const JQ_EMPTY = Symbol('jq-empty');
+export const JQ_EMPTY: unique symbol = Symbol('jq-empty');
 
 /** Sentinel for break $label. */
 export class JqBreak {

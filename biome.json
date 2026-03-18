@@ -45,6 +45,6 @@
 		}
 	},
 	"files": {
-		"ignore": ["dist/", "node_modules/", "_docs/", "*.tsbuildinfo"]
+		"ignore": ["dist/", "node_modules/", "_docs/", "scripts/", "*.tsbuildinfo"]
 	}
 }
