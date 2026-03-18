@@ -1,0 +1,50 @@
+## nested-substitution
+$ x=world; echo "hello $(echo $x)"
+hello world
+
+$ echo "$(echo "$(echo deep)")"
+deep
+
+$ x=abc; echo "${#x} chars"
+3 chars
+
+## empty-and-special
+$ echo "${empty_var}"
+
+$ echo "before${empty_var}after"
+beforeafter
+
+$ x=""; echo "[$x]"
+[]
+
+$ x=""; if [ -z "$x" ]; then echo empty; fi
+empty
+
+## default-chains
+$ a=first; echo "${a:-${b:-fallback}}"
+first
+
+## expansion-in-assignment
+$ x=$(echo hello); echo "$x"
+hello
+
+$ x="val_$(echo suffix)"; echo "$x"
+val_suffix
+
+$ x=5; y=$((x * 2)); echo $y
+10
+
+## special-chars-in-values
+$ x='hello"world'; echo "$x"
+hello"world
+
+$ x="has'quote"; echo "$x"
+has'quote
+
+$ x='$not_expanded'; echo "$x"
+$not_expanded
+
+## ifs-and-word-splitting
+$ x="a  b  c"; echo $x
+a b c
+

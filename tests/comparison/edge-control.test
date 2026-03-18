@@ -1,0 +1,96 @@
+## nested-if-in-loop
+$ for i in 1 2 3; do if [ $i -eq 2 ]; then echo "found $i"; fi; done
+found 2
+
+## loop-with-command-sub
+$ for f in $(echo "a b c"); do echo "item: $f"; done
+item: a
+item: b
+item: c
+
+## case-glob-patterns
+$ x=file.tar.gz; case $x in *.gz) echo gzip;; *.bz2) echo bzip;; esac
+gzip
+
+$ for x in foo bar baz; do case $x in b*) echo "$x starts with b";; esac; done
+bar starts with b
+baz starts with b
+
+## case-fallthrough
+$ x=a; case $x in a) echo first;; b) echo second;; esac
+first
+
+$ x=5; case $x in [0-9]) echo digit;; *) echo other;; esac
+digit
+
+## subshell-exit-code
+$ (true); echo $?
+0
+
+$ (false); echo $?
+1
+
+## command-grouping-redirect
+$ { echo hello; echo world; } | cat
+hello
+world
+
+$ { echo a; echo b; echo c; } | grep b
+b
+
+## pipeline-status
+$ echo hello | grep hello > /dev/null; echo $?
+0
+
+$ echo hello | grep missing > /dev/null 2>&1; echo $?
+1
+
+## conditional-command-chain
+$ x=5; [ $x -gt 3 ] && [ $x -lt 10 ] && echo "in range"
+in range
+
+$ x=15; [ $x -gt 3 ] && [ $x -lt 10 ] || echo "out of range"
+out of range
+
+## errexit-basic
+$ set -e; true; echo "still here"
+still here
+
+## function-with-local
+$ f() { local x=inside; echo $x; }; x=outside; f; echo $x
+inside
+outside
+
+## function-return-code
+$ succeed() { return 0; }; succeed; echo $?
+0
+
+$ fail() { return 1; }; fail; echo $?
+1
+
+$ get_code() { return 42; }; get_code; echo $?
+42
+
+## function-with-args
+$ greet() { echo "Hello, $1!"; }; greet "World"
+Hello, World!
+
+$ repeat() { for i in $(seq $1); do echo "$2"; done; }; repeat 3 hi
+hi
+hi
+hi
+
+## nested-functions
+$ outer() { inner() { echo "inner"; }; echo "outer"; inner; }; outer
+outer
+inner
+
+## for-over-glob-like
+$ for ext in txt log csv; do echo ".$ext"; done
+.txt
+.log
+.csv
+
+## redirect-to-dev-null
+$ echo "visible"; echo "hidden" > /dev/null
+visible
