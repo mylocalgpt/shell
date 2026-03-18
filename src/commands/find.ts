@@ -219,9 +219,10 @@ export const find: Command = {
 		// Execute batch actions
 		if (batchPaths.length > 0) {
 			for (let a = 0; a < actions.length; a++) {
-				if (actions[a].type === 'exec-batch' && actions[a].cmd) {
+				const action = actions[a];
+				if (action.type === 'exec-batch' && action.cmd) {
 					const quotedPaths = batchPaths.map(shellQuote).join(' ');
-					const cmd = actions[a].cmd?.replace(/\{}/g, quotedPaths);
+					const cmd = action.cmd.replace(/\{}/g, quotedPaths);
 					const result = await ctx.exec(cmd);
 					stdout += result.stdout;
 					stderr += result.stderr;

@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+echo "pre-push: typecheck"
+pnpm typecheck
+
+echo "pre-push: lint"
+pnpm lint
+
+echo "pre-push: test"
+pnpm test
+
+echo "pre-push: build"
+pnpm build
+
+echo "pre-push: all checks passed"

@@ -281,7 +281,7 @@ export class Shell {
 				const handler = options.commands[name];
 				this.registry.defineCommand({
 					name,
-					execute: (args: string[], ctx: CommandContext) => handler(args, ctx),
+					execute: async (args: string[], ctx: CommandContext) => handler(args, ctx),
 				});
 			}
 		}
@@ -293,7 +293,7 @@ export class Shell {
 				// Create an adapter Command that delegates to the user callback
 				return {
 					name,
-					execute: (args: string[], ctx: CommandContext) => userCallback(name, args, ctx),
+					execute: async (args: string[], ctx: CommandContext) => userCallback(name, args, ctx),
 				};
 			};
 		}
@@ -509,7 +509,7 @@ export class Shell {
 	defineCommand(name: string, handler: CommandHandler): void {
 		this.registry.defineCommand({
 			name,
-			execute: (args: string[], ctx: CommandContext) => handler(args, ctx),
+			execute: async (args: string[], ctx: CommandContext) => handler(args, ctx),
 		});
 	}
 
