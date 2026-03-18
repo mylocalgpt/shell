@@ -2,7 +2,7 @@
 
 Virtual bash interpreter for AI agents. Pure TypeScript, zero runtime dependencies. Runs in browsers, Node.js, Cloudflare Workers, and any JavaScript runtime. Ships with 60+ commands, a full jq implementation, and a 33KB gzipped entry point.
 
-- 33 KB gzipped, zero dependencies, runs anywhere
+- Pure JS, 33 KB gzipped, zero dependencies, runs anywhere
 - 60+ commands including grep, sed, awk, find, xargs, and a full jq implementation
 - Pipes, redirections, variables, control flow, functions, arithmetic
 - Configurable execution limits, regex guardrails, no eval

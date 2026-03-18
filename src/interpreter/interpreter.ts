@@ -3,6 +3,7 @@ import type { Command, CommandContext, CommandResult } from '../commands/types.j
 import { findSimilarCommands } from '../errors.js';
 import type { FileSystem } from '../fs/types.js';
 import type {
+	ArithmeticCommand,
 	BraceGroup,
 	CaseStatement,
 	CommandNode,
@@ -71,6 +72,20 @@ function makeResult(exitCode: number, stdout: string, stderr: string): CommandRe
 	return { exitCode, stdout, stderr };
 }
 
+/** Extract the literal string value from a Word AST node. */
+function getWordLiteral(word: Word): string {
+	switch (word.type) {
+		case 'LiteralWord':
+			return word.value;
+		case 'QuotedWord':
+			return word.parts.map((p) => (p.type === 'LiteralWord' ? p.value : '')).join('');
+		case 'ConcatWord':
+			return word.parts.map((p) => getWordLiteral(p as Word)).join('');
+		default:
+			return '';
+	}
+}
+
 /**
  * Interpreter that walks the AST and executes commands.
  */
@@ -80,6 +95,7 @@ export class Interpreter {
 	private env: Map<string, string>;
 	private locals: Array<Map<string, string>>;
 	private functions: Map<string, FunctionDefinition>;
+	private arrays: Map<string, string[]>;
 	private cwd: string;
 	private exitCode: number;
 	private options: ShellRuntimeOptions;
@@ -112,6 +128,7 @@ export class Interpreter {
 		this.env = env ?? new Map();
 		this.locals = [];
 		this.functions = new Map();
+		this.arrays = new Map();
 		this.cwd = cwd ?? '/';
 		this.exitCode = 0;
 		this.options = defaultRuntimeOptions();
@@ -133,12 +150,12 @@ export class Interpreter {
 		return {
 			env: this.makeVarMap(),
 			positionalParams: this.positionalParams,
-			arrays: new Map(),
+			arrays: this.arrays,
 			lastExitCode: this.exitCode,
 			pid: 1,
 			bgPid: 0,
 			cwd: this.cwd,
-			options: { nounset: this.options.nounset },
+			options: { nounset: this.options.nounset, noglob: this.options.noglob },
 			fs: this.fs,
 		};
 	}
@@ -263,15 +280,16 @@ export class Interpreter {
 				this.exitCode = pipeResult.exitCode;
 			} catch (e) {
 				// For control flow signals (break, continue, return, exit),
-				// attach accumulated output and re-throw
+				// prepend accumulated output and re-throw
 				if (
 					e instanceof BreakSignal ||
 					e instanceof ContinueSignal ||
 					e instanceof ReturnSignal ||
 					e instanceof ExitSignal
 				) {
-					(e as Error & { _stdout?: string; _stderr?: string })._stdout = result.stdout;
-					(e as Error & { _stdout?: string; _stderr?: string })._stderr = result.stderr;
+					const sig = e as Error & { _stdout?: string; _stderr?: string };
+					sig._stdout = result.stdout + (sig._stdout ?? '');
+					sig._stderr = result.stderr + (sig._stderr ?? '');
 				}
 				throw e;
 			} finally {
@@ -381,6 +399,8 @@ export class Interpreter {
 				return this.executeFunctionDef(node);
 			case 'ConditionalExpression':
 				return this.executeConditionalExpression(node);
+			case 'ArithmeticCommand':
+				return this.executeArithmeticCommand(node);
 			default:
 				return makeResult(0, '', '');
 		}
@@ -392,8 +412,56 @@ export class Interpreter {
 		const tempEnv = new Map<string, string>();
 		for (let i = 0; i < node.assignments.length; i++) {
 			const assign = node.assignments[i];
+
+			// Array assignment: arr=(a b c)
+			if (assign.value && assign.value.type === 'ArrayExpression') {
+				const elements: string[] = [];
+				for (let j = 0; j < assign.value.elements.length; j++) {
+					const expanded = await expandWord(assign.value.elements[j], this.getShellState(), {
+						...this.makeExpansionOpts(),
+						assignmentContext: true,
+					});
+					for (let k = 0; k < expanded.length; k++) {
+						elements.push(expanded[k]);
+					}
+				}
+				this.arrays.set(assign.name, elements);
+				// Also set the scalar value to the first element (bash behavior)
+				this.setVar(assign.name, elements[0] ?? '');
+				continue;
+			}
+
+			// Indexed array assignment: arr[N]=value
+			const bracketIdx = assign.name.indexOf('[');
+			if (bracketIdx >= 0) {
+				const arrayName = assign.name.slice(0, bracketIdx);
+				const indexStr = assign.name.slice(bracketIdx + 1, assign.name.length - 1);
+				const idx = Number.parseInt(indexStr, 10);
+				if (!Number.isNaN(idx)) {
+					let arr = this.arrays.get(arrayName);
+					if (!arr) {
+						arr = [];
+						this.arrays.set(arrayName, arr);
+					}
+					let value = '';
+					if (assign.value) {
+						const expanded = await expandWord(assign.value, this.getShellState(), {
+							...this.makeExpansionOpts(),
+							assignmentContext: true,
+						});
+						value = expanded.join(' ');
+					}
+					// Extend array if needed
+					while (arr.length <= idx) {
+						arr.push('');
+					}
+					arr[idx] = value;
+				}
+				continue;
+			}
+
 			let value = '';
-			if (assign.value && assign.value.type !== 'ArrayExpression') {
+			if (assign.value) {
 				const expanded = await expandWord(assign.value, this.getShellState(), {
 					...this.makeExpansionOpts(),
 					assignmentContext: true,
@@ -450,7 +518,22 @@ export class Interpreter {
 		const cmdName = expandedWords[0];
 		const cmdArgs = expandedWords.slice(1);
 
-		// 3. Apply redirections
+		// 3. Pre-expand here-string targets (<<<), then apply redirections
+		for (let i = 0; i < node.redirections.length; i++) {
+			const redir = node.redirections[i];
+			if (redir.operator === '<<<') {
+				const expanded = await expandWord(redir.target, this.getShellState(), {
+					...this.makeExpansionOpts(),
+					assignmentContext: true,
+				});
+				// Replace target with expanded literal
+				(redir as { target: Word }).target = {
+					type: 'LiteralWord',
+					value: expanded.join(' '),
+					pos: redir.target.pos,
+				};
+			}
+		}
 		const redirState = this.applyRedirections(node.redirections, stdin);
 		const effectiveStdin = redirState.stdin;
 
@@ -561,7 +644,9 @@ export class Interpreter {
 			result = await this.executeCommand(fn.body);
 		} catch (e) {
 			if (e instanceof ReturnSignal) {
-				result = makeResult(e.exitCode, '', '');
+				// Recover accumulated output attached by executeList
+				const sig = e as ReturnSignal & { _stdout?: string; _stderr?: string };
+				result = makeResult(e.exitCode, sig._stdout ?? '', sig._stderr ?? '');
 			} else {
 				throw e;
 			}
@@ -918,6 +1003,14 @@ export class Interpreter {
 		return makeResult(0, '', '');
 	}
 
+	/** Execute (( expression )) arithmetic command. */
+	private executeArithmeticCommand(node: ArithmeticCommand): CommandResult {
+		const state = this.getShellState();
+		const result = evaluateArithmetic(node.expression, state);
+		this.exitCode = result !== 0 ? 0 : 1;
+		return makeResult(this.exitCode, '', '');
+	}
+
 	/** Execute a string as a command (for command substitution). */
 	async executeString(input: string): Promise<CommandResult> {
 		const program = parse(input);
@@ -1000,6 +1093,16 @@ export class Interpreter {
 		return this.fs;
 	}
 
+	/** Set positional parameters ($1, $2, ...). */
+	setPositionalParams(params: string[]): void {
+		this.positionalParams = params;
+	}
+
+	/** Get positional parameters. */
+	getPositionalParams(): string[] {
+		return this.positionalParams;
+	}
+
 	/** Get the pending stdin buffer (for read builtin). */
 	getPendingStdin(): string {
 		return this.pendingStdin;
@@ -1055,12 +1158,8 @@ export class Interpreter {
 				continue;
 			}
 
-			// Get target path
-			// (in a full implementation we'd expand the target word)
-			let target = '';
-			if (redir.target.type === 'LiteralWord') {
-				target = redir.target.value;
-			}
+			// Get target path (extract literal value from word)
+			const target = getWordLiteral(redir.target);
 
 			if (op === '<') {
 				if (target === '/dev/null') {
@@ -1112,6 +1211,9 @@ export class Interpreter {
 					state.stdoutFile = resolved;
 					state.stderrFile = resolved;
 				}
+			} else if (op === '<<<') {
+				// Here-string: expand the word and use as stdin with trailing newline
+				state.stdin = `${target}\n`;
 			}
 		}
 

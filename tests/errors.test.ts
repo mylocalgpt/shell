@@ -88,12 +88,11 @@ describe('error messages through Shell', () => {
 	});
 
 	describe('unsupported features', () => {
-		it('here-strings produce helpful error', async () => {
+		it('here-strings are supported', async () => {
 			const shell = new Shell();
 			const result = await shell.exec('cat <<< "hello"');
-			expect(result.exitCode).not.toBe(0);
-			expect(result.stderr).toContain('here-string');
-			expect(result.stderr).toContain('echo');
+			expect(result.exitCode).toBe(0);
+			expect(result.stdout).toBe('hello\n');
 		});
 
 		it('coproc produces helpful error', async () => {

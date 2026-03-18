@@ -354,9 +354,10 @@ describe('Lexer', () => {
 	});
 
 	describe('unsupported syntax', () => {
-		it('errors on here-string <<<', () => {
-			expect(() => tokenize('cmd <<< "input"')).toThrow(LexerError);
-			expect(() => tokenize('cmd <<< "input"')).toThrow(/here-strings/);
+		it('tokenizes here-string <<<', () => {
+			const tokens = tokenize('cmd <<< "input"');
+			const types = tokens.map((t: { type: string }) => t.type);
+			expect(types).toContain('TLess');
 		});
 
 		it('errors on process substitution <()', () => {

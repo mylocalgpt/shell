@@ -31,8 +31,8 @@ export interface ShellState {
 	bgPid: number;
 	/** Current working directory. */
 	cwd: string;
-	/** Shell options (nounset, etc.). */
-	options: { nounset: boolean };
+	/** Shell options (nounset, noglob, etc.). */
+	options: { nounset: boolean; noglob: boolean };
 	/** The virtual filesystem (for glob expansion). */
 	fs: FileSystem;
 }
@@ -106,8 +106,8 @@ export async function expandWord(
 		}
 	}
 
-	// Step 7: Glob expansion (only for unquoted words)
-	if (!isQuoted) {
+	// Step 7: Glob expansion (only for unquoted words, and when noglob is not set)
+	if (!isQuoted && !state.options.noglob) {
 		const globbed: string[] = [];
 		for (let i = 0; i < results.length; i++) {
 			const expanded = expandGlob(results[i], state);
@@ -424,7 +424,7 @@ function applyParamOperator(value: string, word: VariableWord, state: ShellState
 	}
 
 	const op = word.operator;
-	const operandValue = word.operand ? getWordLiteralValue(word.operand) : '';
+	const operandValue = word.operand ? getWordLiteralValue(word.operand, state) : '';
 
 	switch (op) {
 		case ':-':
@@ -488,15 +488,25 @@ function applyParamOperator(value: string, word: VariableWord, state: ShellState
 	}
 }
 
-/** Get the literal string value of a Word. */
-function getWordLiteralValue(word: Word): string {
+/** Get the string value of a Word, resolving variable references. */
+function getWordLiteralValue(word: Word, state?: ShellState): string {
 	switch (word.type) {
 		case 'LiteralWord':
 			return word.value;
 		case 'QuotedWord':
-			return word.parts.map((p) => (p.type === 'LiteralWord' ? p.value : '')).join('');
+			return word.parts.map((p) => getWordLiteralValue(p as Word, state)).join('');
 		case 'ConcatWord':
-			return word.parts.map((p) => (p.type === 'LiteralWord' ? p.value : '')).join('');
+			return word.parts.map((p) => getWordLiteralValue(p as Word, state)).join('');
+		case 'VariableWord':
+			if (state) {
+				return expandVariable(word, state, {
+					doubleQuoted: false,
+					assignmentContext: false,
+					casePattern: false,
+					executor: async () => '',
+				});
+			}
+			return '';
 		default:
 			return '';
 	}
@@ -918,8 +928,15 @@ function tokenizeArith(expr: string): ArithToken[] {
 			continue;
 		}
 
-		// Skip $
+		// Handle $ - skip it, but if followed by a digit it's a positional param reference
 		if (ch === '$') {
+			if (i + 1 < expr.length && expr[i + 1] >= '0' && expr[i + 1] <= '9') {
+				// $1, $2, etc. - emit as Name token so ArithParser resolves via env
+				const paramName = `$${expr[i + 1]}`;
+				tokens.push({ type: 'Name', value: paramName });
+				i += 2;
+				continue;
+			}
 			i++;
 			continue;
 		}
@@ -1281,6 +1298,17 @@ class ArithParser {
 
 		if (tok.type === 'Name') {
 			this.advance();
+
+			// Resolve positional parameter references ($1, $2, etc.)
+			if (tok.value[0] === '$' && tok.value.length === 2) {
+				const paramIdx = Number.parseInt(tok.value[1], 10) - 1;
+				const paramVal =
+					paramIdx >= 0 && paramIdx < this.state.positionalParams.length
+						? this.state.positionalParams[paramIdx]
+						: '0';
+				return Number.parseInt(paramVal, 10) || 0;
+			}
+
 			// Post-increment/decrement
 			if (this.current().type === 'DoublePlus') {
 				this.advance();

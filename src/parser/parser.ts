@@ -1,4 +1,5 @@
 import type {
+	ArithmeticCommand,
 	ArithmeticExpansion,
 	ArrayExpression,
 	Assignment,
@@ -101,6 +102,7 @@ function isRedirectionOp(type: TokenType): boolean {
 		type === 'DGreat' ||
 		type === 'DLess' ||
 		type === 'DLessDash' ||
+		type === 'TLess' ||
 		type === 'LessAnd' ||
 		type === 'GreatAnd' ||
 		type === 'AndGreat' ||
@@ -354,6 +356,9 @@ class Parser {
 			case 'DblLeftBracket':
 				return this.parseConditionalExpression();
 			case 'LeftParen':
+				if (this.peek(0).type === 'LeftParen') {
+					return this.parseArithmeticCommand();
+				}
 				return this.parseSubshell();
 			case 'LeftBrace':
 				return this.parseBraceGroup();
@@ -954,6 +959,35 @@ class Parser {
 			return { type: 'LiteralWord', value, pos };
 		}
 		return this.parseWord();
+	}
+
+	/** Parse (( expression )) arithmetic command. */
+	parseArithmeticCommand(): ArithmeticCommand {
+		const pos = this.current.pos;
+		this.expect('LeftParen'); // first (
+		this.expect('LeftParen'); // second (
+
+		// Collect everything until )) as the expression string
+		let expression = '';
+		let depth = 0;
+		while (!this.check('EOF')) {
+			if (this.check('RightParen') && this.peek(0).type === 'RightParen' && depth === 0) {
+				break;
+			}
+			if (this.check('LeftParen')) depth++;
+			if (this.check('RightParen')) depth--;
+			// Collect token value with spacing
+			if (expression.length > 0) expression += ' ';
+			expression += this.current.value;
+			this.advance();
+		}
+
+		this.expect('RightParen'); // first )
+		this.expect('RightParen'); // second )
+
+		const redirections = this.parseTrailingRedirections();
+
+		return { type: 'ArithmeticCommand', expression, redirections, pos };
 	}
 
 	/** Parse ( list ). */

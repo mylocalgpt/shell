@@ -26,6 +26,7 @@ export type TokenType =
 	| 'DGreat'
 	| 'DLess'
 	| 'DLessDash'
+	| 'TLess'
 	| 'LessAnd'
 	| 'GreatAnd'
 	| 'AndGreat'
@@ -340,12 +341,11 @@ export class Lexer {
 			if (this.peek() === '<') {
 				this.advance();
 				if (this.peek() === '<') {
-					// <<< here-string - unsupported
+					// <<< here-string
 					this.advance();
-					throw new LexerError(
-						'here-strings (<<<) are not supported; use echo "value" | command instead',
-						pos,
-					);
+					this.reservedWordAllowed = false;
+					this.commandStart = false;
+					return { type: 'TLess', value: '<<<', pos };
 				}
 				if (this.peek() === '-') {
 					this.advance();

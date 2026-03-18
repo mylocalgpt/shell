@@ -192,6 +192,35 @@ function matchesAddr(addr: SedAddr, lineNum: number, line: string, totalLines: n
 	}
 }
 
+/** Execute y/source/dest/ transliteration. */
+function executeTransliterate(line: string, argsStr: string): string | null {
+	if (argsStr.length === 0) return null;
+	const delim = argsStr[0];
+
+	let i = 1;
+	let source = '';
+	while (i < argsStr.length && argsStr[i] !== delim) {
+		source += argsStr[i];
+		i++;
+	}
+	i++; // skip delimiter
+
+	let dest = '';
+	while (i < argsStr.length && argsStr[i] !== delim) {
+		dest += argsStr[i];
+		i++;
+	}
+
+	if (source.length !== dest.length) return null;
+
+	let result = '';
+	for (let c = 0; c < line.length; c++) {
+		const idx = source.indexOf(line[c]);
+		result += idx >= 0 ? dest[idx] : line[c];
+	}
+	return result;
+}
+
 function executeSubstitution(line: string, argsStr: string): string | null {
 	if (argsStr.length === 0) return null;
 	const delim = argsStr[0];
@@ -235,8 +264,32 @@ function executeSubstitution(line: string, argsStr: string): string | null {
 		}
 	}
 
+	// Convert BRE to JS regex: \( -> (, \) -> ), \+ -> +, \? -> ?, \{ -> {, \} -> }
+	let jsPattern = '';
+	for (let p = 0; p < pattern.length; p++) {
+		if (pattern[p] === '\\' && p + 1 < pattern.length) {
+			const next = pattern[p + 1];
+			if (
+				next === '(' ||
+				next === ')' ||
+				next === '+' ||
+				next === '?' ||
+				next === '{' ||
+				next === '}'
+			) {
+				jsPattern += next;
+				p++;
+			} else {
+				jsPattern += pattern[p] + pattern[p + 1];
+				p++;
+			}
+		} else {
+			jsPattern += pattern[p];
+		}
+	}
+
 	// Security check
-	const safety = checkRegexSafety(pattern);
+	const safety = checkRegexSafety(jsPattern);
 	if (safety) return null;
 
 	let flags = caseFlag ? 'i' : '';
@@ -244,7 +297,7 @@ function executeSubstitution(line: string, argsStr: string): string | null {
 
 	let regex: RegExp;
 	try {
-		regex = new RegExp(pattern, flags);
+		regex = new RegExp(jsPattern, flags);
 	} catch {
 		return null;
 	}
@@ -431,6 +484,11 @@ export const sed: Command = {
 							printed = true;
 						}
 						break;
+					case 'y': {
+						const result = executeTransliterate(line, cmd.args);
+						if (result !== null) line = result;
+						break;
+					}
 				}
 
 				if (deleted) break;

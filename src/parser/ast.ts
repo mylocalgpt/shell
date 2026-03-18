@@ -284,6 +284,14 @@ export interface ConditionalExpression {
 	pos: SourcePosition;
 }
 
+/** Arithmetic command: (( expression )). */
+export interface ArithmeticCommand {
+	type: 'ArithmeticCommand';
+	expression: string;
+	redirections: Redirection[];
+	pos: SourcePosition;
+}
+
 /** Array expression: (word...). */
 export interface ArrayExpression {
 	type: 'ArrayExpression';
@@ -301,7 +309,8 @@ export type CompoundCommand =
 	| WhileStatement
 	| UntilStatement
 	| CaseStatement
-	| ConditionalExpression;
+	| ConditionalExpression
+	| ArithmeticCommand;
 
 /** Any command node in the AST. Named CommandNode to avoid conflict with the Command interface. */
 export type CommandNode =
@@ -315,7 +324,8 @@ export type CommandNode =
 	| UntilStatement
 	| CaseStatement
 	| FunctionDefinition
-	| ConditionalExpression;
+	| ConditionalExpression
+	| ArithmeticCommand;
 
 // ── Pipeline and List ──
 

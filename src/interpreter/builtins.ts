@@ -8,6 +8,7 @@ import type { Interpreter, InterpreterContext } from './interpreter.js';
 
 /** All builtin names. */
 const BUILTIN_NAMES = new Set([
+	':',
 	'cd',
 	'export',
 	'unset',
@@ -47,6 +48,8 @@ export async function executeBuiltin(
 	ctx: InterpreterContext,
 ): Promise<CommandResult> {
 	switch (name) {
+		case ':':
+			return ok('');
 		case 'cd':
 			return builtinCd(args, ctx);
 		case 'export':
@@ -418,9 +421,12 @@ function builtinSet(args: string[], ctx: InterpreterContext): CommandResult {
 
 		if (arg === '--') {
 			// Set positional parameters from remaining args
-			// (simplified - would need interpreter support)
-			i++;
-			break;
+			const params: string[] = [];
+			for (let j = i + 1; j < args.length; j++) {
+				params.push(args[j]);
+			}
+			ctx.interpreter.setPositionalParams(params);
+			return ok('');
 		}
 
 		if (arg === '-o' || arg === '+o') {
@@ -576,8 +582,14 @@ async function builtinEval(args: string[], ctx: InterpreterContext): Promise<Com
 
 // ── shift ──
 
-function builtinShift(_args: string[], _ctx: InterpreterContext): CommandResult {
-	// Simplified - would need interpreter positional params access
+function builtinShift(args: string[], ctx: InterpreterContext): CommandResult {
+	const n = args.length > 0 ? Number.parseInt(args[0], 10) : 1;
+	const count = Number.isNaN(n) ? 1 : n;
+	const params = ctx.interpreter.getPositionalParams();
+	if (count > params.length) {
+		return { exitCode: 1, stdout: '', stderr: '' };
+	}
+	ctx.interpreter.setPositionalParams(params.slice(count));
 	return ok('');
 }
 
