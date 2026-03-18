@@ -243,16 +243,10 @@ export class Lexer {
 			return this.scanRedirection();
 		}
 
-		// Closing brace - special since } can also be a word
-		if (ch === '}') {
-			const pos = this.currentPos();
-			this.advance();
-			this.reservedWordAllowed = true;
-			this.commandStart = true;
-			return { type: 'RightBrace', value: '}', pos };
-		}
-
 		// Words (including quoted, expansions, etc.)
+		// Note: } is handled inside scanWord - it becomes RightBrace when
+		// standalone (braceDepth=0), and is included in the word during
+		// brace expansion (braceDepth>0).
 		return this.scanWord();
 	}
 
@@ -503,12 +497,41 @@ export class Lexer {
 		let isAssignment = false;
 		let seenEquals = false;
 		let wordLen = 0;
+		let braceDepth = 0;
 
 		while (this.pos < this.input.length) {
 			const ch = this.peek();
 
-			// Metacharacters end the word (unless quoted)
-			if (isMeta(ch) || ch === '}' || ch === ')') {
+			// Track brace depth for brace expansion (e.g., {a,b,c})
+			if (ch === '{' && wordLen > 0) {
+				// { inside a word starts potential brace expansion
+				braceDepth++;
+			} else if (ch === '{' && wordLen === 0) {
+				// { at start of word: check if followed by non-whitespace
+				// (brace expansion) or whitespace/meta (brace group)
+				const nextCh = this.peekAt(1);
+				if (nextCh === '' || isBlank(nextCh) || nextCh === '\n') {
+					// Standalone { - consume and return as LeftBrace
+					break;
+				}
+				// Part of a brace expansion word
+				braceDepth++;
+			}
+
+			// } closes brace expansion, or ends word if no open braces
+			if (ch === '}') {
+				if (braceDepth > 0) {
+					braceDepth--;
+					value += this.advance();
+					wordLen++;
+					continue;
+				}
+				// Standalone } - break out of word
+				break;
+			}
+
+			// Metacharacters end the word
+			if (isMeta(ch) || ch === ')') {
 				break;
 			}
 
@@ -603,6 +626,20 @@ export class Lexer {
 		}
 
 		if (value.length === 0) {
+			// Handle standalone { that was determined to be a brace group opener
+			if (this.pos < this.input.length && this.peek() === '{') {
+				this.advance();
+				this.reservedWordAllowed = true;
+				this.commandStart = true;
+				return { type: 'LeftBrace', value: '{', pos };
+			}
+			// Handle standalone } that wasn't consumed by the word loop
+			if (this.pos < this.input.length && this.peek() === '}') {
+				this.advance();
+				this.reservedWordAllowed = true;
+				this.commandStart = true;
+				return { type: 'RightBrace', value: '}', pos };
+			}
 			// Should not happen, but safety
 			return { type: 'EOF', value: '', pos };
 		}
@@ -614,8 +651,9 @@ export class Lexer {
 			return { type: 'DblRightBracket', value: ']]', pos };
 		}
 
-		// { as opening brace group (only in reserved word position)
-		if (value === '{' && this.reservedWordAllowed) {
+		// Standalone { should already be handled by the empty-value check above.
+		// This is a fallback for safety.
+		if (value === '{') {
 			this.reservedWordAllowed = true;
 			this.commandStart = true;
 			return { type: 'LeftBrace', value: '{', pos };

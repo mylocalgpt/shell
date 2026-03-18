@@ -167,7 +167,7 @@ export interface Redirection {
 export interface Assignment {
 	type: 'Assignment';
 	name: string;
-	value: Word | null;
+	value: Word | ArrayExpression | null;
 	append: boolean;
 	pos: SourcePosition;
 }

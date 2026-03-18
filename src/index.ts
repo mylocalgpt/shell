@@ -52,6 +52,7 @@ export { DEFAULT_LIMITS } from './security/limits.js';
 
 // Values - parser
 export { Lexer, LexerError, tokenize } from './parser/lexer.js';
+export { ParseError, parse } from './parser/parser.js';
 
 // Shell
 import type { CommandResult } from './commands/types.js';
