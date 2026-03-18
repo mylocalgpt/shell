@@ -452,6 +452,10 @@ export class Interpreter {
 						});
 						value = expanded.join(' ');
 					}
+					// Guard against OOM from large indices
+					if (idx >= this.limits.maxArraySize) {
+						throw new LimitExceededError('maxArraySize', idx, this.limits.maxArraySize);
+					}
 					// Extend array if needed
 					while (arr.length <= idx) {
 						arr.push('');
@@ -968,7 +972,9 @@ export class Interpreter {
 			return await this.executeList(node.body);
 		} catch (e) {
 			if (e instanceof ExitSignal) {
-				return makeResult(e.exitCode, '', '');
+				// Recover accumulated output attached by executeList
+				const sig = e as ExitSignal & { _stdout?: string; _stderr?: string };
+				return makeResult(e.exitCode, sig._stdout ?? '', sig._stderr ?? '');
 			}
 			throw e;
 		} finally {
