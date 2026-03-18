@@ -1,0 +1,36 @@
+{
+	"name": "@mylocalgpt/shell",
+	"version": "0.0.0",
+	"type": "module",
+	"description": "Virtual bash interpreter for AI agents",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		}
+	},
+	"files": ["dist", "README.md", "LICENSE"],
+	"scripts": {
+		"build": "tsdown",
+		"test": "vitest run",
+		"test:comparison": "smokepod verify --target node --target-arg scripts/smokepod-adapter.mjs --mode process --tests tests/comparison/ --fixtures tests/fixtures/",
+		"test:record-fixtures": "smokepod record --target /bin/bash --tests tests/comparison/ --fixtures tests/fixtures/",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"typecheck": "tsc --noEmit",
+		"dev": "tsx watch src/index.ts"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"tsdown": "^0.21.0",
+		"tsx": "^4.19.4",
+		"typescript": "^5.8.2",
+		"vitest": "^3.1.1"
+	},
+	"license": "MIT",
+	"pnpm": {
+		"onlyBuiltDependencies": ["@biomejs/biome", "esbuild"]
+	}
+}
