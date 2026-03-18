@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/quoting.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T18:25:22.656551+03:00",
+	"recorded_at": "2026-03-18T19:56:35.368752+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -49,21 +49,21 @@
 		],
 		"escape-sequences": [
 			{
-				"line": 46,
+				"line": 62,
 				"command": "echo \"hello\\\"world\"",
 				"stdout": "hello\"world\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 49,
+				"line": 65,
 				"command": "echo \"back\\\\slash\"",
 				"stdout": "back\\slash\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 52,
+				"line": 68,
 				"command": "echo \"dollar\\$sign\"",
 				"stdout": "dollar$sign\n",
 				"stderr": "",
@@ -112,6 +112,43 @@
 				"line": 8,
 				"command": "echo 'no $(command) expansion'",
 				"stdout": "no $(command) expansion\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"whitespace-preservation": [
+			{
+				"line": 46,
+				"command": "echo \"  spaces  \"",
+				"stdout": "  spaces  \n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 49,
+				"command": "x=\"  hello  \"; echo \"$x\"",
+				"stdout": "  hello  \n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 52,
+				"command": "x=\"a  b  c\"; echo \"$x\"",
+				"stdout": "a  b  c\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 55,
+				"command": "x=$(echo \"  spaces  \"); echo \"\u003e$x\u003c\"",
+				"stdout": "\u003e  spaces  \u003c\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 58,
+				"command": "x=hello; x+=\" world\"; echo \"$x\"",
+				"stdout": "hello world\n",
 				"stderr": "",
 				"exit_code": 0
 			}

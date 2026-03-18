@@ -53,6 +53,21 @@ export interface ExpansionOpts {
 	executeProgram?: (program: import('../parser/ast.js').Program) => Promise<string>;
 }
 
+/** Check if a word or any of its parts are quoted (suppresses field splitting). */
+function wordContainsQuoting(word: Word): boolean {
+	if (word.type === 'QuotedWord') {
+		return true;
+	}
+	if (word.type === 'ConcatWord') {
+		for (let i = 0; i < word.parts.length; i++) {
+			if (word.parts[i].type === 'QuotedWord') {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 /**
  * Expand a Word AST node into string(s).
  * Multiple results are possible from glob, brace, or word splitting.
@@ -70,6 +85,10 @@ export async function expandWord(
 	// Step 1: Brace expansion (only for unquoted words)
 	const braceExpanded = expandBraces(word);
 
+	// Quoted words, assignment context, and case patterns suppress word splitting and glob expansion
+	const isQuoted =
+		opts.doubleQuoted || opts.assignmentContext || opts.casePattern || wordContainsQuoting(word);
+
 	const results: string[] = [];
 
 	for (let i = 0; i < braceExpanded.length; i++) {
@@ -77,7 +96,7 @@ export async function expandWord(
 		const expanded = await expandSingleWord(braceExpanded[i], state, opts);
 
 		// Step 6: Word splitting (only for unquoted results of param/cmd/arith expansion)
-		if (!opts.doubleQuoted && !opts.casePattern) {
+		if (!isQuoted) {
 			const split = splitOnIFS(expanded, state);
 			for (let j = 0; j < split.length; j++) {
 				results.push(split[j]);
@@ -88,7 +107,7 @@ export async function expandWord(
 	}
 
 	// Step 7: Glob expansion (only for unquoted words)
-	if (!opts.doubleQuoted && !opts.casePattern) {
+	if (!isQuoted) {
 		const globbed: string[] = [];
 		for (let i = 0; i < results.length; i++) {
 			const expanded = expandGlob(results[i], state);

@@ -42,6 +42,22 @@ c
 $ x="a b c"; echo "$x"
 a b c
 
+## whitespace-preservation
+$ echo "  spaces  "
+  spaces
+
+$ x="  hello  "; echo "$x"
+  hello
+
+$ x="a  b  c"; echo "$x"
+a  b  c
+
+$ x=$(echo "  spaces  "); echo ">$x<"
+>  spaces  <
+
+$ x=hello; x+=" world"; echo "$x"
+hello world
+
 ## escape-sequences
 $ echo "hello\"world"
 hello"world

@@ -390,11 +390,10 @@ export class Interpreter {
 			const assign = node.assignments[i];
 			let value = '';
 			if (assign.value && assign.value.type !== 'ArrayExpression') {
-				const expanded = await expandWord(
-					assign.value,
-					this.getShellState(),
-					this.makeExpansionOpts(),
-				);
+				const expanded = await expandWord(assign.value, this.getShellState(), {
+					...this.makeExpansionOpts(),
+					assignmentContext: true,
+				});
 				value = expanded.join(' ');
 			}
 
