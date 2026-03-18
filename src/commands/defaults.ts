@@ -51,4 +51,46 @@ export function registerDefaultCommands(registry: CommandRegistry): void {
 		name: 'file',
 		load: () => import('./file.js').then((m) => m.file),
 	});
+
+	// Text processing commands
+	registry.register({
+		name: 'grep',
+		load: () => import('./grep.js').then((m) => m.grep),
+	});
+	registry.register({
+		name: 'sed',
+		load: () => import('./sed.js').then((m) => m.sed),
+	});
+	registry.register({
+		name: 'awk',
+		load: () => import('./awk.js').then((m) => m.awk),
+	});
+	registry.register({
+		name: 'head',
+		load: () => import('./head.js').then((m) => m.head),
+	});
+	registry.register({
+		name: 'tail',
+		load: () => import('./tail.js').then((m) => m.tail),
+	});
+	registry.register({
+		name: 'sort',
+		load: () => import('./sort.js').then((m) => m.sort),
+	});
+	registry.register({
+		name: 'uniq',
+		load: () => import('./uniq.js').then((m) => m.uniq),
+	});
+	registry.register({
+		name: 'wc',
+		load: () => import('./wc.js').then((m) => m.wc),
+	});
+	registry.register({
+		name: 'cut',
+		load: () => import('./cut.js').then((m) => m.cut),
+	});
+	registry.register({
+		name: 'tr',
+		load: () => import('./tr.js').then((m) => m.tr),
+	});
 }
