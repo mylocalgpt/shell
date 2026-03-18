@@ -17,11 +17,11 @@ Virtual bash interpreter for AI agents. Hand-written recursive descent parser, s
 ## Data Flow
 
 ```
-input string ─→ parse() ─→ AST ─→ Interpreter.execute() ─→ CommandResult
-                                        │
-                                        ├─ expand words (7 phases)
-                                        ├─ resolve builtins (27) or commands (61)
-                                        └─ pipe stdout as string to next command
+input string -> parse() -> AST -> execute()
+  -> expand words (7 phases)
+  -> resolve builtins (27) or commands (61)
+  -> pipe stdout as string to next command
+  -> CommandResult { stdout, stderr, exitCode }
 ```
 
 `Shell.exec()` wraps this pipeline. Never throws - returns `{ stdout, stderr, exitCode }`.
