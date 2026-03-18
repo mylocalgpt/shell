@@ -2,6 +2,11 @@
 
 Virtual bash interpreter for AI agents. Pure TypeScript, zero runtime dependencies. Runs in browsers, Node.js, Cloudflare Workers, and any JavaScript runtime. Ships with 60+ commands, a full jq implementation, and a 33KB gzipped entry point.
 
+- 33 KB gzipped, zero dependencies, runs anywhere
+- 60+ commands including grep, sed, awk, find, xargs, and a full jq implementation
+- Pipes, redirections, variables, control flow, functions, arithmetic
+- Configurable execution limits, regex guardrails, no eval
+
 ## Install
 
 ```bash
@@ -261,17 +266,6 @@ const shell = new Shell({
 
 - This is not an OS-level sandbox. The shell executes within your JavaScript runtime's security context.
 - Custom commands have full access to the JavaScript environment. Use OS-level isolation for untrusted code.
-
-## Comparison
-
-| Feature | @mylocalgpt/shell | just-bash | @cloudflare/shell |
-|---------|-------------------|-----------|-------------------|
-| Entry point (gzipped) | 33 KB | 18.8 MB (unpacked) | 5.4 MB (unpacked) |
-| Runtime dependencies | 0 | 0 | Multiple |
-| Commands | 60+ | ~30 | ~15 |
-| jq support | Full | Partial (buggy) | None |
-| Browser support | Yes | No (node:zlib) | Workers only |
-| Vendor lock-in | None | None | Cloudflare |
 
 ## License
 
