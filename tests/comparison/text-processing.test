@@ -139,6 +139,46 @@ $ echo -e "a\nb\nc" | wc -l
 $ echo "hello" | rev
 olleh
 
+## awk-print-field
+$ echo "hello world" | awk '{print $2}'
+world
+
+## awk-sum-field (xfail: awk += operator not handled)
+$ printf "a 1\nb 2\nc 3\n" | awk '{sum += $2} END {print sum}'
+6
+
+## sed-capture-groups
+$ echo "hello world" | sed 's/\(hello\)/[\1]/'
+[hello] world
+
+## sort-field (xfail: sort -k field sorting not implemented)
+$ printf "apple 3\nbanana 1\ncherry 2\n" | sort -k2 -n
+banana 1
+cherry 2
+apple 3
+
+## printf-multiple-args
+$ printf '%d + %d = %d\n' 3 4 7
+3 + 4 = 7
+
+## uniq-count-format (xfail: uniq -c uses wider padding than bash)
+$ printf "a\na\nb\n" | uniq -c
+      2 a
+      1 b
+
+## tr-squeeze
+$ echo "heeelllo" | tr -s 'el'
+helo
+
+## expr-backslash-multiply (xfail: backslash not stripped before passing to expr)
+$ expr 4 \* 5
+20
+
+## stderr-through-pipe (xfail: 2>&1 | does not capture stderr in pipe)
+$ { echo "out"; echo "err" >&2; } 2>&1 | sort
+err
+out
+
 ## seq
 $ seq 5
 1

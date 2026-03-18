@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/edge-arithmetic.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T18:25:22.223551+03:00",
+	"recorded_at": "2026-03-18T21:41:51.857501+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -109,6 +109,24 @@
 				"exit_code": 0
 			}
 		],
+		"declare-integer": [
+			{
+				"line": 83,
+				"command": "declare -i num=5+3; echo $num",
+				"stdout": "8\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"function-positional-in-arithmetic": [
+			{
+				"line": 87,
+				"command": "add() { echo $(($1 + $2)); }; add 3 4",
+				"stdout": "7\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"modulo-edge-cases": [
 			{
 				"line": 49,
@@ -157,21 +175,21 @@
 		],
 		"nested-arithmetic": [
 			{
-				"line": 83,
+				"line": 91,
 				"command": "x=3; y=4; echo $(( (x + y) * (x - y) ))",
 				"stdout": "-7\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 86,
+				"line": 94,
 				"command": "a=2; b=3; c=4; echo $(( a * b + c ))",
 				"stdout": "10\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 89,
+				"line": 97,
 				"command": "echo $(( 2 + 3 * 4 - 1 ))",
 				"stdout": "13\n",
 				"stderr": "",

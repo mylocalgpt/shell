@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/edge-commands.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T18:25:22.267172+03:00",
+	"recorded_at": "2026-03-18T21:41:51.907828+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -10,14 +10,14 @@
 	"sections": {
 		"base64-roundtrip": [
 			{
-				"line": 57,
+				"line": 66,
 				"command": "echo -n \"hello\" | base64",
 				"stdout": "aGVsbG8=\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 60,
+				"line": 69,
 				"command": "echo \"aGVsbG8=\" | base64 -d",
 				"stdout": "hello",
 				"stderr": "",
@@ -26,14 +26,14 @@
 		],
 		"checksum": [
 			{
-				"line": 64,
+				"line": 73,
 				"command": "echo -n \"hello\" | md5sum",
 				"stdout": "5d41402abc4b2a76b9719d911017c592  -\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 67,
+				"line": 76,
 				"command": "echo -n \"hello\" | sha256sum",
 				"stdout": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824  -\n",
 				"stderr": "",
@@ -42,14 +42,14 @@
 		],
 		"cut-advanced": [
 			{
-				"line": 46,
+				"line": 55,
 				"command": "echo \"2024-01-15\" | cut -d- -f1",
 				"stdout": "2024\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 49,
+				"line": 58,
 				"command": "echo \"2024-01-15\" | cut -d- -f2-",
 				"stdout": "01-15\n",
 				"stderr": "",
@@ -58,7 +58,7 @@
 		],
 		"date-format": [
 			{
-				"line": 78,
+				"line": 87,
 				"command": "date +%Y-%m-%d",
 				"stdout": "2026-03-18\n",
 				"stderr": "",
@@ -67,7 +67,7 @@
 		],
 		"find-xargs-pattern": [
 			{
-				"line": 53,
+				"line": 62,
 				"command": "mkdir -p /tmp/tdir; touch /tmp/tdir/a.txt /tmp/tdir/b.log; find /tmp/tdir -name '*.txt' -type f",
 				"stdout": "/tmp/tdir/a.txt\n",
 				"stderr": "",
@@ -136,16 +136,34 @@
 				"exit_code": 0
 			}
 		],
-		"sort-advanced": [
+		"set-noclobber": [
+			{
+				"line": 38,
+				"command": "echo first \u003e /tmp/noclobber_test; set -C; echo second \u003e /tmp/noclobber_test 2\u003e/dev/null; echo $?; cat /tmp/noclobber_test; set +C; rm -f /tmp/noclobber_test",
+				"stdout": "1\nfirst\n",
+				"stderr": "/bin/bash: /tmp/noclobber_test: cannot overwrite existing file\n",
+				"exit_code": 0
+			}
+		],
+		"set-noglob": [
 			{
 				"line": 34,
+				"command": "set -f; echo *; set +f",
+				"stdout": "*\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"sort-advanced": [
+			{
+				"line": 43,
 				"command": "echo -e \"banana\\napple\\ncherry\\napple\" | sort -u",
 				"stdout": "apple\nbanana\ncherry\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 39,
+				"line": 48,
 				"command": "echo -e \"10\\n2\\n1\\n20\" | sort -n",
 				"stdout": "1\n2\n10\n20\n",
 				"stderr": "",
@@ -154,35 +172,35 @@
 		],
 		"test-command": [
 			{
-				"line": 82,
+				"line": 91,
 				"command": "test 5 -gt 3 \u0026\u0026 echo yes",
 				"stdout": "yes\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 85,
+				"line": 94,
 				"command": "test -z \"\" \u0026\u0026 echo empty",
 				"stdout": "empty\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 88,
+				"line": 97,
 				"command": "test -n \"hello\" \u0026\u0026 echo nonempty",
 				"stdout": "nonempty\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 91,
+				"line": 100,
 				"command": "[ \"abc\" = \"abc\" ] \u0026\u0026 echo equal",
 				"stdout": "equal\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 94,
+				"line": 103,
 				"command": "[ \"abc\" != \"def\" ] \u0026\u0026 echo notequal",
 				"stdout": "notequal\n",
 				"stderr": "",
@@ -191,14 +209,14 @@
 		],
 		"wc-modes": [
 			{
-				"line": 71,
+				"line": 80,
 				"command": "echo -e \"one two three\\nfour five\" | wc -w",
 				"stdout": "       5\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 74,
+				"line": 83,
 				"command": "echo -n \"hello\" | wc -c",
 				"stdout": "       5\n",
 				"stderr": "",

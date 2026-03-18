@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/arithmetic.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T18:25:22.108805+03:00",
+	"recorded_at": "2026-03-18T21:41:51.756117+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",

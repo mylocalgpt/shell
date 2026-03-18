@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/edge-expansion.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T20:30:27.567995+03:00",
+	"recorded_at": "2026-03-18T21:41:52.066241+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",

@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/edge-redirects.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T18:25:22.515482+03:00",
+	"recorded_at": "2026-03-18T21:41:52.251279+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -26,14 +26,14 @@
 		],
 		"conditional-file-ops": [
 			{
-				"line": 59,
+				"line": 63,
 				"command": "echo \"data\" \u003e /tmp/shelltest6; if [ -f /tmp/shelltest6 ]; then echo exists; fi",
 				"stdout": "exists\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 62,
+				"line": 66,
 				"command": "if [ -f /tmp/nonexistent_file_xyz ]; then echo exists; else echo missing; fi",
 				"stdout": "missing\n",
 				"stderr": "",
@@ -52,6 +52,15 @@
 				"line": 16,
 				"command": "cat /dev/null",
 				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"here-string-with-var": [
+			{
+				"line": 49,
+				"command": "x=world; cat \u003c\u003c\u003c \"hello $x\"",
+				"stdout": "hello world\n",
 				"stderr": "",
 				"exit_code": 0
 			}
@@ -94,7 +103,7 @@
 		],
 		"multiple-redirects": [
 			{
-				"line": 49,
+				"line": 53,
 				"command": "echo \"both\" \u003e /tmp/shelltest4 2\u003e\u00261; cat /tmp/shelltest4",
 				"stdout": "both\n",
 				"stderr": "",
@@ -103,7 +112,7 @@
 		],
 		"pipe-to-file": [
 			{
-				"line": 53,
+				"line": 57,
 				"command": "echo -e \"c\\na\\nb\" | sort \u003e /tmp/shelltest5; cat /tmp/shelltest5",
 				"stdout": "a\nb\nc\n",
 				"stderr": "",
@@ -121,14 +130,14 @@
 		],
 		"tee-command": [
 			{
-				"line": 75,
+				"line": 79,
 				"command": "echo \"hello\" | tee /tmp/shelltest9 \u003e /dev/null; cat /tmp/shelltest9",
 				"stdout": "hello\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 78,
+				"line": 82,
 				"command": "echo \"world\" | tee /tmp/shelltest10",
 				"stdout": "world\n",
 				"stderr": "",
@@ -137,14 +146,14 @@
 		],
 		"write-and-process": [
 			{
-				"line": 66,
+				"line": 70,
 				"command": "echo -e \"3\\n1\\n2\" \u003e /tmp/shelltest7; sort -n /tmp/shelltest7",
 				"stdout": "1\n2\n3\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 71,
+				"line": 75,
 				"command": "echo \"hello world\" \u003e /tmp/shelltest8; wc -w \u003c /tmp/shelltest8",
 				"stdout": "       2\n",
 				"stderr": "",

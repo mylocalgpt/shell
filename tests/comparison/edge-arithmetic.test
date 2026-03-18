@@ -79,6 +79,14 @@ $ sum=0; for i in 1 2 3 4 5; do sum=$((sum + i)); done; echo $sum
 $ fact=1; for i in $(seq 1 5); do fact=$((fact * i)); done; echo $fact
 120
 
+## declare-integer (xfail: declare -i does not evaluate arithmetic)
+$ declare -i num=5+3; echo $num
+8
+
+## function-positional-in-arithmetic
+$ add() { echo $(($1 + $2)); }; add 3 4
+7
+
 ## nested-arithmetic
 $ x=3; y=4; echo $(( (x + y) * (x - y) ))
 -7

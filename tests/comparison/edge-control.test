@@ -111,6 +111,13 @@ got: hello
 $ echo "a b c" | { read x y z; echo "$x|$y|$z"; }
 a|b|c
 
+## double-bracket-string-compare (xfail: < and > in [[ ]] parsed as redirects)
+$ if [[ "abc" < "def" ]]; then echo yes; fi
+yes
+
+$ if [[ "def" > "abc" ]]; then echo yes; fi
+yes
+
 ## redirect-to-dev-null
 $ echo "visible"; echo "hidden" > /dev/null
 visible

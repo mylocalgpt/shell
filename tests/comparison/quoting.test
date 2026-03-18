@@ -71,6 +71,20 @@ $ x=$(echo "  spaces  "); echo ">$x<"
 $ x=hello; x+=" world"; echo "$x"
 hello world
 
+## multiline-string-in-var
+$ x=$(printf "hello\nworld"); echo "$x"
+hello
+world
+
+## ansi-c-quoting-newline
+$ echo $'hello\nworld'
+hello
+world
+
+## ansi-c-quoting-tab
+$ echo $'col1\tcol2'
+col1	col2
+
 ## escape-sequences
 $ echo "hello\"world"
 hello"world

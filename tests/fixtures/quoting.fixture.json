@@ -1,13 +1,31 @@
 {
 	"source": "tests/comparison/quoting.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T20:02:23.930978+03:00",
+	"recorded_at": "2026-03-18T21:41:52.414732+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
 		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
 	},
 	"sections": {
+		"ansi-c-quoting-newline": [
+			{
+				"line": 80,
+				"command": "echo $'hello\\nworld'",
+				"stdout": "hello\nworld\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"ansi-c-quoting-tab": [
+			{
+				"line": 85,
+				"command": "echo $'col1\\tcol2'",
+				"stdout": "col1\tcol2\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"double-quotes": [
 			{
 				"line": 25,
@@ -49,21 +67,21 @@
 		],
 		"escape-sequences": [
 			{
-				"line": 75,
+				"line": 89,
 				"command": "echo \"hello\\\"world\"",
 				"stdout": "hello\"world\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 78,
+				"line": 92,
 				"command": "echo \"back\\\\slash\"",
 				"stdout": "back\\slash\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 81,
+				"line": 95,
 				"command": "echo \"dollar\\$sign\"",
 				"stdout": "dollar$sign\n",
 				"stderr": "",
@@ -89,6 +107,15 @@
 				"line": 41,
 				"command": "echo \"mix 'single' and \\\"double\\\"\"",
 				"stdout": "mix 'single' and \"double\"\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"multiline-string-in-var": [
+			{
+				"line": 75,
+				"command": "x=$(printf \"hello\\nworld\"); echo \"$x\"",
+				"stdout": "hello\nworld\n",
 				"stderr": "",
 				"exit_code": 0
 			}

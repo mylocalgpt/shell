@@ -1,13 +1,67 @@
 {
 	"source": "tests/comparison/edge-variables.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T20:39:27.442171+03:00",
+	"recorded_at": "2026-03-18T21:41:52.307327+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
 		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
 	},
 	"sections": {
+		"array-all-elements": [
+			{
+				"line": 67,
+				"command": "arr=(a b c); echo ${arr[@]}",
+				"stdout": "a b c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"array-element-access": [
+			{
+				"line": 63,
+				"command": "arr=(a b c); echo ${arr[0]}",
+				"stdout": "a\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"array-index-assign": [
+			{
+				"line": 75,
+				"command": "arr=(a b c); arr[1]=B; echo ${arr[@]}",
+				"stdout": "a B c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"array-length": [
+			{
+				"line": 71,
+				"command": "arr=(a b c); echo ${#arr[@]}",
+				"stdout": "3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"brace-expansion-with-var": [
+			{
+				"line": 83,
+				"command": "x=3; echo {1..$x}",
+				"stdout": "{1..3}\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"command-sub-in-replacement": [
+			{
+				"line": 79,
+				"command": "x=hello; echo \"${x/hel/$(echo good)}\"",
+				"stdout": "goodlo\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"default-chains": [
 			{
 				"line": 24,
@@ -88,7 +142,7 @@
 		],
 		"ifs-and-word-splitting": [
 			{
-				"line": 63,
+				"line": 87,
 				"command": "x=\"a  b  c\"; echo $x",
 				"stdout": "a b c\n",
 				"stderr": "",

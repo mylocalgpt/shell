@@ -45,6 +45,10 @@ EOF
 indented
 content
 
+## here-string-with-var
+$ x=world; cat <<< "hello $x"
+hello world
+
 ## multiple-redirects
 $ echo "both" > /tmp/shelltest4 2>&1; cat /tmp/shelltest4
 both

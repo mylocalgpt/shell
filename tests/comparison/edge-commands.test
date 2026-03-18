@@ -30,6 +30,15 @@ ff
 $ printf '%o\n' 8
 10
 
+## set-noglob
+$ set -f; echo *; set +f
+*
+
+## set-noclobber (xfail: set -C does not prevent overwriting)
+$ echo first > /tmp/noclobber_test; set -C; echo second > /tmp/noclobber_test 2>/dev/null; echo $?; cat /tmp/noclobber_test; set +C; rm -f /tmp/noclobber_test
+1
+first
+
 ## sort-advanced
 $ echo -e "banana\napple\ncherry\napple" | sort -u
 apple

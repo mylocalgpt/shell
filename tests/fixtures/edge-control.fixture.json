@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/edge-control.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T20:10:14.117329+03:00",
+	"recorded_at": "2026-03-18T21:41:51.997559+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -68,6 +68,22 @@
 				"line": 52,
 				"command": "x=15; [ $x -gt 3 ] \u0026\u0026 [ $x -lt 10 ] || echo \"out of range\"",
 				"stdout": "out of range\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"double-bracket-string-compare": [
+			{
+				"line": 115,
+				"command": "if [[ \"abc\" \u003c \"def\" ]]; then echo yes; fi",
+				"stdout": "yes\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 118,
+				"command": "if [[ \"def\" \u003e \"abc\" ]]; then echo yes; fi",
+				"stdout": "yes\n",
 				"stderr": "",
 				"exit_code": 0
 			}
@@ -208,7 +224,7 @@
 		],
 		"redirect-to-dev-null": [
 			{
-				"line": 115,
+				"line": 122,
 				"command": "echo \"visible\"; echo \"hidden\" \u003e /dev/null",
 				"stdout": "visible\n",
 				"stderr": "",
