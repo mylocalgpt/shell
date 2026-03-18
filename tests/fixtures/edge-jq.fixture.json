@@ -1,274 +1,274 @@
 {
-	"source": "tests/comparison/edge-jq.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T21:41:52.106531+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"alternative-operator": [
-			{
-				"line": 118,
-				"command": "echo '{}' | jq '.b // \"default\"'",
-				"stdout": "\"default\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"array-ops": [
-			{
-				"line": 21,
-				"command": "echo '[1,2,3]' | jq '.[0]'",
-				"stdout": "1\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 24,
-				"command": "echo '[1,2,3]' | jq '.[2]'",
-				"stdout": "3\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 27,
-				"command": "echo '[1,2,3]' | jq 'length'",
-				"stdout": "3\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"basic-access": [
-			{
-				"line": 2,
-				"command": "echo '{\"name\":\"alice\",\"age\":30}' | jq '.name'",
-				"stdout": "\"alice\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 5,
-				"command": "echo '{\"name\":\"alice\",\"age\":30}' | jq '.age'",
-				"stdout": "30\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 8,
-				"command": "echo '{\"a\":{\"b\":{\"c\":42}}}' | jq '.a.b.c'",
-				"stdout": "42\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"comma-multi-output": [
-			{
-				"line": 143,
-				"command": "echo '{\"a\":1,\"b\":2}' | jq '.a, .b'",
-				"stdout": "1\n2\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"compact-output": [
-			{
-				"line": 62,
-				"command": "echo '{\"a\": 1, \"b\": 2}' | jq -c '.'",
-				"stdout": "{\"a\":1,\"b\":2}\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"del": [
-			{
-				"line": 148,
-				"command": "echo '{\"a\":1,\"b\":2,\"c\":3}' | jq 'del(.b)'",
-				"stdout": "{\n  \"a\": 1,\n  \"c\": 3\n}\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"flatten": [
-			{
-				"line": 95,
-				"command": "echo '[[1,2],[3,[4,5]]]' | jq 'flatten'",
-				"stdout": "[\n  1,\n  2,\n  3,\n  4,\n  5\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"has-and-in": [
-			{
-				"line": 73,
-				"command": "echo '{\"a\":1,\"b\":2}' | jq 'has(\"a\")'",
-				"stdout": "true\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 76,
-				"command": "echo '{\"a\":1,\"b\":2}' | jq 'has(\"c\")'",
-				"stdout": "false\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"keys-and-values": [
-			{
-				"line": 50,
-				"command": "echo '{\"b\":2,\"a\":1,\"c\":3}' | jq 'keys'",
-				"stdout": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"map-and-reduce": [
-			{
-				"line": 58,
-				"command": "echo '[1,2,3,4,5]' | jq 'add'",
-				"stdout": "15\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"map-arithmetic": [
-			{
-				"line": 122,
-				"command": "echo '[1,2,3]' | jq 'map(. + 10)'",
-				"stdout": "[\n  11,\n  12,\n  13\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"object-construction": [
-			{
-				"line": 130,
-				"command": "echo '{\"name\":\"alice\"}' | jq '{name: .name}'",
-				"stdout": "{\n  \"name\": \"alice\"\n}\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"pipe-in-filter": [
-			{
-				"line": 112,
-				"command": "echo '[1,2,3]' | jq '.[] | . * 2'",
-				"stdout": "2\n4\n6\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"raw-output": [
-			{
-				"line": 12,
-				"command": "echo '{\"name\":\"alice\"}' | jq -r '.name'",
-				"stdout": "alice\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 15,
-				"command": "echo '[\"a\",\"b\",\"c\"]' | jq -r '.[]'",
-				"stdout": "a\nb\nc\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"select-with-pipe": [
-			{
-				"line": 136,
-				"command": "echo '[1,2,3,4,5]' | jq '[.[] | select(. \u003e 3)]'",
-				"stdout": "[\n  4,\n  5\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"slicing": [
-			{
-				"line": 66,
-				"command": "echo '[0,1,2,3,4]' | jq '.[1:3]'",
-				"stdout": "[\n  1,\n  2\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"sort-and-group": [
-			{
-				"line": 80,
-				"command": "echo '[3,1,2]' | jq 'sort'",
-				"stdout": "[\n  1,\n  2,\n  3\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 87,
-				"command": "echo '[\"banana\",\"apple\",\"cherry\"]' | jq 'sort'",
-				"stdout": "[\n  \"apple\",\n  \"banana\",\n  \"cherry\"\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"tostring-tonumber": [
-			{
-				"line": 105,
-				"command": "echo '42' | jq 'tostring'",
-				"stdout": "\"42\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 108,
-				"command": "echo '\"42\"' | jq 'tonumber'",
-				"stdout": "42\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"type-functions": [
-			{
-				"line": 31,
-				"command": "echo '42' | jq 'type'",
-				"stdout": "\"number\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 34,
-				"command": "echo '\"hello\"' | jq 'type'",
-				"stdout": "\"string\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 37,
-				"command": "echo '[1,2]' | jq 'type'",
-				"stdout": "\"array\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 40,
-				"command": "echo '{\"a\":1}' | jq 'type'",
-				"stdout": "\"object\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 43,
-				"command": "echo 'null' | jq 'type'",
-				"stdout": "\"null\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 46,
-				"command": "echo 'true' | jq 'type'",
-				"stdout": "\"boolean\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/edge-jq.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T01:23:35.571102+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "alternative-operator": [
+      {
+        "line": 118,
+        "command": "echo '{}' | jq '.b // \"default\"'",
+        "stdout": "\"default\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "array-ops": [
+      {
+        "line": 21,
+        "command": "echo '[1,2,3]' | jq '.[0]'",
+        "stdout": "1\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 24,
+        "command": "echo '[1,2,3]' | jq '.[2]'",
+        "stdout": "3\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 27,
+        "command": "echo '[1,2,3]' | jq 'length'",
+        "stdout": "3\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "basic-access": [
+      {
+        "line": 2,
+        "command": "echo '{\"name\":\"alice\",\"age\":30}' | jq '.name'",
+        "stdout": "\"alice\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 5,
+        "command": "echo '{\"name\":\"alice\",\"age\":30}' | jq '.age'",
+        "stdout": "30\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 8,
+        "command": "echo '{\"a\":{\"b\":{\"c\":42}}}' | jq '.a.b.c'",
+        "stdout": "42\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "comma-multi-output": [
+      {
+        "line": 143,
+        "command": "echo '{\"a\":1,\"b\":2}' | jq '.a, .b'",
+        "stdout": "1\n2\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "compact-output": [
+      {
+        "line": 62,
+        "command": "echo '{\"a\": 1, \"b\": 2}' | jq -c '.'",
+        "stdout": "{\"a\":1,\"b\":2}\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "del": [
+      {
+        "line": 148,
+        "command": "echo '{\"a\":1,\"b\":2,\"c\":3}' | jq 'del(.b)'",
+        "stdout": "{\n  \"a\": 1,\n  \"c\": 3\n}\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "flatten": [
+      {
+        "line": 95,
+        "command": "echo '[[1,2],[3,[4,5]]]' | jq 'flatten'",
+        "stdout": "[\n  1,\n  2,\n  3,\n  4,\n  5\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "has-and-in": [
+      {
+        "line": 73,
+        "command": "echo '{\"a\":1,\"b\":2}' | jq 'has(\"a\")'",
+        "stdout": "true\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 76,
+        "command": "echo '{\"a\":1,\"b\":2}' | jq 'has(\"c\")'",
+        "stdout": "false\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "keys-and-values": [
+      {
+        "line": 50,
+        "command": "echo '{\"b\":2,\"a\":1,\"c\":3}' | jq 'keys'",
+        "stdout": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "map-and-reduce": [
+      {
+        "line": 58,
+        "command": "echo '[1,2,3,4,5]' | jq 'add'",
+        "stdout": "15\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "map-arithmetic": [
+      {
+        "line": 122,
+        "command": "echo '[1,2,3]' | jq 'map(. + 10)'",
+        "stdout": "[\n  11,\n  12,\n  13\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "object-construction": [
+      {
+        "line": 130,
+        "command": "echo '{\"name\":\"alice\"}' | jq '{name: .name}'",
+        "stdout": "{\n  \"name\": \"alice\"\n}\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "pipe-in-filter": [
+      {
+        "line": 112,
+        "command": "echo '[1,2,3]' | jq '.[] | . * 2'",
+        "stdout": "2\n4\n6\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "raw-output": [
+      {
+        "line": 12,
+        "command": "echo '{\"name\":\"alice\"}' | jq -r '.name'",
+        "stdout": "alice\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 15,
+        "command": "echo '[\"a\",\"b\",\"c\"]' | jq -r '.[]'",
+        "stdout": "a\nb\nc\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "select-with-pipe": [
+      {
+        "line": 136,
+        "command": "echo '[1,2,3,4,5]' | jq '[.[] | select(. \u003e 3)]'",
+        "stdout": "[\n  4,\n  5\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "slicing": [
+      {
+        "line": 66,
+        "command": "echo '[0,1,2,3,4]' | jq '.[1:3]'",
+        "stdout": "[\n  1,\n  2\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "sort-and-group": [
+      {
+        "line": 80,
+        "command": "echo '[3,1,2]' | jq 'sort'",
+        "stdout": "[\n  1,\n  2,\n  3\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 87,
+        "command": "echo '[\"banana\",\"apple\",\"cherry\"]' | jq 'sort'",
+        "stdout": "[\n  \"apple\",\n  \"banana\",\n  \"cherry\"\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "tostring-tonumber": [
+      {
+        "line": 105,
+        "command": "echo '42' | jq 'tostring'",
+        "stdout": "\"42\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 108,
+        "command": "echo '\"42\"' | jq 'tonumber'",
+        "stdout": "42\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "type-functions": [
+      {
+        "line": 31,
+        "command": "echo '42' | jq 'type'",
+        "stdout": "\"number\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 34,
+        "command": "echo '\"hello\"' | jq 'type'",
+        "stdout": "\"string\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 37,
+        "command": "echo '[1,2]' | jq 'type'",
+        "stdout": "\"array\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 40,
+        "command": "echo '{\"a\":1}' | jq 'type'",
+        "stdout": "\"object\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 43,
+        "command": "echo 'null' | jq 'type'",
+        "stdout": "\"null\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 46,
+        "command": "echo 'true' | jq 'type'",
+        "stdout": "\"boolean\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

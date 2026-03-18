@@ -3,7 +3,7 @@ $ echo hello | cat
 hello
 
 $ echo "hello world" | wc -w
-1 (re)
+\s*2 (re)
 
 $ echo -e "c\na\nb" | sort
 a

@@ -3,7 +3,16 @@
 	"version": "0.0.0",
 	"type": "module",
 	"description": "Virtual bash interpreter for AI agents. Pure TypeScript, zero dependencies.",
-	"keywords": ["bash", "shell", "interpreter", "virtual", "sandbox", "agent", "ai", "jq"],
+	"keywords": [
+		"bash",
+		"shell",
+		"interpreter",
+		"virtual",
+		"sandbox",
+		"agent",
+		"ai",
+		"jq"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/mylocalgpt/shell"
@@ -21,7 +30,12 @@
 			"require": "./dist/jq/index.cjs"
 		}
 	},
-	"files": ["dist", "README.md", "LICENSE", "AGENTS.md"],
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE",
+		"AGENTS.md"
+	],
 	"packageManager": "pnpm@10.32.1",
 	"scripts": {
 		"build": "tsdown",
@@ -36,7 +50,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
-		"smokepod": "^1.0.7",
+		"smokepod": "^1.0.10",
 		"tsdown": "^0.21.0",
 		"tsx": "^4.19.4",
 		"typescript": "^5.8.2",
@@ -44,6 +58,10 @@
 	},
 	"license": "MIT",
 	"pnpm": {
-		"onlyBuiltDependencies": ["@biomejs/biome", "esbuild", "smokepod"]
+		"onlyBuiltDependencies": [
+			"@biomejs/biome",
+			"esbuild",
+			"smokepod"
+		]
 	}
 }
