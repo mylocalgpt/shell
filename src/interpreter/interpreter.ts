@@ -146,6 +146,16 @@ export class Interpreter {
 			assignmentContext: false,
 			casePattern: false,
 			executor: (cmd: string) => this.executeCommandSubstitution(cmd),
+			executeProgram: async (program) => {
+				const savedEnv = this.env;
+				this.env = new Map(savedEnv);
+				try {
+					const result = await this.execute(program);
+					return result.stdout;
+				} finally {
+					this.env = savedEnv;
+				}
+			},
 		};
 	}
 

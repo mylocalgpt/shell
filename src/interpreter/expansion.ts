@@ -47,8 +47,10 @@ export interface ExpansionOpts {
 	assignmentContext: boolean;
 	/** Whether this is a case pattern (glob but no word splitting). */
 	casePattern: boolean;
-	/** Execute a command substitution and return its stdout. */
+	/** Execute a command substitution string and return its stdout. */
 	executor: (cmd: string) => Promise<string>;
+	/** Execute a pre-parsed Program AST and return its stdout (for $(cmd) inside words). */
+	executeProgram?: (program: import('../parser/ast.js').Program) => Promise<string>;
 }
 
 /**
@@ -576,13 +578,16 @@ function substringOp(value: string, operand: string): string {
  * Expand command substitution by calling the executor callback.
  */
 async function expandCommandSubstitution(
-	word: { type: 'CommandSubstitution' },
+	word: { type: 'CommandSubstitution'; body?: import('../parser/ast.js').Program },
 	opts: ExpansionOpts,
 ): Promise<string> {
-	// The executor is expected to be provided by the interpreter.
-	// For now, we reconstruct the command text from the AST body (simplified).
-	// The interpreter will handle the actual execution.
-	const result = await opts.executor('');
+	let result: string;
+	if (word.body && opts.executeProgram) {
+		// Use the pre-parsed AST
+		result = await opts.executeProgram(word.body);
+	} else {
+		result = await opts.executor('');
+	}
 	// Trim trailing newline (bash behavior)
 	return result.replace(/\n+$/, '');
 }

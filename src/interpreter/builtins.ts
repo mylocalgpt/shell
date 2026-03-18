@@ -33,6 +33,7 @@ const BUILTIN_NAMES = new Set([
 	'echo',
 	'printf',
 	'pwd',
+	'cat',
 	'trap',
 	'getopts',
 ]);
@@ -98,6 +99,8 @@ export async function executeBuiltin(
 			return builtinPrintf(args);
 		case 'pwd':
 			return ok(`${ctx.cwd}\n`);
+		case 'cat':
+			return builtinCat(args, ctx);
 		case 'trap':
 			return err('@mylocalgpt/shell: signal traps not supported.\n');
 		case 'getopts':
@@ -956,6 +959,30 @@ function builtinPrintf(args: string[]): CommandResult {
 		}
 	}
 
+	return ok(output);
+}
+
+// ── cat (builtin, reads files or stdin) ──
+
+async function builtinCat(args: string[], ctx: InterpreterContext): Promise<CommandResult> {
+	if (args.length === 0) {
+		return ok(ctx.stdin);
+	}
+
+	let output = '';
+	for (let i = 0; i < args.length; i++) {
+		if (args[i] === '-') {
+			output += ctx.stdin;
+			continue;
+		}
+		const filePath = resolvePath(args[i], ctx.cwd);
+		try {
+			const content = ctx.fs.readFile(filePath);
+			output += typeof content === 'string' ? content : await content;
+		} catch {
+			return err(`cat: ${args[i]}: No such file or directory\n`);
+		}
+	}
 	return ok(output);
 }
 
