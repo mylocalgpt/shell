@@ -105,4 +105,23 @@ export class CommandRegistry {
 	defineCommand(command: Command): void {
 		this.cache.set(command.name, command);
 	}
+
+	/**
+	 * Remove all commands except those in the given allowlist.
+	 * Applies to both lazy definitions and cached commands.
+	 *
+	 * @param names - Set of command names to keep
+	 */
+	retainOnly(names: Set<string>): void {
+		for (const key of Array.from(this.definitions.keys())) {
+			if (!names.has(key)) {
+				this.definitions.delete(key);
+			}
+		}
+		for (const key of Array.from(this.cache.keys())) {
+			if (!names.has(key)) {
+				this.cache.delete(key);
+			}
+		}
+	}
 }

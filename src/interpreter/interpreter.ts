@@ -1122,6 +1122,37 @@ export class Interpreter {
 	): void {
 		this.builtins.set(name, handler);
 	}
+
+	/**
+	 * Reset per-execution counters and shell options to defaults.
+	 * Called between exec() calls when the interpreter is reused.
+	 */
+	resetExecution(): void {
+		this.loopIterations = 0;
+		this.callDepth = 0;
+		this.commandCount = 0;
+		this.conditionalDepth = 0;
+		this.options = defaultRuntimeOptions();
+		this.positionalParams = [];
+		this.pipestatus = [0];
+		this.locals = [];
+		this.exitCode = 0;
+	}
+
+	/** Get the environment Map (direct reference, not a copy). */
+	getEnv(): Map<string, string> {
+		return this.env;
+	}
+
+	/** Get the functions Map (direct reference, not a copy). */
+	getFunctions(): Map<string, FunctionDefinition> {
+		return this.functions;
+	}
+
+	/** Get the set of exported variable names. */
+	getExportedVars(): Set<string> {
+		return this.exportedVars;
+	}
 }
 
 /** Interpreter context passed to builtin commands. */

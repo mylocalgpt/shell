@@ -68,10 +68,9 @@ export { registerBuiltins } from './interpreter/builtins.js';
 
 import { registerDefaultCommands } from './commands/defaults.js';
 import { CommandRegistry } from './commands/registry.js';
-// Shell
-import type { CommandResult } from './commands/types.js';
+import type { Command, CommandContext, CommandResult } from './commands/types.js';
 import { InMemoryFs } from './fs/memory.js';
-import type { FileSystem } from './fs/types.js';
+import type { FileSystem, LazyFileContent } from './fs/types.js';
 import { registerBuiltins } from './interpreter/builtins.js';
 import { Interpreter } from './interpreter/interpreter.js';
 import { parse as parseInput } from './parser/parser.js';
@@ -91,39 +90,219 @@ const DEFAULT_ENV: Record<string, string> = {
 };
 
 /**
+ * Handler function for a custom command.
+ * Receives the command arguments and context, returns a result.
+ *
+ * @example
+ * ```typescript
+ * const handler: CommandHandler = async (args, ctx) => ({
+ *   stdout: `Hello ${args[0]}\n`,
+ *   stderr: '',
+ *   exitCode: 0,
+ * });
+ * ```
+ */
+export type CommandHandler = (
+	args: string[],
+	ctx: CommandContext,
+) => Promise<CommandResult> | CommandResult;
+
+/**
  * Options for creating a Shell instance.
+ *
+ * @example
+ * ```typescript
+ * const shell = new Shell({
+ *   files: {
+ *     '/workspace/data.json': '{"key": "value"}',
+ *     '/workspace/big.csv': () => fetch('...').then(r => r.text()),
+ *   },
+ *   env: { HOME: '/home/agent', USER: 'agent' },
+ *   limits: { maxLoopIterations: 5000 },
+ * });
+ * ```
  */
 export interface ShellOptions {
-	/** Custom filesystem implementation. Defaults to a new InMemoryFs. */
-	fs?: FileSystem;
-	/** Initial environment variables. Converted to a Map internally. */
+	/**
+	 * Initial files to populate in the filesystem.
+	 * Values can be strings (immediate content) or functions (lazy-loaded on first read).
+	 */
+	files?: Record<string, string | (() => string | Promise<string>)>;
+	/** Initial environment variables. Merged with defaults (HOME, USER, PATH, etc.). */
 	env?: Record<string, string>;
-	/** Initial working directory. Defaults to "/". */
-	cwd?: string;
 	/** Execution limits. Merged with DEFAULT_LIMITS. */
 	limits?: Partial<ExecutionLimits>;
+	/**
+	 * Custom commands to register.
+	 * Keys are command names, values are handler functions.
+	 *
+	 * @example
+	 * ```typescript
+	 * commands: {
+	 *   'my-tool': async (args, ctx) => ({
+	 *     stdout: `Ran with ${args.join(' ')}\n`,
+	 *     stderr: '',
+	 *     exitCode: 0,
+	 *   }),
+	 * }
+	 * ```
+	 */
+	commands?: Record<string, CommandHandler>;
+	/**
+	 * Callback invoked when a command is not found in the registry.
+	 * Return a result to handle the command, or let it fall through to the default "not found" error.
+	 */
+	onUnknownCommand?: (
+		name: string,
+		args: string[],
+		ctx: CommandContext,
+	) => Promise<CommandResult> | CommandResult;
+	/**
+	 * Post-processing hook called after each exec() call.
+	 * Receives the result and returns a (possibly modified) result.
+	 * Synchronous to prevent unhandled promise rejections.
+	 *
+	 * @example
+	 * ```typescript
+	 * onOutput: (result) => ({
+	 *   ...result,
+	 *   stdout: result.stdout.slice(0, 10000), // truncate
+	 * })
+	 * ```
+	 */
+	onOutput?: (result: ExecResult) => ExecResult;
+	/** Hostname for the virtual shell (used by the hostname command). */
+	hostname?: string;
+	/** Username for the virtual shell (used by the whoami command). */
+	username?: string;
+	/**
+	 * Restrict available commands to this allowlist.
+	 * When set, only the listed commands are available; all others are removed from the registry.
+	 */
+	enabledCommands?: string[];
 }
 
 /**
- * Virtual bash interpreter.
- * Executes shell commands against an in-memory filesystem.
+ * Per-call options for Shell.exec().
  *
- * The filesystem persists across exec() calls. Environment, functions,
- * and working directory are reset to their initial state for each call.
+ * @example
+ * ```typescript
+ * const result = await shell.exec('echo $INPUT', {
+ *   env: { INPUT: 'hello' },
+ *   cwd: '/workspace',
+ *   timeout: 5000,
+ * });
+ * ```
+ */
+export interface ExecOptions {
+	/** Additional environment variables for this call only. */
+	env?: Record<string, string>;
+	/** Override working directory for this call. */
+	cwd?: string;
+	/** Provide stdin to the command. */
+	stdin?: string;
+	/** AbortSignal for cancellation. */
+	signal?: AbortSignal;
+	/** Timeout in milliseconds. Creates an internal AbortSignal. */
+	timeout?: number;
+}
+
+/**
+ * Result of executing a shell command.
+ */
+export interface ExecResult {
+	/** Standard output produced by the command. */
+	stdout: string;
+	/** Standard error output produced by the command. */
+	stderr: string;
+	/** Exit code: 0 for success, non-zero for failure. */
+	exitCode: number;
+}
+
+/**
+ * Virtual bash interpreter for AI agents.
+ *
+ * Executes shell commands against an in-memory filesystem.
+ * The filesystem, environment exports, functions, and working directory
+ * persist across exec() calls. Shell options (set -e, etc.) reset per call.
+ *
+ * @example
+ * ```typescript
+ * import { Shell } from '@mylocalgpt/shell';
+ *
+ * const shell = new Shell({
+ *   files: { '/data.json': '{"name": "alice"}' },
+ * });
+ *
+ * const result = await shell.exec('cat /data.json | jq .name');
+ * console.log(result.stdout); // "alice"\n
+ * ```
  */
 export class Shell {
-	private readonly fs: FileSystem;
+	private readonly _fs: FileSystem;
 	private readonly initialEnv: Map<string, string>;
 	private readonly initialCwd: string;
-	private readonly limits: Partial<ExecutionLimits>;
+	private readonly _limits: Partial<ExecutionLimits>;
 	private readonly registry: CommandRegistry;
+	private readonly _onOutput: ((result: ExecResult) => ExecResult) | undefined;
+	private interpreter: Interpreter | null = null;
 
 	constructor(options?: ShellOptions) {
-		this.fs = options?.fs ?? new InMemoryFs();
-		this.initialCwd = options?.cwd ?? '/';
-		this.limits = options?.limits ?? {};
+		// Initialize filesystem
+		const fsInstance = new InMemoryFs();
+		this._fs = fsInstance;
+		this.initialCwd = '/';
+		this._limits = options?.limits ?? {};
+		this._onOutput = options?.onOutput;
+
+		// Populate files (supports both string and lazy content)
+		if (options?.files) {
+			const paths = Object.keys(options.files);
+			for (let i = 0; i < paths.length; i++) {
+				const filePath = paths[i];
+				const content = options.files[filePath];
+				if (typeof content === 'function') {
+					fsInstance.addLazyFile(filePath, content as () => string | Promise<string>);
+				} else {
+					fsInstance.writeFile(filePath, content);
+				}
+			}
+		}
+
+		// Set up command registry
 		this.registry = new CommandRegistry();
 		registerDefaultCommands(this.registry);
+
+		// Register custom commands
+		if (options?.commands) {
+			const names = Object.keys(options.commands);
+			for (let i = 0; i < names.length; i++) {
+				const name = names[i];
+				const handler = options.commands[name];
+				this.registry.defineCommand({
+					name,
+					execute: (args: string[], ctx: CommandContext) => handler(args, ctx),
+				});
+			}
+		}
+
+		// Wire onUnknownCommand callback
+		if (options?.onUnknownCommand) {
+			const userCallback = options.onUnknownCommand;
+			this.registry.onUnknownCommand = (name: string): Command | undefined => {
+				// Create an adapter Command that delegates to the user callback
+				return {
+					name,
+					execute: (args: string[], ctx: CommandContext) => userCallback(name, args, ctx),
+				};
+			};
+		}
+
+		// Filter to enabled commands only
+		if (options?.enabledCommands) {
+			const allowed = new Set(options.enabledCommands);
+			this.registry.retainOnly(allowed);
+		}
 
 		// Build initial env from defaults + user overrides
 		this.initialEnv = new Map<string, string>();
@@ -131,6 +310,15 @@ export class Shell {
 		for (let i = 0; i < keys.length; i++) {
 			this.initialEnv.set(keys[i], DEFAULT_ENV[keys[i]]);
 		}
+
+		// Apply hostname and username to env
+		if (options?.hostname) {
+			this.initialEnv.set('HOSTNAME', options.hostname);
+		}
+		if (options?.username) {
+			this.initialEnv.set('USER', options.username);
+		}
+
 		if (options?.env) {
 			const userKeys = Object.keys(options.env);
 			for (let i = 0; i < userKeys.length; i++) {
@@ -139,6 +327,40 @@ export class Shell {
 		}
 		// Set PWD to match cwd
 		this.initialEnv.set('PWD', this.initialCwd);
+	}
+
+	/**
+	 * Get the filesystem used by this shell.
+	 * Allows direct read/write access to the virtual filesystem.
+	 *
+	 * @example
+	 * ```typescript
+	 * shell.fs.writeFile('/test.txt', 'hello');
+	 * const content = shell.fs.readFile('/test.txt');
+	 * ```
+	 */
+	get fs(): FileSystem {
+		return this._fs;
+	}
+
+	/**
+	 * Get the current working directory.
+	 */
+	get cwd(): string {
+		if (this.interpreter) {
+			return this.interpreter.getCwd();
+		}
+		return this.initialCwd;
+	}
+
+	/**
+	 * Get the environment variables as a Map.
+	 */
+	get env(): Map<string, string> {
+		if (this.interpreter) {
+			return this.interpreter.getEnv();
+		}
+		return new Map(this.initialEnv);
 	}
 
 	/**
@@ -154,9 +376,10 @@ export class Shell {
 	 * Get the filesystem used by this shell.
 	 *
 	 * @returns The filesystem instance
+	 * @deprecated Use the `fs` getter property instead.
 	 */
 	getFs(): FileSystem {
-		return this.fs;
+		return this._fs;
 	}
 
 	/**
@@ -164,10 +387,27 @@ export class Shell {
 	 * Never throws to the caller. All errors are returned as
 	 * { stdout, stderr, exitCode }.
 	 *
+	 * State persistence: environment exports, functions, working directory,
+	 * and filesystem persist across calls. Shell options (set -e, etc.)
+	 * reset to defaults for each call.
+	 *
 	 * @param command - The shell command to execute
+	 * @param options - Per-call options (env, cwd, stdin, signal, timeout)
 	 * @returns stdout, stderr, and exit code
+	 *
+	 * @example
+	 * ```typescript
+	 * const result = await shell.exec('echo hello | wc -c');
+	 * console.log(result.stdout); // "6\n"
+	 * ```
 	 */
-	async exec(command: string): Promise<CommandResult> {
+	async exec(command: string, options?: ExecOptions): Promise<ExecResult> {
+		// Check abort signal before parsing
+		const signal = this.resolveSignal(options?.signal, options?.timeout);
+		if (signal?.aborted) {
+			return { exitCode: 130, stdout: '', stderr: '@mylocalgpt/shell: execution aborted\n' };
+		}
+
 		// Parse
 		let ast: import('./parser/ast.js').Program;
 		try {
@@ -177,18 +417,146 @@ export class Shell {
 			return { exitCode: 2, stdout: '', stderr: `@mylocalgpt/shell: ${msg}\n` };
 		}
 
-		// Create fresh interpreter with a copy of the initial env
-		const env = new Map(this.initialEnv);
-		const interpreter = new Interpreter(this.fs, this.registry, env, this.initialCwd, this.limits);
-		registerBuiltins(interpreter);
+		// Get or create persistent interpreter
+		const interp = this.getOrCreateInterpreter();
+
+		// Reset per-execution counters and shell options
+		interp.resetExecution();
+
+		// Apply per-call env overrides
+		const env = interp.getEnv();
+		const addedKeys: string[] = [];
+		const savedValues: Map<string, string | undefined> = new Map();
+		if (options?.env) {
+			const overrideKeys = Object.keys(options.env);
+			for (let i = 0; i < overrideKeys.length; i++) {
+				const key = overrideKeys[i];
+				savedValues.set(key, env.get(key));
+				env.set(key, options.env[key]);
+				addedKeys.push(key);
+			}
+		}
+
+		// Apply per-call cwd override
+		const savedCwd = interp.getCwd();
+		if (options?.cwd) {
+			interp.setCwd(options.cwd);
+			env.set('PWD', options.cwd);
+		}
 
 		// Execute
+		let result: ExecResult;
 		try {
-			return await interpreter.execute(ast);
+			// Check signal before execution
+			if (signal?.aborted) {
+				return { exitCode: 130, stdout: '', stderr: '@mylocalgpt/shell: execution aborted\n' };
+			}
+			result = await interp.execute(ast);
 		} catch (e) {
 			const msg = e instanceof Error ? e.message : String(e);
-			return { exitCode: 1, stdout: '', stderr: `@mylocalgpt/shell: ${msg}\n` };
+			result = { exitCode: 1, stdout: '', stderr: `@mylocalgpt/shell: ${msg}\n` };
+		} finally {
+			// Restore per-call env overrides (keep only vars that were exported)
+			for (let i = 0; i < addedKeys.length; i++) {
+				const key = addedKeys[i];
+				const saved = savedValues.get(key);
+				if (saved === undefined) {
+					// Only remove if it was not exported during execution
+					if (!interp.getExportedVars().has(key)) {
+						env.delete(key);
+					}
+				} else {
+					// Only restore if it was not modified by the script
+					if (!interp.getExportedVars().has(key)) {
+						env.set(key, saved);
+					}
+				}
+			}
+
+			// Restore cwd if it was overridden per-call and wasn't changed by the script
+			if (options?.cwd && interp.getCwd() === options.cwd) {
+				// Script didn't cd, so don't persist the override
+				interp.setCwd(savedCwd);
+				env.set('PWD', savedCwd);
+			}
 		}
+
+		// Apply onOutput hook
+		if (this._onOutput) {
+			result = this._onOutput(result);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Register a custom command after construction.
+	 * The command participates in pipes, redirections, and all shell features.
+	 *
+	 * @param name - The command name
+	 * @param handler - The command handler function
+	 *
+	 * @example
+	 * ```typescript
+	 * shell.defineCommand('greet', async (args, ctx) => ({
+	 *   stdout: `Hello ${args[0] ?? 'world'}\n`,
+	 *   stderr: '',
+	 *   exitCode: 0,
+	 * }));
+	 * await shell.exec('greet Alice | cat');
+	 * ```
+	 */
+	defineCommand(name: string, handler: CommandHandler): void {
+		this.registry.defineCommand({
+			name,
+			execute: (args: string[], ctx: CommandContext) => handler(args, ctx),
+		});
+	}
+
+	/**
+	 * Reset shell state: clear env to initial values, clear functions,
+	 * reset cwd to initial. Filesystem is kept intact.
+	 */
+	reset(): void {
+		this.interpreter = null;
+	}
+
+	/**
+	 * Create or return the persistent interpreter instance.
+	 */
+	private getOrCreateInterpreter(): Interpreter {
+		if (!this.interpreter) {
+			const env = new Map(this.initialEnv);
+			this.interpreter = new Interpreter(
+				this._fs,
+				this.registry,
+				env,
+				this.initialCwd,
+				this._limits,
+			);
+			registerBuiltins(this.interpreter);
+		}
+		return this.interpreter;
+	}
+
+	/**
+	 * Resolve the effective AbortSignal from user-provided signal and/or timeout.
+	 */
+	private resolveSignal(userSignal?: AbortSignal, timeout?: number): AbortSignal | undefined {
+		if (!userSignal && timeout === undefined) {
+			return undefined;
+		}
+
+		if (timeout !== undefined && timeout > 0) {
+			const timeoutSignal = AbortSignal.timeout(timeout);
+			if (userSignal) {
+				// Compose: abort when either fires
+				return AbortSignal.any([userSignal, timeoutSignal]);
+			}
+			return timeoutSignal;
+		}
+
+		return userSignal;
 	}
 }
 
