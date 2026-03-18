@@ -31,10 +31,6 @@ const BUILTIN_NAMES = new Set([
 	'type',
 	'command',
 	'builtin',
-	'echo',
-	'printf',
-	'pwd',
-	'cat',
 	'trap',
 	'getopts',
 ]);
@@ -94,14 +90,6 @@ export async function executeBuiltin(
 			return builtinCommand(args, ctx);
 		case 'builtin':
 			return builtinBuiltinCmd(args, ctx);
-		case 'echo':
-			return builtinEcho(args);
-		case 'printf':
-			return builtinPrintf(args);
-		case 'pwd':
-			return ok(`${ctx.cwd}\n`);
-		case 'cat':
-			return builtinCat(args, ctx);
 		case 'trap':
 			return err('@mylocalgpt/shell: signal traps not supported.\n');
 		case 'getopts':
@@ -893,101 +881,6 @@ async function builtinBuiltinCmd(args: string[], ctx: InterpreterContext): Promi
 		return err(`builtin: ${name}: not a shell builtin\n`);
 	}
 	return executeBuiltin(name, args.slice(1), ctx);
-}
-
-// ── echo (builtin version) ──
-
-function builtinEcho(args: string[]): CommandResult {
-	let noNewline = false;
-	let startIdx = 0;
-
-	if (args.length > 0 && args[0] === '-n') {
-		noNewline = true;
-		startIdx = 1;
-	}
-
-	const output = args.slice(startIdx).join(' ');
-	return ok(noNewline ? output : `${output}\n`);
-}
-
-// ── printf (builtin, simplified) ──
-
-function builtinPrintf(args: string[]): CommandResult {
-	if (args.length === 0) return ok('');
-
-	const format = args[0];
-	const fmtArgs = args.slice(1);
-	let output = '';
-	let argIdx = 0;
-
-	let i = 0;
-	while (i < format.length) {
-		if (format[i] === '%' && i + 1 < format.length) {
-			const spec = format[i + 1];
-			switch (spec) {
-				case 's':
-					output += argIdx < fmtArgs.length ? fmtArgs[argIdx] : '';
-					argIdx++;
-					break;
-				case 'd':
-					output += argIdx < fmtArgs.length ? Number.parseInt(fmtArgs[argIdx], 10) || 0 : '0';
-					argIdx++;
-					break;
-				case '%':
-					output += '%';
-					break;
-				default:
-					output += `%${spec}`;
-					break;
-			}
-			i += 2;
-		} else if (format[i] === '\\' && i + 1 < format.length) {
-			switch (format[i + 1]) {
-				case 'n':
-					output += '\n';
-					break;
-				case 't':
-					output += '\t';
-					break;
-				case '\\':
-					output += '\\';
-					break;
-				default:
-					output += `\\${format[i + 1]}`;
-					break;
-			}
-			i += 2;
-		} else {
-			output += format[i];
-			i++;
-		}
-	}
-
-	return ok(output);
-}
-
-// ── cat (builtin, reads files or stdin) ──
-
-async function builtinCat(args: string[], ctx: InterpreterContext): Promise<CommandResult> {
-	if (args.length === 0) {
-		return ok(ctx.stdin);
-	}
-
-	let output = '';
-	for (let i = 0; i < args.length; i++) {
-		if (args[i] === '-') {
-			output += ctx.stdin;
-			continue;
-		}
-		const filePath = resolvePath(args[i], ctx.cwd);
-		try {
-			const content = ctx.fs.readFile(filePath);
-			output += typeof content === 'string' ? content : await content;
-		} catch {
-			return err(`cat: ${args[i]}: No such file or directory\n`);
-		}
-	}
-	return ok(output);
 }
 
 /**

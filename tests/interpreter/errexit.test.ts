@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { registerDefaultCommands } from '../../src/commands/defaults.js';
 import { CommandRegistry } from '../../src/commands/registry.js';
 import type { CommandResult } from '../../src/commands/types.js';
 import { InMemoryFs } from '../../src/fs/memory.js';
@@ -9,6 +10,7 @@ import { parse } from '../../src/parser/parser.js';
 function makeInterpreter(env?: Record<string, string>): Interpreter {
 	const fs = new InMemoryFs();
 	const registry = new CommandRegistry();
+	registerDefaultCommands(registry);
 	const envMap = new Map<string, string>();
 	if (env) {
 		for (const [k, v] of Object.entries(env)) {
