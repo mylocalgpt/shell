@@ -259,4 +259,10 @@ export function registerDefaultCommands(registry: CommandRegistry): void {
 		name: 'sleep',
 		load: () => import('./sleep.js').then((m) => m.sleep),
 	});
+
+	// JSON processing
+	registry.register({
+		name: 'jq',
+		load: () => import('./jq.js').then((m) => m.jqCommand),
+	});
 }
