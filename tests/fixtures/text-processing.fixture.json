@@ -1,0 +1,361 @@
+{
+  "source": "tests/comparison/text-processing.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-18T18:09:41.748307+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "basename-dirname": [
+      {
+        "line": 165,
+        "command": "basename /usr/local/bin/file.txt",
+        "stdout": "file.txt\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 168,
+        "command": "basename /usr/local/bin/file.txt .txt",
+        "stdout": "file\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 171,
+        "command": "dirname /usr/local/bin/file.txt",
+        "stdout": "/usr/local/bin\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "cut-basic": [
+      {
+        "line": 85,
+        "command": "echo \"a:b:c\" | cut -d: -f2",
+        "stdout": "b\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 88,
+        "command": "echo \"a:b:c\" | cut -d: -f1,3",
+        "stdout": "a:c\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 91,
+        "command": "echo \"hello\" | cut -c1-3",
+        "stdout": "hel\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "echo-flags": [
+      {
+        "line": 2,
+        "command": "echo -n \"no newline\"",
+        "stdout": "no newline",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 5,
+        "command": "echo -e \"hello\\nworld\"",
+        "stdout": "hello\nworld\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 9,
+        "command": "echo -e \"tab\\there\"",
+        "stdout": "tab\there\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "expr-basic": [
+      {
+        "line": 175,
+        "command": "expr 3 + 4",
+        "stdout": "7\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 178,
+        "command": "expr 10 - 3",
+        "stdout": "7\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 181,
+        "command": "expr 10 / 2",
+        "stdout": "5\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "grep-basic": [
+      {
+        "line": 46,
+        "command": "echo -e \"apple\\nbanana\\ncherry\" | grep an",
+        "stdout": "banana\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 49,
+        "command": "echo -e \"apple\\nbanana\\ncherry\" | grep -v an",
+        "stdout": "apple\ncherry\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 53,
+        "command": "echo -e \"Apple\\napple\\nAPPLE\" | grep -i apple",
+        "stdout": "Apple\napple\nAPPLE\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 58,
+        "command": "echo -e \"hello world\\nfoo bar\" | grep -o \"hello\"",
+        "stdout": "hello\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "grep-count": [
+      {
+        "line": 62,
+        "command": "echo -e \"a\\nb\\na\\nc\\na\" | grep -c a",
+        "stdout": "3\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "head-and-tail": [
+      {
+        "line": 36,
+        "command": "echo -e \"1\\n2\\n3\\n4\\n5\" | head -n 3",
+        "stdout": "1\n2\n3\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 41,
+        "command": "echo -e \"1\\n2\\n3\\n4\\n5\" | tail -n 2",
+        "stdout": "4\n5\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "printf-basic": [
+      {
+        "line": 13,
+        "command": "printf \"%s\\n\" hello",
+        "stdout": "hello\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 16,
+        "command": "printf \"%d\\n\" 42",
+        "stdout": "42\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 19,
+        "command": "printf \"%05d\\n\" 42",
+        "stdout": "00042\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 22,
+        "command": "printf \"%s=%s\\n\" key value",
+        "stdout": "key=value\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "printf-format": [
+      {
+        "line": 26,
+        "command": "printf \"%.2f\\n\" 3.14159",
+        "stdout": "3.14\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 29,
+        "command": "printf \"%10s\\n\" right",
+        "stdout": "     right\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 32,
+        "command": "printf \"%-10s|\\n\" left",
+        "stdout": "left      |\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "rev": [
+      {
+        "line": 139,
+        "command": "echo \"hello\" | rev",
+        "stdout": "olleh\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "sed-basic": [
+      {
+        "line": 66,
+        "command": "echo \"hello world\" | sed 's/world/earth/'",
+        "stdout": "hello earth\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 69,
+        "command": "echo \"aaa\" | sed 's/a/b/'",
+        "stdout": "baa\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 72,
+        "command": "echo \"aaa\" | sed 's/a/b/g'",
+        "stdout": "bbb\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "sed-delete": [
+      {
+        "line": 76,
+        "command": "echo -e \"a\\nb\\nc\" | sed '2d'",
+        "stdout": "a\nc\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 80,
+        "command": "echo -e \"a\\nb\\nc\" | sed '/b/d'",
+        "stdout": "a\nc\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "seq": [
+      {
+        "line": 143,
+        "command": "seq 5",
+        "stdout": "1\n2\n3\n4\n5\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 150,
+        "command": "seq 2 5",
+        "stdout": "2\n3\n4\n5\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 156,
+        "command": "seq 0 2 10",
+        "stdout": "0\n2\n4\n6\n8\n10\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "sort-basic": [
+      {
+        "line": 105,
+        "command": "echo -e \"banana\\napple\\ncherry\" | sort",
+        "stdout": "apple\nbanana\ncherry\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 110,
+        "command": "echo -e \"3\\n1\\n2\" | sort -n",
+        "stdout": "1\n2\n3\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 115,
+        "command": "echo -e \"1\\n2\\n3\" | sort -rn",
+        "stdout": "3\n2\n1\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "tr-basic": [
+      {
+        "line": 95,
+        "command": "echo \"hello\" | tr 'a-z' 'A-Z'",
+        "stdout": "HELLO\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 98,
+        "command": "echo \"HELLO\" | tr 'A-Z' 'a-z'",
+        "stdout": "hello\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 101,
+        "command": "echo \"hello123world\" | tr -d '0-9'",
+        "stdout": "helloworld\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "uniq-basic": [
+      {
+        "line": 121,
+        "command": "echo -e \"a\\na\\nb\\nb\\nc\" | uniq",
+        "stdout": "a\nb\nc\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 126,
+        "command": "echo -e \"a\\na\\nb\\nc\\nc\" | uniq",
+        "stdout": "a\nb\nc\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "wc-basic": [
+      {
+        "line": 132,
+        "command": "echo \"hello world\" | wc -w",
+        "stdout": "       2\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 135,
+        "command": "echo -e \"a\\nb\\nc\" | wc -l",
+        "stdout": "       3\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
+}

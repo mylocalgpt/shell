@@ -13,4 +13,7 @@ pnpm test
 echo "pre-push: build"
 pnpm build
 
+echo "pre-push: comparison tests"
+pnpm test:comparison
+
 echo "pre-push: all checks passed"

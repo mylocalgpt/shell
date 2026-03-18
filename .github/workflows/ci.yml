@@ -50,6 +50,9 @@ jobs:
             exit 1
           fi
 
+      - name: Comparison tests
+        run: pnpm test:comparison
+
       - name: Check bundle size
         run: |
           SIZE=$(tar cf - dist/ | gzip -c | wc -c | tr -d ' ')
@@ -58,36 +61,3 @@ jobs:
           if [ "$KB" -gt 500 ]; then
             echo "WARNING: Bundle size exceeds 500KB target (${KB}KB)"
           fi
-
-  comparison:
-    name: Comparison Tests
-    runs-on: ubuntu-latest
-    continue-on-error: true
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm build
-
-      - name: Run comparison tests
-        uses: peteretelej/smokepod@v1
-        with:
-          mode: verify
-          target: node
-          target-args: scripts/smokepod-adapter.mjs
-          target-mode: process
-          tests: tests/comparison/
-          fixtures: tests/fixtures/

@@ -1,0 +1,116 @@
+## pipe-basic
+$ echo hello | cat
+hello
+
+$ echo "hello world" | wc -w
+1 (re)
+
+$ echo -e "c\na\nb" | sort
+a
+b
+c
+
+## pipe-chain
+$ echo -e "a\nb\na\nc\na" | sort | uniq
+a
+b
+c
+
+$ echo -e "a\nb\na\nc\na" | sort | uniq
+a
+b
+c
+
+## and-operator
+$ true && echo yes
+yes
+
+$ false && echo yes
+
+$ true && true && echo "all passed"
+all passed
+
+## or-operator
+$ false || echo fallback
+fallback
+
+$ true || echo fallback
+
+$ false || false || echo "last resort"
+last resort
+
+## mixed-logic
+$ true && echo ok || echo fail
+ok
+
+$ false && echo ok || echo fail
+fail
+
+## semicolon
+$ echo first; echo second
+first
+second
+
+$ echo a; echo b; echo c
+a
+b
+c
+
+## subshell
+$ (echo inside)
+inside
+
+$ x=outer; (x=inner; echo $x); echo $x
+inner
+outer
+
+## brace-group
+$ { echo a; echo b; }
+a
+b
+
+## command-substitution
+$ echo "hello $(echo world)"
+hello world
+
+$ x=$(echo 42); echo $x
+42
+
+$ echo "$(echo "nested $(echo deep)")"
+nested deep
+
+## backtick-substitution
+$ echo `echo hello`
+hello
+
+## pipeline-exit-code
+$ true | true; echo $?
+0
+
+$ false | true; echo $?
+0
+
+## negation
+$ ! false; echo $?
+0
+
+$ ! true; echo $?
+1
+
+## here-document
+$ cat <<EOF
+hello
+world
+EOF
+hello
+world
+
+$ x=test; cat <<EOF
+value is $x
+EOF
+value is test
+
+$ cat <<'EOF'
+no $expansion here
+EOF
+no $expansion here

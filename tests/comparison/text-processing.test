@@ -1,0 +1,182 @@
+## echo-flags
+$ echo -n "no newline"
+no newline
+
+$ echo -e "hello\nworld"
+hello
+world
+
+$ echo -e "tab\there"
+tab	here
+
+## printf-basic
+$ printf "%s\n" hello
+hello
+
+$ printf "%d\n" 42
+42
+
+$ printf "%05d\n" 42
+00042
+
+$ printf "%s=%s\n" key value
+key=value
+
+## printf-format
+$ printf "%.2f\n" 3.14159
+3.14
+
+$ printf "%10s\n" right
+     right
+
+$ printf "%-10s|\n" left
+left      |
+
+## head-and-tail
+$ echo -e "1\n2\n3\n4\n5" | head -n 3
+1
+2
+3
+
+$ echo -e "1\n2\n3\n4\n5" | tail -n 2
+4
+5
+
+## grep-basic
+$ echo -e "apple\nbanana\ncherry" | grep an
+banana
+
+$ echo -e "apple\nbanana\ncherry" | grep -v an
+apple
+cherry
+
+$ echo -e "Apple\napple\nAPPLE" | grep -i apple
+Apple
+apple
+APPLE
+
+$ echo -e "hello world\nfoo bar" | grep -o "hello"
+hello
+
+## grep-count
+$ echo -e "a\nb\na\nc\na" | grep -c a
+3
+
+## sed-basic
+$ echo "hello world" | sed 's/world/earth/'
+hello earth
+
+$ echo "aaa" | sed 's/a/b/'
+baa
+
+$ echo "aaa" | sed 's/a/b/g'
+bbb
+
+## sed-delete
+$ echo -e "a\nb\nc" | sed '2d'
+a
+c
+
+$ echo -e "a\nb\nc" | sed '/b/d'
+a
+c
+
+## cut-basic
+$ echo "a:b:c" | cut -d: -f2
+b
+
+$ echo "a:b:c" | cut -d: -f1,3
+a:c
+
+$ echo "hello" | cut -c1-3
+hel
+
+## tr-basic
+$ echo "hello" | tr 'a-z' 'A-Z'
+HELLO
+
+$ echo "HELLO" | tr 'A-Z' 'a-z'
+hello
+
+$ echo "hello123world" | tr -d '0-9'
+helloworld
+
+## sort-basic
+$ echo -e "banana\napple\ncherry" | sort
+apple
+banana
+cherry
+
+$ echo -e "3\n1\n2" | sort -n
+1
+2
+3
+
+$ echo -e "1\n2\n3" | sort -rn
+3
+2
+1
+
+## uniq-basic
+$ echo -e "a\na\nb\nb\nc" | uniq
+a
+b
+c
+
+$ echo -e "a\na\nb\nc\nc" | uniq
+a
+b
+c
+
+## wc-basic
+$ echo "hello world" | wc -w
+(re)
+
+$ echo -e "a\nb\nc" | wc -l
+(re)
+
+## rev
+$ echo "hello" | rev
+olleh
+
+## seq
+$ seq 5
+1
+2
+3
+4
+5
+
+$ seq 2 5
+2
+3
+4
+5
+
+$ seq 0 2 10
+0
+2
+4
+6
+8
+10
+
+## basename-dirname
+$ basename /usr/local/bin/file.txt
+file.txt
+
+$ basename /usr/local/bin/file.txt .txt
+file
+
+$ dirname /usr/local/bin/file.txt
+/usr/local/bin
+
+## expr-basic
+$ expr 3 + 4
+7
+
+$ expr 10 - 3
+7
+
+$ expr 10 / 2
+5

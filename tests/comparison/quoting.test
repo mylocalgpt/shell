@@ -1,0 +1,53 @@
+## single-quotes
+$ echo 'hello world'
+hello world
+
+$ echo '$not_a_variable'
+$not_a_variable
+
+$ echo 'no $(command) expansion'
+no $(command) expansion
+
+## double-quotes
+$ x=world; echo "hello $x"
+hello world
+
+$ echo "two\nwords"
+two\nwords
+
+$ echo "$(echo embedded)"
+embedded
+
+## mixed-quoting
+$ echo "it's a test"
+it's a test
+
+$ echo 'say "hello"'
+say "hello"
+
+$ echo "mix 'single' and \"double\""
+mix 'single' and "double"
+
+## empty-strings
+$ echo ""
+
+$ echo ''
+
+## word-splitting
+$ x="a b c"; for word in $x; do echo $word; done
+a
+b
+c
+
+$ x="a b c"; echo "$x"
+a b c
+
+## escape-sequences
+$ echo "hello\"world"
+hello"world
+
+$ echo "back\\slash"
+back\slash
+
+$ echo "dollar\$sign"
+dollar$sign

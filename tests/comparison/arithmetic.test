@@ -1,0 +1,110 @@
+## basic-ops
+$ echo $((2 + 3))
+5
+
+$ echo $((10 - 4))
+6
+
+$ echo $((3 * 7))
+21
+
+$ echo $((20 / 4))
+5
+
+$ echo $((17 % 5))
+2
+
+## precedence
+$ echo $((2 + 3 * 4))
+14
+
+$ echo $(((2 + 3) * 4))
+20
+
+$ echo $((10 - 2 * 3 + 1))
+5
+
+## comparison
+$ echo $((5 > 3))
+1
+
+$ echo $((5 < 3))
+0
+
+$ echo $((5 == 5))
+1
+
+$ echo $((5 != 3))
+1
+
+## logical
+$ echo $((1 && 1))
+1
+
+$ echo $((1 && 0))
+0
+
+$ echo $((0 || 1))
+1
+
+$ echo $((0 || 0))
+0
+
+## unary
+$ echo $((-5))
+-5
+
+$ echo $((! 0))
+1
+
+$ echo $((! 1))
+0
+
+## bitwise
+$ echo $((5 & 3))
+1
+
+$ echo $((5 | 3))
+7
+
+$ echo $((5 ^ 3))
+6
+
+$ echo $((~0))
+-1
+
+$ echo $((1 << 4))
+16
+
+$ echo $((16 >> 2))
+4
+
+## variables-in-arithmetic
+$ x=10; echo $((x + 5))
+15
+
+$ x=10; y=20; echo $((x + y))
+30
+
+$ x=5; echo $((x * x))
+25
+
+## ternary
+$ echo $(( 5 > 3 ? 1 : 0 ))
+1
+
+$ echo $(( 2 > 3 ? 1 : 0 ))
+0
+
+## power
+$ echo $((2 ** 10))
+1024
+
+$ echo $((3 ** 3))
+27
+
+## arithmetic-for-loop
+$ for ((i=0; i<3; i++)); do echo $i; done
+0
+1
+2
