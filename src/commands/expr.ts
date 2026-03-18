@@ -134,7 +134,7 @@ function parseUnary(args: string[], state: ParseState): string {
 			const str = args[state.pos++];
 			const regex = args[state.pos++];
 			try {
-				if (!checkRegexSafety(regex)) return '0';
+				if (checkRegexSafety(regex)) return '0';
 				const re = new RegExp(`^${regex}`);
 				const m = re.exec(str);
 				if (m) return m[1] ?? String(m[0].length);
