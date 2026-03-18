@@ -1,5 +1,5 @@
 // Types - filesystem
-export type { FileSystem, FileStat, LazyFileContent } from './fs/types.js';
+export type { FileStat, FileSystem, LazyFileContent } from './fs/types.js';
 
 // Types - commands
 export type { Command, CommandContext, CommandResult, LazyCommandDef } from './commands/types.js';
@@ -7,11 +7,17 @@ export type { Command, CommandContext, CommandResult, LazyCommandDef } from './c
 // Types - security
 export type { ExecutionLimits } from './security/limits.js';
 
-// Values - security
-export { DEFAULT_LIMITS } from './security/limits.js';
-
 // Types - parser
 export type { AST, BaseNode } from './parser/ast.js';
+
+// Values - filesystem
+export { FsError, InMemoryFs } from './fs/memory.js';
+
+// Values - commands
+export { CommandRegistry } from './commands/registry.js';
+
+// Values - security
+export { DEFAULT_LIMITS } from './security/limits.js';
 
 // Shell
 import type { CommandResult } from './commands/types.js';
