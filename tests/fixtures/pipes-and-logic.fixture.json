@@ -1,241 +1,241 @@
 {
-  "source": "tests/comparison/pipes-and-logic.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-18T18:25:22.59137+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "and-operator": [
-      {
-        "line": 25,
-        "command": "true \u0026\u0026 echo yes",
-        "stdout": "yes\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 28,
-        "command": "false \u0026\u0026 echo yes",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 1
-      },
-      {
-        "line": 30,
-        "command": "true \u0026\u0026 true \u0026\u0026 echo \"all passed\"",
-        "stdout": "all passed\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "backtick-substitution": [
-      {
-        "line": 83,
-        "command": "echo `echo hello`",
-        "stdout": "hello\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "brace-group": [
-      {
-        "line": 68,
-        "command": "{ echo a; echo b; }",
-        "stdout": "a\nb\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "command-substitution": [
-      {
-        "line": 73,
-        "command": "echo \"hello $(echo world)\"",
-        "stdout": "hello world\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 76,
-        "command": "x=$(echo 42); echo $x",
-        "stdout": "42\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 79,
-        "command": "echo \"$(echo \"nested $(echo deep)\")\"",
-        "stdout": "nested deep\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "here-document": [
-      {
-        "line": 101,
-        "command": "cat \u003c\u003cEOF",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 108,
-        "command": "x=test; cat \u003c\u003cEOF",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 113,
-        "command": "cat \u003c\u003c'EOF'",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "mixed-logic": [
-      {
-        "line": 43,
-        "command": "true \u0026\u0026 echo ok || echo fail",
-        "stdout": "ok\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 46,
-        "command": "false \u0026\u0026 echo ok || echo fail",
-        "stdout": "fail\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "negation": [
-      {
-        "line": 94,
-        "command": "! false; echo $?",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 97,
-        "command": "! true; echo $?",
-        "stdout": "1\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "or-operator": [
-      {
-        "line": 34,
-        "command": "false || echo fallback",
-        "stdout": "fallback\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 37,
-        "command": "true || echo fallback",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 39,
-        "command": "false || false || echo \"last resort\"",
-        "stdout": "last resort\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "pipe-basic": [
-      {
-        "line": 2,
-        "command": "echo hello | cat",
-        "stdout": "hello\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 5,
-        "command": "echo \"hello world\" | wc -w",
-        "stdout": "       2\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 8,
-        "command": "echo -e \"c\\na\\nb\" | sort",
-        "stdout": "a\nb\nc\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "pipe-chain": [
-      {
-        "line": 14,
-        "command": "echo -e \"a\\nb\\na\\nc\\na\" | sort | uniq",
-        "stdout": "a\nb\nc\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 19,
-        "command": "echo -e \"a\\nb\\na\\nc\\na\" | sort | uniq",
-        "stdout": "a\nb\nc\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "pipeline-exit-code": [
-      {
-        "line": 87,
-        "command": "true | true; echo $?",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 90,
-        "command": "false | true; echo $?",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "semicolon": [
-      {
-        "line": 50,
-        "command": "echo first; echo second",
-        "stdout": "first\nsecond\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 54,
-        "command": "echo a; echo b; echo c",
-        "stdout": "a\nb\nc\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "subshell": [
-      {
-        "line": 60,
-        "command": "(echo inside)",
-        "stdout": "inside\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 63,
-        "command": "x=outer; (x=inner; echo $x); echo $x",
-        "stdout": "inner\nouter\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/pipes-and-logic.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-18T18:25:22.59137+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"and-operator": [
+			{
+				"line": 25,
+				"command": "true \u0026\u0026 echo yes",
+				"stdout": "yes\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 28,
+				"command": "false \u0026\u0026 echo yes",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 1
+			},
+			{
+				"line": 30,
+				"command": "true \u0026\u0026 true \u0026\u0026 echo \"all passed\"",
+				"stdout": "all passed\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"backtick-substitution": [
+			{
+				"line": 83,
+				"command": "echo `echo hello`",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"brace-group": [
+			{
+				"line": 68,
+				"command": "{ echo a; echo b; }",
+				"stdout": "a\nb\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"command-substitution": [
+			{
+				"line": 73,
+				"command": "echo \"hello $(echo world)\"",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 76,
+				"command": "x=$(echo 42); echo $x",
+				"stdout": "42\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 79,
+				"command": "echo \"$(echo \"nested $(echo deep)\")\"",
+				"stdout": "nested deep\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"here-document": [
+			{
+				"line": 101,
+				"command": "cat \u003c\u003cEOF",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 108,
+				"command": "x=test; cat \u003c\u003cEOF",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 113,
+				"command": "cat \u003c\u003c'EOF'",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"mixed-logic": [
+			{
+				"line": 43,
+				"command": "true \u0026\u0026 echo ok || echo fail",
+				"stdout": "ok\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 46,
+				"command": "false \u0026\u0026 echo ok || echo fail",
+				"stdout": "fail\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"negation": [
+			{
+				"line": 94,
+				"command": "! false; echo $?",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 97,
+				"command": "! true; echo $?",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"or-operator": [
+			{
+				"line": 34,
+				"command": "false || echo fallback",
+				"stdout": "fallback\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 37,
+				"command": "true || echo fallback",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 39,
+				"command": "false || false || echo \"last resort\"",
+				"stdout": "last resort\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"pipe-basic": [
+			{
+				"line": 2,
+				"command": "echo hello | cat",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "echo \"hello world\" | wc -w",
+				"stdout": "       2\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 8,
+				"command": "echo -e \"c\\na\\nb\" | sort",
+				"stdout": "a\nb\nc\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"pipe-chain": [
+			{
+				"line": 14,
+				"command": "echo -e \"a\\nb\\na\\nc\\na\" | sort | uniq",
+				"stdout": "a\nb\nc\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 19,
+				"command": "echo -e \"a\\nb\\na\\nc\\na\" | sort | uniq",
+				"stdout": "a\nb\nc\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"pipeline-exit-code": [
+			{
+				"line": 87,
+				"command": "true | true; echo $?",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 90,
+				"command": "false | true; echo $?",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"semicolon": [
+			{
+				"line": 50,
+				"command": "echo first; echo second",
+				"stdout": "first\nsecond\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 54,
+				"command": "echo a; echo b; echo c",
+				"stdout": "a\nb\nc\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"subshell": [
+			{
+				"line": 60,
+				"command": "(echo inside)",
+				"stdout": "inside\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 63,
+				"command": "x=outer; (x=inner; echo $x); echo $x",
+				"stdout": "inner\nouter\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

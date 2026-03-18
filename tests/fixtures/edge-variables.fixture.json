@@ -1,129 +1,129 @@
 {
-  "source": "tests/comparison/edge-variables.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-18T18:25:22.565079+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "default-chains": [
-      {
-        "line": 24,
-        "command": "a=first; echo \"${a:-${b:-fallback}}\"",
-        "stdout": "first\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "empty-and-special": [
-      {
-        "line": 12,
-        "command": "echo \"${empty_var}\"",
-        "stdout": "\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 14,
-        "command": "echo \"before${empty_var}after\"",
-        "stdout": "beforeafter\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 17,
-        "command": "x=\"\"; echo \"[$x]\"",
-        "stdout": "[]\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 20,
-        "command": "x=\"\"; if [ -z \"$x\" ]; then echo empty; fi",
-        "stdout": "empty\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "expansion-in-assignment": [
-      {
-        "line": 28,
-        "command": "x=$(echo hello); echo \"$x\"",
-        "stdout": "hello\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 31,
-        "command": "x=\"val_$(echo suffix)\"; echo \"$x\"",
-        "stdout": "val_suffix\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 34,
-        "command": "x=5; y=$((x * 2)); echo $y",
-        "stdout": "10\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "ifs-and-word-splitting": [
-      {
-        "line": 48,
-        "command": "x=\"a  b  c\"; echo $x",
-        "stdout": "a b c\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "nested-substitution": [
-      {
-        "line": 2,
-        "command": "x=world; echo \"hello $(echo $x)\"",
-        "stdout": "hello world\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 5,
-        "command": "echo \"$(echo \"$(echo deep)\")\"",
-        "stdout": "deep\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 8,
-        "command": "x=abc; echo \"${#x} chars\"",
-        "stdout": "3 chars\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "special-chars-in-values": [
-      {
-        "line": 38,
-        "command": "x='hello\"world'; echo \"$x\"",
-        "stdout": "hello\"world\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 41,
-        "command": "x=\"has'quote\"; echo \"$x\"",
-        "stdout": "has'quote\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 44,
-        "command": "x='$not_expanded'; echo \"$x\"",
-        "stdout": "$not_expanded\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/edge-variables.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-18T18:25:22.565079+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"default-chains": [
+			{
+				"line": 24,
+				"command": "a=first; echo \"${a:-${b:-fallback}}\"",
+				"stdout": "first\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"empty-and-special": [
+			{
+				"line": 12,
+				"command": "echo \"${empty_var}\"",
+				"stdout": "\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 14,
+				"command": "echo \"before${empty_var}after\"",
+				"stdout": "beforeafter\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 17,
+				"command": "x=\"\"; echo \"[$x]\"",
+				"stdout": "[]\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 20,
+				"command": "x=\"\"; if [ -z \"$x\" ]; then echo empty; fi",
+				"stdout": "empty\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"expansion-in-assignment": [
+			{
+				"line": 28,
+				"command": "x=$(echo hello); echo \"$x\"",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 31,
+				"command": "x=\"val_$(echo suffix)\"; echo \"$x\"",
+				"stdout": "val_suffix\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 34,
+				"command": "x=5; y=$((x * 2)); echo $y",
+				"stdout": "10\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"ifs-and-word-splitting": [
+			{
+				"line": 48,
+				"command": "x=\"a  b  c\"; echo $x",
+				"stdout": "a b c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"nested-substitution": [
+			{
+				"line": 2,
+				"command": "x=world; echo \"hello $(echo $x)\"",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "echo \"$(echo \"$(echo deep)\")\"",
+				"stdout": "deep\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 8,
+				"command": "x=abc; echo \"${#x} chars\"",
+				"stdout": "3 chars\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"special-chars-in-values": [
+			{
+				"line": 38,
+				"command": "x='hello\"world'; echo \"$x\"",
+				"stdout": "hello\"world\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 41,
+				"command": "x=\"has'quote\"; echo \"$x\"",
+				"stdout": "has'quote\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 44,
+				"command": "x='$not_expanded'; echo \"$x\"",
+				"stdout": "$not_expanded\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

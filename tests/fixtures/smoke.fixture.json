@@ -1,39 +1,39 @@
 {
-  "source": "tests/comparison/smoke.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-18T18:25:22.684272+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "echo-basic": [
-      {
-        "line": 2,
-        "command": "echo hello",
-        "stdout": "hello\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "echo-multiple-args": [
-      {
-        "line": 6,
-        "command": "echo hello world",
-        "stdout": "hello world\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "true-exit-code": [
-      {
-        "line": 10,
-        "command": "true",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/smoke.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-18T18:25:22.684272+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"echo-basic": [
+			{
+				"line": 2,
+				"command": "echo hello",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"echo-multiple-args": [
+			{
+				"line": 6,
+				"command": "echo hello world",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"true-exit-code": [
+			{
+				"line": 10,
+				"command": "true",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

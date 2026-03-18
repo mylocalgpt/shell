@@ -1,263 +1,263 @@
 {
-  "source": "tests/comparison/arithmetic.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-18T18:25:22.108805+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "arithmetic-for-loop": [
-      {
-        "line": 107,
-        "command": "for ((i=0; i\u003c3; i++)); do echo $i; done",
-        "stdout": "0\n1\n2\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "basic-ops": [
-      {
-        "line": 2,
-        "command": "echo $((2 + 3))",
-        "stdout": "5\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 5,
-        "command": "echo $((10 - 4))",
-        "stdout": "6\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 8,
-        "command": "echo $((3 * 7))",
-        "stdout": "21\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 11,
-        "command": "echo $((20 / 4))",
-        "stdout": "5\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 14,
-        "command": "echo $((17 % 5))",
-        "stdout": "2\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "bitwise": [
-      {
-        "line": 64,
-        "command": "echo $((5 \u0026 3))",
-        "stdout": "1\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 67,
-        "command": "echo $((5 | 3))",
-        "stdout": "7\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 70,
-        "command": "echo $((5 ^ 3))",
-        "stdout": "6\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 73,
-        "command": "echo $((~0))",
-        "stdout": "-1\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 76,
-        "command": "echo $((1 \u003c\u003c 4))",
-        "stdout": "16\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 79,
-        "command": "echo $((16 \u003e\u003e 2))",
-        "stdout": "4\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "comparison": [
-      {
-        "line": 28,
-        "command": "echo $((5 \u003e 3))",
-        "stdout": "1\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 31,
-        "command": "echo $((5 \u003c 3))",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 34,
-        "command": "echo $((5 == 5))",
-        "stdout": "1\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 37,
-        "command": "echo $((5 != 3))",
-        "stdout": "1\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "logical": [
-      {
-        "line": 41,
-        "command": "echo $((1 \u0026\u0026 1))",
-        "stdout": "1\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 44,
-        "command": "echo $((1 \u0026\u0026 0))",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 47,
-        "command": "echo $((0 || 1))",
-        "stdout": "1\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 50,
-        "command": "echo $((0 || 0))",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "power": [
-      {
-        "line": 100,
-        "command": "echo $((2 ** 10))",
-        "stdout": "1024\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 103,
-        "command": "echo $((3 ** 3))",
-        "stdout": "27\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "precedence": [
-      {
-        "line": 18,
-        "command": "echo $((2 + 3 * 4))",
-        "stdout": "14\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 21,
-        "command": "echo $(((2 + 3) * 4))",
-        "stdout": "20\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 24,
-        "command": "echo $((10 - 2 * 3 + 1))",
-        "stdout": "5\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "ternary": [
-      {
-        "line": 93,
-        "command": "echo $(( 5 \u003e 3 ? 1 : 0 ))",
-        "stdout": "1\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 96,
-        "command": "echo $(( 2 \u003e 3 ? 1 : 0 ))",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "unary": [
-      {
-        "line": 54,
-        "command": "echo $((-5))",
-        "stdout": "-5\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 57,
-        "command": "echo $((! 0))",
-        "stdout": "1\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 60,
-        "command": "echo $((! 1))",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "variables-in-arithmetic": [
-      {
-        "line": 83,
-        "command": "x=10; echo $((x + 5))",
-        "stdout": "15\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 86,
-        "command": "x=10; y=20; echo $((x + y))",
-        "stdout": "30\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 89,
-        "command": "x=5; echo $((x * x))",
-        "stdout": "25\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/arithmetic.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-18T18:25:22.108805+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"arithmetic-for-loop": [
+			{
+				"line": 107,
+				"command": "for ((i=0; i\u003c3; i++)); do echo $i; done",
+				"stdout": "0\n1\n2\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"basic-ops": [
+			{
+				"line": 2,
+				"command": "echo $((2 + 3))",
+				"stdout": "5\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "echo $((10 - 4))",
+				"stdout": "6\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 8,
+				"command": "echo $((3 * 7))",
+				"stdout": "21\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 11,
+				"command": "echo $((20 / 4))",
+				"stdout": "5\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 14,
+				"command": "echo $((17 % 5))",
+				"stdout": "2\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"bitwise": [
+			{
+				"line": 64,
+				"command": "echo $((5 \u0026 3))",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 67,
+				"command": "echo $((5 | 3))",
+				"stdout": "7\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 70,
+				"command": "echo $((5 ^ 3))",
+				"stdout": "6\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 73,
+				"command": "echo $((~0))",
+				"stdout": "-1\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 76,
+				"command": "echo $((1 \u003c\u003c 4))",
+				"stdout": "16\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 79,
+				"command": "echo $((16 \u003e\u003e 2))",
+				"stdout": "4\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"comparison": [
+			{
+				"line": 28,
+				"command": "echo $((5 \u003e 3))",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 31,
+				"command": "echo $((5 \u003c 3))",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 34,
+				"command": "echo $((5 == 5))",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 37,
+				"command": "echo $((5 != 3))",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"logical": [
+			{
+				"line": 41,
+				"command": "echo $((1 \u0026\u0026 1))",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 44,
+				"command": "echo $((1 \u0026\u0026 0))",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 47,
+				"command": "echo $((0 || 1))",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 50,
+				"command": "echo $((0 || 0))",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"power": [
+			{
+				"line": 100,
+				"command": "echo $((2 ** 10))",
+				"stdout": "1024\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 103,
+				"command": "echo $((3 ** 3))",
+				"stdout": "27\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"precedence": [
+			{
+				"line": 18,
+				"command": "echo $((2 + 3 * 4))",
+				"stdout": "14\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 21,
+				"command": "echo $(((2 + 3) * 4))",
+				"stdout": "20\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 24,
+				"command": "echo $((10 - 2 * 3 + 1))",
+				"stdout": "5\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"ternary": [
+			{
+				"line": 93,
+				"command": "echo $(( 5 \u003e 3 ? 1 : 0 ))",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 96,
+				"command": "echo $(( 2 \u003e 3 ? 1 : 0 ))",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"unary": [
+			{
+				"line": 54,
+				"command": "echo $((-5))",
+				"stdout": "-5\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 57,
+				"command": "echo $((! 0))",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 60,
+				"command": "echo $((! 1))",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"variables-in-arithmetic": [
+			{
+				"line": 83,
+				"command": "x=10; echo $((x + 5))",
+				"stdout": "15\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 86,
+				"command": "x=10; y=20; echo $((x + y))",
+				"stdout": "30\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 89,
+				"command": "x=5; echo $((x * x))",
+				"stdout": "25\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }
