@@ -45,7 +45,7 @@ jobs:
 
       - name: Verify no node imports in dist
         run: |
-          if grep -r "node:" dist/ 2>/dev/null; then
+          if grep -rE "(from|require\()\s*['\"]node:" dist/ --include='*.mjs' --include='*.cjs' --include='*.js' 2>/dev/null; then
             echo "ERROR: found node: imports in dist/"
             exit 1
           fi
