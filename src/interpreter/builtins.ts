@@ -1,6 +1,7 @@
 import type { CommandResult } from '../commands/types.js';
 import type { ConditionalExpr } from '../parser/ast.js';
 import { parse } from '../parser/parser.js';
+import { checkRegexSafety, checkSubjectLength } from '../security/regex.js';
 import { globMatch } from '../utils/glob.js';
 import { BreakSignal, ContinueSignal, ExitSignal, ReturnSignal } from './errors.js';
 import type { Interpreter, InterpreterContext } from './interpreter.js';
@@ -381,9 +382,9 @@ function builtinLocal(args: string[], ctx: InterpreterContext): CommandResult {
 		if (eqIdx >= 0) {
 			const name = arg.slice(0, eqIdx);
 			const value = arg.slice(eqIdx + 1);
-			ctx.interpreter.setVar(name, value);
+			ctx.interpreter.setLocal(name, value);
 		} else {
-			ctx.interpreter.setVar(arg, '');
+			ctx.interpreter.setLocal(arg, '');
 		}
 	}
 	return ok('');
@@ -783,9 +784,12 @@ function evaluateBinaryTest(
 		case '!=':
 			return !globMatch(right, left);
 		case '=~': {
-			// Regex matching with guardrails
+			// Regex matching with guardrails: check pattern complexity before compiling
 			try {
-				if (right.length > 1000) return false; // Pattern complexity guardrail
+				const patternErr = checkRegexSafety(right);
+				if (patternErr) return false;
+				const subjectErr = checkSubjectLength(left);
+				if (subjectErr) return false;
 				const regex = new RegExp(right);
 				const match = regex.exec(left);
 				if (match) {

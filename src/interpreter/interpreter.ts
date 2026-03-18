@@ -127,7 +127,7 @@ export class Interpreter {
 	/** Get the current shell state for the expansion engine. */
 	private getShellState(): ShellState {
 		return {
-			env: this.env,
+			env: this.makeVarMap(),
 			positionalParams: this.positionalParams,
 			arrays: new Map(),
 			lastExitCode: this.exitCode,
@@ -137,6 +137,55 @@ export class Interpreter {
 			options: { nounset: this.options.nounset },
 			fs: this.fs,
 		};
+	}
+
+	/**
+	 * Create a Map-like object that resolves variables through the local scope
+	 * chain before falling back to the global env. This ensures the expansion
+	 * engine sees local variables declared inside functions.
+	 */
+	private makeVarMap(): Map<string, string> {
+		const interp = this;
+		return {
+			get(key: string): string | undefined {
+				return interp.getVar(key);
+			},
+			has(key: string): boolean {
+				return interp.getVar(key) !== undefined;
+			},
+			set(key: string, value: string): Map<string, string> {
+				interp.setVar(key, value);
+				return this as unknown as Map<string, string>;
+			},
+			delete(key: string): boolean {
+				interp.env.delete(key);
+				return true;
+			},
+			get size(): number {
+				return interp.env.size;
+			},
+			[Symbol.iterator](): IterableIterator<[string, string]> {
+				return interp.env[Symbol.iterator]();
+			},
+			entries(): IterableIterator<[string, string]> {
+				return interp.env.entries();
+			},
+			keys(): IterableIterator<string> {
+				return interp.env.keys();
+			},
+			values(): IterableIterator<string> {
+				return interp.env.values();
+			},
+			forEach(callbackfn: (value: string, key: string, map: Map<string, string>) => void): void {
+				interp.env.forEach(callbackfn);
+			},
+			clear(): void {
+				interp.env.clear();
+			},
+			get [Symbol.toStringTag](): string {
+				return 'VarMap';
+			},
+		} as Map<string, string>;
 	}
 
 	/** Create expansion options. */
@@ -195,7 +244,8 @@ export class Interpreter {
 			}
 
 			// Track conditional depth for && and ||
-			if (entry.operator === '&&' || entry.operator === '||') {
+			const isConditional = entry.operator === '&&' || entry.operator === '||';
+			if (isConditional) {
 				this.conditionalDepth++;
 			}
 
@@ -220,10 +270,10 @@ export class Interpreter {
 					(e as Error & { _stdout?: string; _stderr?: string })._stderr = result.stderr;
 				}
 				throw e;
-			}
-
-			if (entry.operator === '&&' || entry.operator === '||') {
-				this.conditionalDepth--;
+			} finally {
+				if (isConditional) {
+					this.conditionalDepth--;
+				}
 			}
 		}
 
@@ -875,6 +925,20 @@ export class Interpreter {
 			}
 		}
 		this.env.set(name, value);
+	}
+
+	/** Set a variable in the current function-local scope (for the `local` builtin). */
+	setLocal(name: string, value: string): void {
+		if (this.readonlyVars.has(name)) {
+			throw new Error(`${name}: readonly variable`);
+		}
+
+		if (this.locals.length > 0) {
+			this.locals[this.locals.length - 1].set(name, value);
+		} else {
+			// Not inside a function - fall back to global env (matches bash behavior)
+			this.env.set(name, value);
+		}
 	}
 
 	/** Get the current working directory. */
