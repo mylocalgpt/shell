@@ -8,6 +8,19 @@ $not_a_variable
 $ echo 'no $(command) expansion'
 no $(command) expansion
 
+## single-quote-special-chars
+$ echo 'pipe | here'
+pipe | here
+
+$ echo 'backslash \ here'
+backslash \ here
+
+$ echo '{braces} and (parens)'
+{braces} and (parens)
+
+$ echo 'a // b + c'
+a // b + c
+
 ## double-quotes
 $ x=world; echo "hello $x"
 hello world

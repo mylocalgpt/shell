@@ -108,6 +108,42 @@ $ echo '42' | jq 'tostring'
 $ echo '"42"' | jq 'tonumber'
 42
 
+## pipe-in-filter
+$ echo '[1,2,3]' | jq '.[] | . * 2'
+2
+4
+6
+
+## alternative-operator
+$ echo '{}' | jq '.b // "default"'
+"default"
+
+## map-arithmetic
+$ echo '[1,2,3]' | jq 'map(. + 10)'
+[
+  11,
+  12,
+  13
+]
+
+## object-construction
+$ echo '{"name":"alice"}' | jq '{name: .name}'
+{
+  "name": "alice"
+}
+
+## select-with-pipe
+$ echo '[1,2,3,4,5]' | jq '[.[] | select(. > 3)]'
+[
+  4,
+  5
+]
+
+## comma-multi-output
+$ echo '{"a":1,"b":2}' | jq '.a, .b'
+1
+2
+
 ## del
 $ echo '{"a":1,"b":2,"c":3}' | jq 'del(.b)'
 {

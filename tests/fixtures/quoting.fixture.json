@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/quoting.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T19:56:35.368752+03:00",
+	"recorded_at": "2026-03-18T20:02:23.930978+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -10,21 +10,21 @@
 	"sections": {
 		"double-quotes": [
 			{
-				"line": 12,
+				"line": 25,
 				"command": "x=world; echo \"hello $x\"",
 				"stdout": "hello world\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 15,
+				"line": 28,
 				"command": "echo \"two\\nwords\"",
 				"stdout": "two\\nwords\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 18,
+				"line": 31,
 				"command": "echo \"$(echo embedded)\"",
 				"stdout": "embedded\n",
 				"stderr": "",
@@ -33,14 +33,14 @@
 		],
 		"empty-strings": [
 			{
-				"line": 32,
+				"line": 45,
 				"command": "echo \"\"",
 				"stdout": "\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 34,
+				"line": 47,
 				"command": "echo ''",
 				"stdout": "\n",
 				"stderr": "",
@@ -49,21 +49,21 @@
 		],
 		"escape-sequences": [
 			{
-				"line": 62,
+				"line": 75,
 				"command": "echo \"hello\\\"world\"",
 				"stdout": "hello\"world\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 65,
+				"line": 78,
 				"command": "echo \"back\\\\slash\"",
 				"stdout": "back\\slash\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 68,
+				"line": 81,
 				"command": "echo \"dollar\\$sign\"",
 				"stdout": "dollar$sign\n",
 				"stderr": "",
@@ -72,23 +72,53 @@
 		],
 		"mixed-quoting": [
 			{
-				"line": 22,
+				"line": 35,
 				"command": "echo \"it's a test\"",
 				"stdout": "it's a test\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 25,
+				"line": 38,
 				"command": "echo 'say \"hello\"'",
 				"stdout": "say \"hello\"\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 28,
+				"line": 41,
 				"command": "echo \"mix 'single' and \\\"double\\\"\"",
 				"stdout": "mix 'single' and \"double\"\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"single-quote-special-chars": [
+			{
+				"line": 12,
+				"command": "echo 'pipe | here'",
+				"stdout": "pipe | here\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 15,
+				"command": "echo 'backslash \\ here'",
+				"stdout": "backslash \\ here\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 18,
+				"command": "echo '{braces} and (parens)'",
+				"stdout": "{braces} and (parens)\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 21,
+				"command": "echo 'a // b + c'",
+				"stdout": "a // b + c\n",
 				"stderr": "",
 				"exit_code": 0
 			}
@@ -118,35 +148,35 @@
 		],
 		"whitespace-preservation": [
 			{
-				"line": 46,
+				"line": 59,
 				"command": "echo \"  spaces  \"",
 				"stdout": "  spaces  \n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 49,
+				"line": 62,
 				"command": "x=\"  hello  \"; echo \"$x\"",
 				"stdout": "  hello  \n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 52,
+				"line": 65,
 				"command": "x=\"a  b  c\"; echo \"$x\"",
 				"stdout": "a  b  c\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 55,
+				"line": 68,
 				"command": "x=$(echo \"  spaces  \"); echo \"\u003e$x\u003c\"",
 				"stdout": "\u003e  spaces  \u003c\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 58,
+				"line": 71,
 				"command": "x=hello; x+=\" world\"; echo \"$x\"",
 				"stdout": "hello world\n",
 				"stderr": "",
@@ -155,14 +185,14 @@
 		],
 		"word-splitting": [
 			{
-				"line": 37,
+				"line": 50,
 				"command": "x=\"a b c\"; for word in $x; do echo $word; done",
 				"stdout": "a\nb\nc\n",
 				"stderr": "",
 				"exit_code": 0
 			},
 			{
-				"line": 42,
+				"line": 55,
 				"command": "x=\"a b c\"; echo \"$x\"",
 				"stdout": "a b c\n",
 				"stderr": "",
