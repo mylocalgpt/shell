@@ -81,10 +81,15 @@ function parseAwkProgram(program: string): AwkRule[] {
 			const action = extractBlock(program, i);
 			i = action.end;
 			let regex: RegExp | undefined;
-			try {
-				regex = new RegExp(pat);
-			} catch {
-				// invalid regex
+			const regexSafety = checkRegexSafety(pat);
+			if (regexSafety) {
+				// unsafe regex - skip this rule
+			} else {
+				try {
+					regex = new RegExp(pat);
+				} catch {
+					// invalid regex
+				}
 			}
 			rules.push({ type: 'pattern', pattern: pat, patternRegex: regex, action: action.body });
 			continue;
@@ -564,15 +569,20 @@ function evaluateExpr(expr: string, state: AwkState): string {
 		const pat = evaluateExpr(argParts[0], state);
 		const repl = evaluateExpr(argParts[1], state);
 		const flags = isGlobal ? 'g' : '';
-		try {
-			const regex = new RegExp(pat, flags);
-			state.fields[0] = state.line;
-			const newLine = state.line.replace(regex, repl);
-			state.line = newLine;
-			state.fields = splitFields(newLine, state.fs);
-			state.nf = state.fields.length;
-		} catch {
-			// invalid regex
+		const subSafety = checkRegexSafety(pat);
+		if (subSafety) {
+			// unsafe regex - skip substitution
+		} else {
+			try {
+				const regex = new RegExp(pat, flags);
+				state.fields[0] = state.line;
+				const newLine = state.line.replace(regex, repl);
+				state.line = newLine;
+				state.fields = splitFields(newLine, state.fs);
+				state.nf = state.fields.length;
+			} catch {
+				// invalid regex
+			}
 		}
 		return '';
 	}

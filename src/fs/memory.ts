@@ -123,7 +123,7 @@ export class InMemoryFs implements FileSystem {
 	}
 
 	readFile(path: string): string | Promise<string> {
-		const normalized = normalizePath(path);
+		const normalized = this.resolveSymlink(normalizePath(path));
 
 		// Virtual device: /dev/null always returns empty
 		if (normalized === '/dev/null') {
@@ -165,7 +165,7 @@ export class InMemoryFs implements FileSystem {
 	}
 
 	writeFile(path: string, content: string): void {
-		const normalized = normalizePath(path);
+		const normalized = this.resolveSymlink(normalizePath(path));
 
 		// Virtual device: /dev/null discards writes
 		if (normalized === '/dev/null') {
@@ -190,7 +190,7 @@ export class InMemoryFs implements FileSystem {
 	}
 
 	appendFile(path: string, content: string): void {
-		const normalized = normalizePath(path);
+		const normalized = this.resolveSymlink(normalizePath(path));
 
 		if (VIRTUAL_DEVICES.has(normalized)) {
 			return;
@@ -473,7 +473,7 @@ export class InMemoryFs implements FileSystem {
 		if (!this.nodes.has(normalized)) {
 			throw new FsError('ENOENT', normalized, `ENOENT: no such file or directory: ${normalized}`);
 		}
-		return normalized;
+		return this.resolveSymlink(normalized);
 	}
 
 	symlink(target: string, linkPath: string): void {
@@ -524,6 +524,27 @@ export class InMemoryFs implements FileSystem {
 			mtime: now,
 			ctime: now,
 		});
+	}
+
+	/**
+	 * Resolve a path through symlinks, returning the final path.
+	 * Used by readFile/writeFile/appendFile to transparently follow symlinks.
+	 */
+	private resolveSymlink(normalized: string, depth?: number): string {
+		const maxDepth = depth ?? 40;
+		const node = this.nodes.get(normalized);
+		if (!node) return normalized;
+		if (node.type !== 'symlink' || maxDepth <= 0) return normalized;
+
+		const target = node.symlinkTarget ?? '';
+		let resolvedTarget: string;
+		if (target.startsWith('/')) {
+			resolvedTarget = normalizePath(target);
+		} else {
+			const dir = parentDir(normalized);
+			resolvedTarget = normalizePath(dir === '/' ? `/${target}` : `${dir}/${target}`);
+		}
+		return this.resolveSymlink(resolvedTarget, maxDepth - 1);
 	}
 
 	/**

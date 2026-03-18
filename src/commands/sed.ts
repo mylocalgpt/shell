@@ -139,6 +139,10 @@ function parseAddress(s: string, pos: number): { addr: SedAddr | null; end: numb
 			}
 		}
 		if (p < s.length) p++; // skip closing /
+		const safety = checkRegexSafety(pattern);
+		if (safety) {
+			return { addr: null, end: p };
+		}
 		try {
 			return { addr: { type: 'regex', regex: new RegExp(pattern) }, end: p };
 		} catch {
@@ -375,6 +379,7 @@ export const sed: Command = {
 		const totalLines = lines.length;
 		let stdout = '';
 		const inRange = new Array<boolean>(cmds.length).fill(false);
+		const rangeStartLine = new Array<number>(cmds.length).fill(0);
 
 		for (let i = 0; i < lines.length; i++) {
 			let line = lines[i];
@@ -392,11 +397,16 @@ export const sed: Command = {
 						if (!inRange[c]) {
 							if (matchesAddr(cmd.addr1, lineNum, line, totalLines)) {
 								inRange[c] = true;
+								rangeStartLine[c] = lineNum;
 							} else {
 								applies = false;
 							}
 						}
-						if (inRange[c] && matchesAddr(cmd.addr2, lineNum, line, totalLines)) {
+						if (
+							inRange[c] &&
+							lineNum > rangeStartLine[c] &&
+							matchesAddr(cmd.addr2, lineNum, line, totalLines)
+						) {
 							inRange[c] = false;
 						}
 					} else {
