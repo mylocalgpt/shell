@@ -44,6 +44,21 @@ has'quote
 $ x='$not_expanded'; echo "$x"
 $not_expanded
 
+## variable-indirection
+$ x=hello; y=x; echo ${!y}
+hello
+
+## readonly-var
+$ readonly RO=42; echo $RO
+42
+
+## glob-strip-greedy
+$ x=hello.tar.gz; echo ${x%%.*}
+hello
+
+$ x=/usr/local/bin; echo ${x##*/}
+bin
+
 ## ifs-and-word-splitting
 $ x="a  b  c"; echo $x
 a b c

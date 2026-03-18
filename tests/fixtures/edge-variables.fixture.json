@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/edge-variables.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T18:25:22.565079+03:00",
+	"recorded_at": "2026-03-18T20:39:27.442171+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -70,9 +70,25 @@
 				"exit_code": 0
 			}
 		],
+		"glob-strip-greedy": [
+			{
+				"line": 56,
+				"command": "x=hello.tar.gz; echo ${x%%.*}",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 59,
+				"command": "x=/usr/local/bin; echo ${x##*/}",
+				"stdout": "bin\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"ifs-and-word-splitting": [
 			{
-				"line": 48,
+				"line": 63,
 				"command": "x=\"a  b  c\"; echo $x",
 				"stdout": "a b c\n",
 				"stderr": "",
@@ -102,6 +118,15 @@
 				"exit_code": 0
 			}
 		],
+		"readonly-var": [
+			{
+				"line": 52,
+				"command": "readonly RO=42; echo $RO",
+				"stdout": "42\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"special-chars-in-values": [
 			{
 				"line": 38,
@@ -121,6 +146,15 @@
 				"line": 44,
 				"command": "x='$not_expanded'; echo \"$x\"",
 				"stdout": "$not_expanded\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"variable-indirection": [
+			{
+				"line": 48,
+				"command": "x=hello; y=x; echo ${!y}",
+				"stdout": "hello\n",
 				"stderr": "",
 				"exit_code": 0
 			}

@@ -3,17 +3,25 @@ import type { FileSystem } from '../fs/types.js';
 /**
  * Test whether a text string matches a glob pattern.
  * Supports: *, ?, [...], [!...], [^...], [a-z] ranges.
- * Does NOT match / for * and ? (they are segment-level).
+ * By default does NOT match / for * and ? (segment-level).
+ * Pass slashMatch=true for parameter expansion patterns.
  *
  * @param pattern - The glob pattern
  * @param text - The text to test
+ * @param slashMatch - When true, * and ? match / (for parameter expansion)
  * @returns true if the text matches the pattern
  */
-export function globMatch(pattern: string, text: string): boolean {
-	return matchAt(pattern, 0, text, 0);
+export function globMatch(pattern: string, text: string, slashMatch?: boolean): boolean {
+	return matchAt(pattern, 0, text, 0, slashMatch ?? false);
 }
 
-function matchAt(pattern: string, startPi: number, text: string, startTi: number): boolean {
+function matchAt(
+	pattern: string,
+	startPi: number,
+	text: string,
+	startTi: number,
+	slashMatch: boolean,
+): boolean {
 	let pi = startPi;
 	let ti = startTi;
 
@@ -26,24 +34,26 @@ function matchAt(pattern: string, startPi: number, text: string, startTi: number
 				pi++;
 			}
 
-			// Trailing * matches everything (except /)
+			// Trailing * matches everything (except / when not slashMatch)
 			if (pi >= pattern.length) {
-				for (let k = ti; k < text.length; k++) {
-					if (text[k] === '/') return false;
+				if (!slashMatch) {
+					for (let k = ti; k < text.length; k++) {
+						if (text[k] === '/') return false;
+					}
 				}
 				return true;
 			}
 
 			// Try matching * against 0, 1, 2, ... characters
 			for (let k = ti; k <= text.length; k++) {
-				if (k > ti && text[k - 1] === '/') break;
-				if (matchAt(pattern, pi, text, k)) return true;
+				if (!slashMatch && k > ti && text[k - 1] === '/') break;
+				if (matchAt(pattern, pi, text, k, slashMatch)) return true;
 			}
 			return false;
 		}
 
 		if (pc === '?') {
-			if (ti >= text.length || text[ti] === '/') return false;
+			if (ti >= text.length || (!slashMatch && text[ti] === '/')) return false;
 			pi++;
 			ti++;
 			continue;

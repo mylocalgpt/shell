@@ -337,6 +337,13 @@ function expandVariable(word: VariableWord, state: ShellState, _opts: ExpansionO
 		return expandArrayAccess(name, word, state);
 	}
 
+	// Variable indirection: ${!var} - use value of var as name of another variable
+	if (word.indirect && !name.includes('[')) {
+		const indirectName = state.env.get(name) ?? '';
+		const indirectValue = indirectName.length > 0 ? (state.env.get(indirectName) ?? '') : '';
+		return applyParamOperator(indirectValue, word, state);
+	}
+
 	// Regular variable
 	const value = state.env.get(name);
 
@@ -493,6 +500,8 @@ function getWordLiteralValue(word: Word, state?: ShellState): string {
 	switch (word.type) {
 		case 'LiteralWord':
 			return word.value;
+		case 'GlobWord':
+			return word.pattern;
 		case 'QuotedWord':
 			return word.parts.map((p) => getWordLiteralValue(p as Word, state)).join('');
 		case 'ConcatWord':
@@ -516,13 +525,13 @@ function getWordLiteralValue(word: Word, state?: ShellState): string {
 function stripPrefix(value: string, pattern: string, longest: boolean): string {
 	if (longest) {
 		for (let i = value.length; i >= 0; i--) {
-			if (globMatch(pattern, value.slice(0, i))) {
+			if (globMatch(pattern, value.slice(0, i), true)) {
 				return value.slice(i);
 			}
 		}
 	} else {
 		for (let i = 0; i <= value.length; i++) {
-			if (globMatch(pattern, value.slice(0, i))) {
+			if (globMatch(pattern, value.slice(0, i), true)) {
 				return value.slice(i);
 			}
 		}
@@ -534,13 +543,13 @@ function stripPrefix(value: string, pattern: string, longest: boolean): string {
 function stripSuffix(value: string, pattern: string, longest: boolean): string {
 	if (longest) {
 		for (let i = 0; i <= value.length; i++) {
-			if (globMatch(pattern, value.slice(i))) {
+			if (globMatch(pattern, value.slice(i), true)) {
 				return value.slice(0, i);
 			}
 		}
 	} else {
 		for (let i = value.length; i >= 0; i--) {
-			if (globMatch(pattern, value.slice(i))) {
+			if (globMatch(pattern, value.slice(i), true)) {
 				return value.slice(0, i);
 			}
 		}
@@ -556,7 +565,7 @@ function substituteFirst(value: string, operand: string): string {
 
 	for (let i = 0; i < value.length; i++) {
 		for (let j = i + 1; j <= value.length; j++) {
-			if (globMatch(pattern, value.slice(i, j))) {
+			if (globMatch(pattern, value.slice(i, j), true)) {
 				return value.slice(0, i) + replacement + value.slice(j);
 			}
 		}
@@ -575,7 +584,7 @@ function substituteAll(value: string, operand: string): string {
 	while (i < value.length) {
 		let matched = false;
 		for (let j = i + 1; j <= value.length; j++) {
-			if (globMatch(pattern, value.slice(i, j))) {
+			if (globMatch(pattern, value.slice(i, j), true)) {
 				result += replacement;
 				i = j;
 				matched = true;

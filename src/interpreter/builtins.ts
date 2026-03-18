@@ -12,6 +12,7 @@ const BUILTIN_NAMES = new Set([
 	'cd',
 	'export',
 	'unset',
+	'readonly',
 	'read',
 	'source',
 	'.',
@@ -56,6 +57,8 @@ export async function executeBuiltin(
 			return builtinExport(args, ctx);
 		case 'unset':
 			return builtinUnset(args, ctx);
+		case 'readonly':
+			return builtinReadonly(args, ctx);
 		case 'read':
 			return builtinRead(args, ctx);
 		case 'source':
@@ -228,6 +231,25 @@ function builtinUnset(args: string[], ctx: InterpreterContext): CommandResult {
 		// -f not implemented yet (no direct function access from builtins)
 	}
 
+	return ok('');
+}
+
+// ── readonly ──
+
+function builtinReadonly(args: string[], ctx: InterpreterContext): CommandResult {
+	for (let i = 0; i < args.length; i++) {
+		const arg = args[i];
+		if (arg === '-p') continue; // print readonly vars (simplified)
+		const eqIdx = arg.indexOf('=');
+		if (eqIdx >= 0) {
+			const name = arg.slice(0, eqIdx);
+			const value = arg.slice(eqIdx + 1);
+			ctx.interpreter.setVar(name, value);
+			ctx.interpreter.markReadonly(name);
+		} else {
+			ctx.interpreter.markReadonly(arg);
+		}
+	}
 	return ok('');
 }
 

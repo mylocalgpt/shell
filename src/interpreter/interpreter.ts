@@ -26,6 +26,7 @@ import { parse } from '../parser/parser.js';
 import type { ExecutionLimits } from '../security/limits.js';
 import { DEFAULT_LIMITS } from '../security/limits.js';
 import { globMatch } from '../utils/glob.js';
+import { evaluateConditionalExpr } from './builtins.js';
 import {
 	BreakSignal,
 	ContinueSignal,
@@ -998,9 +999,17 @@ export class Interpreter {
 	}
 
 	/** Execute a [[ conditional expression ]]. */
-	private async executeConditionalExpression(_node: ConditionalExpression): Promise<CommandResult> {
-		// Placeholder - Phase 5 builds will fully implement this
-		return makeResult(0, '', '');
+	private async executeConditionalExpression(node: ConditionalExpression): Promise<CommandResult> {
+		const ctx: InterpreterContext = {
+			fs: this.fs,
+			cwd: this.cwd,
+			env: this.env,
+			stdin: '',
+			exec: (cmd: string) => this.executeString(cmd),
+			interpreter: this,
+		};
+		const result = evaluateConditionalExpr(node.expression, ctx);
+		return makeResult(result ? 0 : 1, '', '');
 	}
 
 	/** Execute (( expression )) arithmetic command. */
@@ -1086,6 +1095,11 @@ export class Interpreter {
 	/** Get runtime options. */
 	getOptions(): ShellRuntimeOptions {
 		return this.options;
+	}
+
+	/** Mark a variable as readonly. */
+	markReadonly(name: string): void {
+		this.readonlyVars.add(name);
 	}
 
 	/** Get the filesystem. */
