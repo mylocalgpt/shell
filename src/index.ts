@@ -8,7 +8,38 @@ export type { Command, CommandContext, CommandResult, LazyCommandDef } from './c
 export type { ExecutionLimits } from './security/limits.js';
 
 // Types - parser
-export type { AST, BaseNode } from './parser/ast.js';
+export type {
+	AST,
+	ASTNode,
+	Assignment,
+	BaseNode,
+	BraceGroup,
+	CaseItem,
+	CaseStatement,
+	CommandNode,
+	CompoundCommand,
+	ConditionalExpr,
+	ConditionalExpression,
+	ConcatWord,
+	ForCStatement,
+	ForStatement,
+	FunctionDefinition,
+	HereDoc,
+	IfStatement,
+	List,
+	ListEntry,
+	Pipeline,
+	Program,
+	Redirection,
+	SimpleCommand,
+	SourcePosition,
+	Subshell,
+	UntilStatement,
+	WhileStatement,
+	Word,
+	WordPart,
+} from './parser/ast.js';
+export type { Token, TokenType } from './parser/lexer.js';
 
 // Values - filesystem
 export { FsError, InMemoryFs } from './fs/memory.js';
@@ -18,6 +49,9 @@ export { CommandRegistry } from './commands/registry.js';
 
 // Values - security
 export { DEFAULT_LIMITS } from './security/limits.js';
+
+// Values - parser
+export { Lexer, LexerError, tokenize } from './parser/lexer.js';
 
 // Shell
 import type { CommandResult } from './commands/types.js';
