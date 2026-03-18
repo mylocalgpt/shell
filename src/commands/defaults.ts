@@ -93,4 +93,58 @@ export function registerDefaultCommands(registry: CommandRegistry): void {
 		name: 'tr',
 		load: () => import('./tr.js').then((m) => m.tr),
 	});
+
+	// Remaining text and search commands
+	registry.register({
+		name: 'rev',
+		load: () => import('./rev.js').then((m) => m.rev),
+	});
+	registry.register({
+		name: 'tac',
+		load: () => import('./tac.js').then((m) => m.tac),
+	});
+	registry.register({
+		name: 'paste',
+		load: () => import('./paste.js').then((m) => m.paste),
+	});
+	registry.register({
+		name: 'fold',
+		load: () => import('./fold.js').then((m) => m.fold),
+	});
+	registry.register({
+		name: 'comm',
+		load: () => import('./comm.js').then((m) => m.comm),
+	});
+	registry.register({
+		name: 'join',
+		load: () => import('./join.js').then((m) => m.join),
+	});
+	registry.register({
+		name: 'nl',
+		load: () => import('./nl.js').then((m) => m.nl),
+	});
+	registry.register({
+		name: 'expand',
+		load: () => import('./expand.js').then((m) => m.expand),
+	});
+	registry.register({
+		name: 'unexpand',
+		load: () => import('./unexpand.js').then((m) => m.unexpand),
+	});
+	registry.register({
+		name: 'strings',
+		load: () => import('./strings.js').then((m) => m.strings),
+	});
+	registry.register({
+		name: 'column',
+		load: () => import('./column.js').then((m) => m.column),
+	});
+	registry.register({
+		name: 'find',
+		load: () => import('./find.js').then((m) => m.find),
+	});
+	registry.register({
+		name: 'xargs',
+		load: () => import('./xargs.js').then((m) => m.xargs),
+	});
 }
