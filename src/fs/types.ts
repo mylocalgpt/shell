@@ -150,4 +150,23 @@ export interface FileSystem {
 	 * @throws {FsError} ENOENT if the path does not exist
 	 */
 	realpath(path: string): string;
+
+	/**
+	 * Create a symbolic link.
+	 *
+	 * @param target - The target the symlink points to
+	 * @param linkPath - Absolute path for the new symlink
+	 * @throws {FsError} EEXIST if the link path already exists
+	 */
+	symlink(target: string, linkPath: string): void;
+
+	/**
+	 * Read the target of a symbolic link.
+	 *
+	 * @param path - Absolute path to the symlink
+	 * @returns The symlink target string
+	 * @throws {FsError} ENOENT if the path does not exist
+	 * @throws {FsError} EINVAL if the path is not a symlink
+	 */
+	readlink(path: string): string;
 }

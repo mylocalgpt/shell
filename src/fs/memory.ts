@@ -19,7 +19,9 @@ export class FsError extends Error {
 
 interface FileNode {
 	content: LazyFileContent;
-	type: 'file' | 'directory';
+	type: 'file' | 'directory' | 'symlink';
+	/** Symlink target (only set when type is 'symlink'). */
+	symlinkTarget?: string;
 	mode: number;
 	mtime: Date;
 	ctime: Date;
@@ -236,7 +238,7 @@ export class InMemoryFs implements FileSystem {
 
 	stat(path: string): FileStat {
 		const normalized = normalizePath(path);
-		const node = this.nodes.get(normalized);
+		const node = this.resolveNode(normalized);
 		if (!node) {
 			throw new FsError('ENOENT', normalized, `ENOENT: no such file or directory: ${normalized}`);
 		}
@@ -474,6 +476,35 @@ export class InMemoryFs implements FileSystem {
 		return normalized;
 	}
 
+	symlink(target: string, linkPath: string): void {
+		const normalized = normalizePath(linkPath);
+		if (this.nodes.has(normalized)) {
+			throw new FsError('EEXIST', normalized, `EEXIST: file already exists: ${normalized}`);
+		}
+		this.ensureParentDirs(normalized);
+		const now = new Date();
+		this.nodes.set(normalized, {
+			content: '',
+			type: 'symlink',
+			symlinkTarget: target,
+			mode: 0o777,
+			mtime: now,
+			ctime: now,
+		});
+	}
+
+	readlink(path: string): string {
+		const normalized = normalizePath(path);
+		const node = this.nodes.get(normalized);
+		if (!node) {
+			throw new FsError('ENOENT', normalized, `ENOENT: no such file or directory: ${normalized}`);
+		}
+		if (node.type !== 'symlink') {
+			throw new FsError('EINVAL', normalized, `EINVAL: invalid argument: ${normalized}`);
+		}
+		return node.symlinkTarget ?? '';
+	}
+
 	/**
 	 * Add a file with lazy content (sync or async function).
 	 * The function is called on first read and its result is cached.
@@ -493,6 +524,27 @@ export class InMemoryFs implements FileSystem {
 			mtime: now,
 			ctime: now,
 		});
+	}
+
+	/**
+	 * Resolve a node, following symlinks up to a maximum depth.
+	 */
+	private resolveNode(normalized: string, depth?: number): FileNode | undefined {
+		const maxDepth = depth ?? 40;
+		const node = this.nodes.get(normalized);
+		if (!node) return undefined;
+		if (node.type !== 'symlink' || maxDepth <= 0) return node;
+
+		// Follow symlink
+		const target = node.symlinkTarget ?? '';
+		let resolvedTarget: string;
+		if (target.startsWith('/')) {
+			resolvedTarget = normalizePath(target);
+		} else {
+			const dir = parentDir(normalized);
+			resolvedTarget = normalizePath(dir === '/' ? `/${target}` : `${dir}/${target}`);
+		}
+		return this.resolveNode(resolvedTarget, maxDepth - 1);
 	}
 
 	/**

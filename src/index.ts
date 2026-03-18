@@ -66,6 +66,7 @@ export {
 } from './interpreter/errors.js';
 export { registerBuiltins } from './interpreter/builtins.js';
 
+import { registerDefaultCommands } from './commands/defaults.js';
 import { CommandRegistry } from './commands/registry.js';
 // Shell
 import type { CommandResult } from './commands/types.js';
@@ -122,6 +123,7 @@ export class Shell {
 		this.initialCwd = options?.cwd ?? '/';
 		this.limits = options?.limits ?? {};
 		this.registry = new CommandRegistry();
+		registerDefaultCommands(this.registry);
 
 		// Build initial env from defaults + user overrides
 		this.initialEnv = new Map<string, string>();
