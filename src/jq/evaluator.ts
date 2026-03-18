@@ -19,6 +19,12 @@ import type {
 	UpdateOp,
 	VariableBinding,
 } from './ast.js';
+import {
+	applyFormatValue as applyFmt,
+	gmtime as gmtimeFn,
+	mktime as mktimeFn,
+	strftime as strftimeFn,
+} from './builtins/format.js';
 import { JqHaltError, JqRuntimeError, JqTypeError } from './errors.js';
 
 // ---------------------------------------------------------------------------
@@ -864,44 +870,14 @@ function* evalFormat(
 	input: JsonValue,
 	env: JqEnv,
 ): Generator<JsonValue> {
-	// Basic format support - full implementation in Phase 4
 	if (node.str !== null) {
 		// Format with string argument
 		for (const v of evaluate(node.str, input, env)) {
-			const s = typeof v === 'string' ? v : jsonStringify(v);
-			yield applyFormat(node.name, s);
+			yield applyFmt(node.name, v);
 		}
 	} else {
 		// Format applied to input
-		const s = typeof input === 'string' ? input : jsonStringify(input);
-		yield applyFormat(node.name, s);
-	}
-}
-
-function applyFormat(name: string, value: string): string {
-	switch (name) {
-		case 'json':
-			return JSON.stringify(value);
-		case 'text':
-			return value;
-		case 'html': {
-			let result = '';
-			for (let i = 0; i < value.length; i++) {
-				const ch = value[i];
-				if (ch === '<') result += '&lt;';
-				else if (ch === '>') result += '&gt;';
-				else if (ch === '&') result += '&amp;';
-				else if (ch === "'") result += '&#39;';
-				else if (ch === '"') result += '&quot;';
-				else result += ch;
-			}
-			return result;
-		}
-		case 'sh': {
-			return `'${value.replace(/'/g, "'\\''")}'`;
-		}
-		default:
-			throw new JqRuntimeError(`unknown format: @${name}`);
+		yield applyFmt(node.name, input);
 	}
 }
 
@@ -1780,6 +1756,7 @@ function* evalBuiltinCall(
 		}
 		case 'recurse': {
 			const filter = args.length > 0 ? args[0] : null;
+			const condition = args.length > 1 ? args[1] : null;
 			const stack: JsonValue[] = [input];
 			let iterations = 0;
 			while (stack.length > 0) {
@@ -1787,6 +1764,17 @@ function* evalBuiltinCall(
 					throw new JqRuntimeError('recurse iteration limit exceeded');
 				}
 				const v = stack.pop() as JsonValue;
+				// Check condition if provided
+				if (condition !== null) {
+					let pass = false;
+					for (const cv of evaluate(condition, v, env)) {
+						if (isTruthy(cv)) {
+							pass = true;
+							break;
+						}
+					}
+					if (!pass) continue;
+				}
 				yield v;
 				if (filter !== null) {
 					try {
@@ -2211,12 +2199,196 @@ function* evalBuiltinCall(
 			yield result;
 			return;
 		}
+		// Regex builtins
+		case 'test': {
+			if (typeof input !== 'string') throw new JqTypeError('test requires string input');
+			if (args.length < 1) throw new JqRuntimeError('test requires 1 argument');
+			const pattern = collectFirst(args[0], input, env);
+			if (typeof pattern !== 'string') throw new JqTypeError('test pattern must be string');
+			const flags = args.length > 1 ? (collectFirst(args[1], input, env) as string) : '';
+			checkRegex(pattern, input);
+			const re = new RegExp(pattern, typeof flags === 'string' ? flags : '');
+			yield re.test(input);
+			return;
+		}
+		case 'match': {
+			if (typeof input !== 'string') throw new JqTypeError('match requires string input');
+			if (args.length < 1) throw new JqRuntimeError('match requires 1 argument');
+			const pattern = collectFirst(args[0], input, env);
+			if (typeof pattern !== 'string') throw new JqTypeError('match pattern must be string');
+			const flags = args.length > 1 ? (collectFirst(args[1], input, env) as string) : '';
+			checkRegex(pattern, input);
+			const re = new RegExp(pattern, typeof flags === 'string' ? flags : '');
+			const m = re.exec(input);
+			if (m) {
+				const captures: JsonValue[] = [];
+				for (let i = 1; i < m.length; i++) {
+					captures.push({
+						offset: m.index + (m[0].indexOf(m[i] ?? '') >= 0 ? m[0].indexOf(m[i] ?? '') : 0),
+						length: (m[i] ?? '').length,
+						string: m[i] ?? null,
+						name: null,
+					});
+				}
+				yield {
+					offset: m.index,
+					length: m[0].length,
+					string: m[0],
+					captures,
+				};
+			} else {
+				throw new JqRuntimeError('match: pattern not found');
+			}
+			return;
+		}
+		case 'capture': {
+			if (typeof input !== 'string') throw new JqTypeError('capture requires string input');
+			if (args.length < 1) throw new JqRuntimeError('capture requires 1 argument');
+			const pattern = collectFirst(args[0], input, env);
+			if (typeof pattern !== 'string') throw new JqTypeError('capture pattern must be string');
+			const flags = args.length > 1 ? (collectFirst(args[1], input, env) as string) : '';
+			checkRegex(pattern, input);
+			const re = new RegExp(pattern, typeof flags === 'string' ? flags : '');
+			const m = re.exec(input);
+			if (m?.groups) {
+				const result: JsonObject = {};
+				const gKeys = Object.keys(m.groups);
+				for (let i = 0; i < gKeys.length; i++) {
+					result[gKeys[i]] = m.groups[gKeys[i]] ?? null;
+				}
+				yield result;
+			} else if (m) {
+				yield {};
+			} else {
+				throw new JqRuntimeError('capture: pattern not found');
+			}
+			return;
+		}
+		case 'scan': {
+			if (typeof input !== 'string') throw new JqTypeError('scan requires string input');
+			if (args.length < 1) throw new JqRuntimeError('scan requires 1 argument');
+			const pattern = collectFirst(args[0], input, env);
+			if (typeof pattern !== 'string') throw new JqTypeError('scan pattern must be string');
+			const flags = args.length > 1 ? (collectFirst(args[1], input, env) as string) : 'g';
+			checkRegex(pattern, input);
+			const gFlags = typeof flags === 'string' && flags.includes('g') ? flags : `${flags}g`;
+			const re = new RegExp(pattern, gFlags);
+			for (;;) {
+				const m = re.exec(input);
+				if (m === null) break;
+				if (m.length > 1) {
+					const groups: JsonValue[] = [];
+					for (let i = 1; i < m.length; i++) groups.push(m[i] ?? null);
+					yield groups;
+				} else {
+					yield m[0];
+				}
+				if (m[0].length === 0) re.lastIndex++;
+			}
+			return;
+		}
+		case 'sub':
+		case 'gsub': {
+			if (typeof input !== 'string') throw new JqTypeError(`${name} requires string input`);
+			if (args.length < 2) throw new JqRuntimeError(`${name} requires 2 arguments`);
+			const pattern = collectFirst(args[0], input, env);
+			if (typeof pattern !== 'string') throw new JqTypeError(`${name} pattern must be string`);
+			const flags = args.length > 2 ? (collectFirst(args[2], input, env) as string) : '';
+			checkRegex(pattern, input);
+			const reFlags =
+				name === 'gsub'
+					? `${typeof flags === 'string' ? flags : ''}g`
+					: typeof flags === 'string'
+						? flags
+						: '';
+			const re = new RegExp(pattern, reFlags);
+			let result = '';
+			let lastIdx = 0;
+			const globalRe = new RegExp(re.source, re.flags.includes('g') ? re.flags : `${re.flags}g`);
+			for (;;) {
+				const m = globalRe.exec(input);
+				if (m === null) break;
+				result += input.slice(lastIdx, m.index);
+				// Evaluate tostr filter with match info as input
+				const matchObj: JsonObject = {
+					offset: m.index,
+					length: m[0].length,
+					string: m[0],
+					captures: [],
+				};
+				const replacement = collectFirst(args[1], matchObj, env);
+				result += typeof replacement === 'string' ? replacement : jsonStringify(replacement);
+				lastIdx = m.index + m[0].length;
+				if (m[0].length === 0) {
+					if (globalRe.lastIndex < input.length) {
+						result += input[lastIdx];
+						lastIdx++;
+						globalRe.lastIndex = lastIdx;
+					} else {
+						break;
+					}
+				}
+				if (name === 'sub') break; // Only first match
+			}
+			result += input.slice(lastIdx);
+			yield result;
+			return;
+		}
+		// Date builtins
+		case 'todate': {
+			if (typeof input !== 'number') throw new JqTypeError('todate requires number input');
+			yield strftimeFn('%Y-%m-%dT%H:%M:%SZ', input);
+			return;
+		}
+		case 'fromdate': {
+			if (typeof input !== 'string') throw new JqTypeError('fromdate requires string input');
+			const ts = Date.parse(input);
+			if (Number.isNaN(ts)) throw new JqRuntimeError(`cannot parse date: ${input}`);
+			yield ts / 1000;
+			return;
+		}
+		case 'strftime': {
+			if (typeof input !== 'number') throw new JqTypeError('strftime requires number input');
+			if (args.length < 1) throw new JqRuntimeError('strftime requires 1 argument');
+			const fmt = collectFirst(args[0], input, env);
+			if (typeof fmt !== 'string') throw new JqTypeError('strftime format must be string');
+			yield strftimeFn(fmt, input);
+			return;
+		}
+		case 'strptime': {
+			// Simplified: parse ISO-like strings
+			if (typeof input !== 'string') throw new JqTypeError('strptime requires string input');
+			const ts = Date.parse(input);
+			if (Number.isNaN(ts)) throw new JqRuntimeError(`cannot parse date: ${input}`);
+			yield gmtimeFn(ts / 1000);
+			return;
+		}
+		case 'gmtime': {
+			if (typeof input !== 'number') throw new JqTypeError('gmtime requires number input');
+			yield gmtimeFn(input);
+			return;
+		}
+		case 'mktime': {
+			if (!Array.isArray(input)) throw new JqTypeError('mktime requires array input');
+			yield mktimeFn(input);
+			return;
+		}
 		default:
 			throw new JqRuntimeError(`unknown function: ${name}/${args.length}`);
 	}
 }
 
 /** Collect the first output of an expression, or return null if no outputs. */
+/** Simple regex safety check: cap pattern and subject length. */
+function checkRegex(pattern: string, subject: string): void {
+	if (pattern.length > 1000) {
+		throw new JqRuntimeError(`regex pattern too long (${pattern.length} > 1000)`);
+	}
+	if (subject.length > 100_000) {
+		throw new JqRuntimeError(`regex subject too long (${subject.length} > 100000)`);
+	}
+}
+
 function collectFirst(node: JqNode, input: JsonValue, env: JqEnv): JsonValue {
 	for (const v of evaluate(node, input, env)) {
 		return v;
