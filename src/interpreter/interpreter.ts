@@ -185,13 +185,28 @@ export class Interpreter {
 				this.conditionalDepth++;
 			}
 
-			const pipeResult = await this.executePipeline(entry.pipeline);
-			result = {
-				exitCode: pipeResult.exitCode,
-				stdout: result.stdout + pipeResult.stdout,
-				stderr: result.stderr + pipeResult.stderr,
-			};
-			this.exitCode = pipeResult.exitCode;
+			try {
+				const pipeResult = await this.executePipeline(entry.pipeline);
+				result = {
+					exitCode: pipeResult.exitCode,
+					stdout: result.stdout + pipeResult.stdout,
+					stderr: result.stderr + pipeResult.stderr,
+				};
+				this.exitCode = pipeResult.exitCode;
+			} catch (e) {
+				// For control flow signals (break, continue, return, exit),
+				// attach accumulated output and re-throw
+				if (
+					e instanceof BreakSignal ||
+					e instanceof ContinueSignal ||
+					e instanceof ReturnSignal ||
+					e instanceof ExitSignal
+				) {
+					(e as Error & { _stdout?: string; _stderr?: string })._stdout = result.stdout;
+					(e as Error & { _stdout?: string; _stderr?: string })._stderr = result.stderr;
+				}
+				throw e;
+			}
 
 			if (entry.operator === '&&' || entry.operator === '||') {
 				this.conditionalDepth--;
@@ -532,6 +547,11 @@ export class Interpreter {
 					stderr: result.stderr + bodyResult.stderr,
 				};
 			} catch (e) {
+				// Capture any accumulated output from the signal
+				const sig = e as Error & { _stdout?: string; _stderr?: string };
+				if (sig._stdout) result = { ...result, stdout: result.stdout + sig._stdout };
+				if (sig._stderr) result = { ...result, stderr: result.stderr + sig._stderr };
+
 				if (e instanceof BreakSignal) {
 					if (e.levels > 1) throw new BreakSignal(e.levels - 1);
 					break;
@@ -631,6 +651,11 @@ export class Interpreter {
 					stderr: result.stderr + bodyResult.stderr,
 				};
 			} catch (e) {
+				// Capture any accumulated output from the signal
+				const sig = e as Error & { _stdout?: string; _stderr?: string };
+				if (sig._stdout) result = { ...result, stdout: result.stdout + sig._stdout };
+				if (sig._stderr) result = { ...result, stderr: result.stderr + sig._stderr };
+
 				if (e instanceof BreakSignal) {
 					if (e.levels > 1) throw new BreakSignal(e.levels - 1);
 					break;
@@ -674,6 +699,11 @@ export class Interpreter {
 					stderr: result.stderr + bodyResult.stderr,
 				};
 			} catch (e) {
+				// Capture any accumulated output from the signal
+				const sig = e as Error & { _stdout?: string; _stderr?: string };
+				if (sig._stdout) result = { ...result, stdout: result.stdout + sig._stdout };
+				if (sig._stderr) result = { ...result, stderr: result.stderr + sig._stderr };
+
 				if (e instanceof BreakSignal) {
 					if (e.levels > 1) throw new BreakSignal(e.levels - 1);
 					break;
