@@ -33,6 +33,8 @@ const BUILTIN_NAMES = new Set([
 	'echo',
 	'printf',
 	'pwd',
+	'trap',
+	'getopts',
 ]);
 
 /** Check if a name is a builtin. */
@@ -96,6 +98,10 @@ export async function executeBuiltin(
 			return builtinPrintf(args);
 		case 'pwd':
 			return ok(`${ctx.cwd}\n`);
+		case 'trap':
+			return err('@mylocalgpt/shell: signal traps not supported.\n');
+		case 'getopts':
+			return err('@mylocalgpt/shell: getopts not supported. Alternative: use case statements.\n');
 		default:
 			return { exitCode: 1, stdout: '', stderr: `${name}: not a builtin\n` };
 	}

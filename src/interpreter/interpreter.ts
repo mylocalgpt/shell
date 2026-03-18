@@ -27,6 +27,7 @@ import { globMatch } from '../utils/glob.js';
 import {
 	BreakSignal,
 	ContinueSignal,
+	ErrexitError,
 	ExitSignal,
 	LimitExceededError,
 	ReturnSignal,
@@ -156,6 +157,9 @@ export class Interpreter {
 			if (e instanceof ExitSignal) {
 				return makeResult(e.exitCode, '', '');
 			}
+			if (e instanceof ErrexitError) {
+				return makeResult(e.exitCode, e.stdout, e.stderr);
+			}
 			throw e;
 		}
 	}
@@ -226,6 +230,11 @@ export class Interpreter {
 			);
 		}
 
+		// ! negation suppresses errexit
+		if (node.negated) {
+			this.conditionalDepth++;
+		}
+
 		const statuses: number[] = [];
 		let stdin = '';
 		let lastResult = makeResult(0, '', '');
@@ -263,6 +272,7 @@ export class Interpreter {
 		// ! negation
 		if (node.negated) {
 			exitCode = exitCode === 0 ? 1 : 0;
+			this.conditionalDepth--;
 		}
 
 		return {
@@ -348,15 +358,25 @@ export class Interpreter {
 
 		// 2. Expand all words
 		const expandedWords: string[] = [];
-		for (let i = 0; i < node.words.length; i++) {
-			const expanded = await expandWord(
-				node.words[i],
-				this.getShellState(),
-				this.makeExpansionOpts(),
-			);
-			for (let j = 0; j < expanded.length; j++) {
-				expandedWords.push(expanded[j]);
+		try {
+			for (let i = 0; i < node.words.length; i++) {
+				const expanded = await expandWord(
+					node.words[i],
+					this.getShellState(),
+					this.makeExpansionOpts(),
+				);
+				for (let j = 0; j < expanded.length; j++) {
+					expandedWords.push(expanded[j]);
+				}
 			}
+		} catch (e) {
+			if (e instanceof Error && e.message.includes('unbound variable')) {
+				const errResult = makeResult(1, '', `@mylocalgpt/shell: ${e.message}\n`);
+				this.exitCode = 1;
+				this.checkErrexit(errResult, '', '');
+				return errResult;
+			}
+			throw e;
 		}
 
 		if (expandedWords.length === 0) {
@@ -396,6 +416,10 @@ export class Interpreter {
 		result = this.applyOutputRedirections(result, redirState);
 
 		this.exitCode = result.exitCode;
+
+		// Errexit check
+		this.checkErrexit(result, '', '');
+
 		return result;
 	}
 
@@ -861,6 +885,27 @@ export class Interpreter {
 	/** Get the filesystem. */
 	getFs(): FileSystem {
 		return this.fs;
+	}
+
+	/**
+	 * Check if errexit should trigger after a command.
+	 * Throws ErrexitError if:
+	 * - errexit is enabled
+	 * - exitCode is non-zero
+	 * - we are NOT in a conditional context
+	 */
+	private checkErrexit(
+		result: CommandResult,
+		accumulatedStdout: string,
+		accumulatedStderr: string,
+	): void {
+		if (this.options.errexit && result.exitCode !== 0 && this.conditionalDepth === 0) {
+			throw new ErrexitError(
+				accumulatedStdout + result.stdout,
+				accumulatedStderr + result.stderr,
+				result.exitCode,
+			);
+		}
 	}
 
 	/** Apply redirections and return the modified I/O state. */
