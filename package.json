@@ -6,7 +6,7 @@
 	"keywords": ["bash", "shell", "interpreter", "virtual", "sandbox", "agent", "ai", "jq"],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/peteretelej/shell"
+		"url": "https://github.com/mylocalgpt/shell"
 	},
 	"author": "Peter Etelej",
 	"exports": {
@@ -23,6 +23,7 @@
 	},
 	"files": ["dist", "README.md", "LICENSE", "AGENTS.md"],
 	"scripts": {
+		"preinstall": "node scripts/check-pnpm.js",
 		"build": "tsdown",
 		"test": "vitest run",
 		"test:comparison": "smokepod verify --target node --target-arg scripts/smokepod-adapter.mjs --mode process --tests tests/comparison/ --fixtures tests/fixtures/",
