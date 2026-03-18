@@ -1,3 +1,4 @@
+import { formatLimitError } from '../errors.js';
 import type { SourcePosition } from '../parser/ast.js';
 
 /** Thrown when set -e (errexit) triggers on a non-zero exit. */
@@ -22,7 +23,7 @@ export class LimitExceededError extends Error {
 	readonly maxValue: number;
 
 	constructor(limitName: string, currentValue: number, maxValue: number) {
-		super(`limit exceeded: ${limitName} (${currentValue} >= ${maxValue})`);
+		super(`@mylocalgpt/shell: ${formatLimitError(limitName, maxValue)}`);
 		this.name = 'LimitExceededError';
 		this.limitName = limitName;
 		this.currentValue = currentValue;

@@ -1,5 +1,6 @@
 import type { CommandRegistry } from '../commands/registry.js';
 import type { Command, CommandContext, CommandResult } from '../commands/types.js';
+import { findSimilarCommands } from '../errors.js';
 import type { FileSystem } from '../fs/types.js';
 import type {
 	BraceGroup,
@@ -523,8 +524,14 @@ export class Interpreter {
 			return cmd.execute(args, ctx);
 		}
 
-		// Command not found
-		return makeResult(127, '', `${name}: command not found\n`);
+		// Command not found - suggest similar commands
+		const available = this.registry.list();
+		const suggestions = findSimilarCommands(name, available);
+		let msg = `@mylocalgpt/shell: ${name}: command not found`;
+		if (suggestions.length > 0) {
+			msg += `. Similar: ${suggestions.join(', ')}`;
+		}
+		return makeResult(127, '', `${msg}\n`);
 	}
 
 	/** Call a user-defined function. */
