@@ -404,7 +404,7 @@ export const sed: Command = {
 						}
 						if (
 							inRange[c] &&
-							lineNum > rangeStartLine[c] &&
+							lineNum >= rangeStartLine[c] &&
 							matchesAddr(cmd.addr2, lineNum, line, totalLines)
 						) {
 							inRange[c] = false;
