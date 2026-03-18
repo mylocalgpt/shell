@@ -92,6 +92,8 @@ export class Interpreter {
 	private conditionalDepth: number;
 	private exportedVars: Set<string>;
 	private readonlyVars: Set<string>;
+	/** Stdin buffer for compound commands receiving piped input (consumed by read). */
+	private pendingStdin: string;
 	// Builtin handlers (populated by Phase 5)
 	private builtins: Map<
 		string,
@@ -122,6 +124,7 @@ export class Interpreter {
 		this.conditionalDepth = 0;
 		this.exportedVars = new Set();
 		this.readonlyVars = new Set();
+		this.pendingStdin = '';
 		this.builtins = new Map();
 	}
 
@@ -354,25 +357,26 @@ export class Interpreter {
 			);
 		}
 
+		const stdinStr = stdin ?? '';
 		switch (node.type) {
 			case 'SimpleCommand':
-				return this.executeSimpleCommand(node, stdin ?? '');
+				return this.executeSimpleCommand(node, stdinStr);
 			case 'IfStatement':
-				return this.executeIf(node);
+				return this.executeIf(node, stdinStr);
 			case 'ForStatement':
-				return this.executeFor(node);
+				return this.executeFor(node, stdinStr);
 			case 'ForCStatement':
 				return this.executeForC(node);
 			case 'WhileStatement':
-				return this.executeWhile(node);
+				return this.executeWhile(node, stdinStr);
 			case 'UntilStatement':
-				return this.executeUntil(node);
+				return this.executeUntil(node, stdinStr);
 			case 'CaseStatement':
 				return this.executeCase(node);
 			case 'Subshell':
 				return this.executeSubshell(node);
 			case 'BraceGroup':
-				return this.executeBraceGroup(node);
+				return this.executeBraceGroup(node, stdinStr);
 			case 'FunctionDefinition':
 				return this.executeFunctionDef(node);
 			case 'ConditionalExpression':
@@ -573,7 +577,7 @@ export class Interpreter {
 	}
 
 	/** Execute an if statement. */
-	private async executeIf(node: IfStatement): Promise<CommandResult> {
+	private async executeIf(node: IfStatement, _stdin?: string): Promise<CommandResult> {
 		this.conditionalDepth++;
 		const condResult = await this.executeList(node.condition);
 		this.conditionalDepth--;
@@ -599,7 +603,7 @@ export class Interpreter {
 	}
 
 	/** Execute a for-in loop. */
-	private async executeFor(node: ForStatement): Promise<CommandResult> {
+	private async executeFor(node: ForStatement, _stdin?: string): Promise<CommandResult> {
 		const words: string[] = [];
 		for (let i = 0; i < node.words.length; i++) {
 			const expanded = await expandWord(
@@ -714,96 +718,112 @@ export class Interpreter {
 	}
 
 	/** Execute a while loop. */
-	private async executeWhile(node: WhileStatement): Promise<CommandResult> {
+	private async executeWhile(node: WhileStatement, stdin?: string): Promise<CommandResult> {
 		let result = makeResult(0, '', '');
+		const savedPendingStdin = this.pendingStdin;
+		if (stdin) {
+			this.pendingStdin = stdin;
+		}
 
-		while (true) {
-			this.loopIterations++;
-			if (this.loopIterations > this.limits.maxLoopIterations) {
-				throw new LimitExceededError(
-					'maxLoopIterations',
-					this.loopIterations,
-					this.limits.maxLoopIterations,
-				);
-			}
-
-			this.conditionalDepth++;
-			const condResult = await this.executeList(node.condition);
-			this.conditionalDepth--;
-
-			if (condResult.exitCode !== 0) break;
-
-			try {
-				const bodyResult = await this.executeList(node.body);
-				result = {
-					exitCode: bodyResult.exitCode,
-					stdout: result.stdout + bodyResult.stdout,
-					stderr: result.stderr + bodyResult.stderr,
-				};
-			} catch (e) {
-				// Capture any accumulated output from the signal
-				const sig = e as Error & { _stdout?: string; _stderr?: string };
-				if (sig._stdout) result = { ...result, stdout: result.stdout + sig._stdout };
-				if (sig._stderr) result = { ...result, stderr: result.stderr + sig._stderr };
-
-				if (e instanceof BreakSignal) {
-					if (e.levels > 1) throw new BreakSignal(e.levels - 1);
-					break;
+		try {
+			while (true) {
+				this.loopIterations++;
+				if (this.loopIterations > this.limits.maxLoopIterations) {
+					throw new LimitExceededError(
+						'maxLoopIterations',
+						this.loopIterations,
+						this.limits.maxLoopIterations,
+					);
 				}
-				if (e instanceof ContinueSignal) {
-					if (e.levels > 1) throw new ContinueSignal(e.levels - 1);
-					continue;
+
+				this.conditionalDepth++;
+				const condResult = await this.executeList(node.condition);
+				this.conditionalDepth--;
+
+				if (condResult.exitCode !== 0) break;
+
+				try {
+					const bodyResult = await this.executeList(node.body);
+					result = {
+						exitCode: bodyResult.exitCode,
+						stdout: result.stdout + bodyResult.stdout,
+						stderr: result.stderr + bodyResult.stderr,
+					};
+				} catch (e) {
+					// Capture any accumulated output from the signal
+					const sig = e as Error & { _stdout?: string; _stderr?: string };
+					if (sig._stdout) result = { ...result, stdout: result.stdout + sig._stdout };
+					if (sig._stderr) result = { ...result, stderr: result.stderr + sig._stderr };
+
+					if (e instanceof BreakSignal) {
+						if (e.levels > 1) throw new BreakSignal(e.levels - 1);
+						break;
+					}
+					if (e instanceof ContinueSignal) {
+						if (e.levels > 1) throw new ContinueSignal(e.levels - 1);
+						continue;
+					}
+					throw e;
 				}
-				throw e;
 			}
+		} finally {
+			this.pendingStdin = savedPendingStdin;
 		}
 
 		return result;
 	}
 
 	/** Execute an until loop. */
-	private async executeUntil(node: UntilStatement): Promise<CommandResult> {
+	private async executeUntil(node: UntilStatement, stdin?: string): Promise<CommandResult> {
 		let result = makeResult(0, '', '');
+		const savedPendingStdin = this.pendingStdin;
+		if (stdin) {
+			this.pendingStdin = stdin;
+		}
 
-		while (true) {
-			this.loopIterations++;
-			if (this.loopIterations > this.limits.maxLoopIterations) {
-				throw new LimitExceededError(
-					'maxLoopIterations',
-					this.loopIterations,
-					this.limits.maxLoopIterations,
-				);
-			}
-
-			this.conditionalDepth++;
-			const condResult = await this.executeList(node.condition);
-			this.conditionalDepth--;
-
-			if (condResult.exitCode === 0) break;
-
-			try {
-				const bodyResult = await this.executeList(node.body);
-				result = {
-					exitCode: bodyResult.exitCode,
-					stdout: result.stdout + bodyResult.stdout,
-					stderr: result.stderr + bodyResult.stderr,
-				};
-			} catch (e) {
-				// Capture any accumulated output from the signal
-				const sig = e as Error & { _stdout?: string; _stderr?: string };
-				if (sig._stdout) result = { ...result, stdout: result.stdout + sig._stdout };
-				if (sig._stderr) result = { ...result, stderr: result.stderr + sig._stderr };
-
-				if (e instanceof BreakSignal) {
-					if (e.levels > 1) throw new BreakSignal(e.levels - 1);
-					break;
+		try {
+			while (true) {
+				this.loopIterations++;
+				if (this.loopIterations > this.limits.maxLoopIterations) {
+					throw new LimitExceededError(
+						'maxLoopIterations',
+						this.loopIterations,
+						this.limits.maxLoopIterations,
+					);
 				}
-				if (e instanceof ContinueSignal) {
-					if (e.levels > 1) throw new ContinueSignal(e.levels - 1);
-					continue;
+
+				this.conditionalDepth++;
+				const condResult = await this.executeList(node.condition);
+				this.conditionalDepth--;
+
+				if (condResult.exitCode === 0) break;
+
+				try {
+					const bodyResult = await this.executeList(node.body);
+					result = {
+						exitCode: bodyResult.exitCode,
+						stdout: result.stdout + bodyResult.stdout,
+						stderr: result.stderr + bodyResult.stderr,
+					};
+				} catch (e) {
+					// Capture any accumulated output from the signal
+					const sig = e as Error & { _stdout?: string; _stderr?: string };
+					if (sig._stdout) result = { ...result, stdout: result.stdout + sig._stdout };
+					if (sig._stderr) result = { ...result, stderr: result.stderr + sig._stderr };
+
+					if (e instanceof BreakSignal) {
+						if (e.levels > 1) throw new BreakSignal(e.levels - 1);
+						break;
+					}
+					if (e instanceof ContinueSignal) {
+						if (e.levels > 1) throw new ContinueSignal(e.levels - 1);
+						continue;
+					}
+					throw e;
 				}
-				throw e;
 			}
+		} finally {
+			this.pendingStdin = savedPendingStdin;
 		}
 
 		return result;
@@ -860,6 +880,11 @@ export class Interpreter {
 
 		try {
 			return await this.executeList(node.body);
+		} catch (e) {
+			if (e instanceof ExitSignal) {
+				return makeResult(e.exitCode, '', '');
+			}
+			throw e;
 		} finally {
 			this.env = savedEnv;
 			this.cwd = savedCwd;
@@ -869,8 +894,16 @@ export class Interpreter {
 	}
 
 	/** Execute a brace group. */
-	private async executeBraceGroup(node: BraceGroup): Promise<CommandResult> {
-		return this.executeList(node.body);
+	private async executeBraceGroup(node: BraceGroup, stdin?: string): Promise<CommandResult> {
+		const savedPendingStdin = this.pendingStdin;
+		if (stdin) {
+			this.pendingStdin = stdin;
+		}
+		try {
+			return await this.executeList(node.body);
+		} finally {
+			this.pendingStdin = savedPendingStdin;
+		}
 	}
 
 	/** Execute a function definition (registers the function). */
@@ -965,6 +998,16 @@ export class Interpreter {
 	/** Get the filesystem. */
 	getFs(): FileSystem {
 		return this.fs;
+	}
+
+	/** Get the pending stdin buffer (for read builtin). */
+	getPendingStdin(): string {
+		return this.pendingStdin;
+	}
+
+	/** Set the pending stdin buffer (after read consumes a line). */
+	setPendingStdin(value: string): void {
+		this.pendingStdin = value;
 	}
 
 	/**

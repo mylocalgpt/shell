@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/edge-control.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-18T18:25:22.345674+03:00",
+	"recorded_at": "2026-03-18T20:10:14.117329+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -165,6 +165,31 @@
 				"exit_code": 0
 			}
 		],
+		"pipe-to-brace-read": [
+			{
+				"line": 108,
+				"command": "echo \"hello\" | { read word; echo \"got: $word\"; }",
+				"stdout": "got: hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 111,
+				"command": "echo \"a b c\" | { read x y z; echo \"$x|$y|$z\"; }",
+				"stdout": "a|b|c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"pipe-to-while-read": [
+			{
+				"line": 102,
+				"command": "printf \"a\\nb\\nc\\n\" | while read line; do echo \"got: $line\"; done",
+				"stdout": "got: a\ngot: b\ngot: c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"pipeline-status": [
 			{
 				"line": 42,
@@ -183,7 +208,7 @@
 		],
 		"redirect-to-dev-null": [
 			{
-				"line": 95,
+				"line": 115,
 				"command": "echo \"visible\"; echo \"hidden\" \u003e /dev/null",
 				"stdout": "visible\n",
 				"stderr": "",
@@ -202,6 +227,22 @@
 				"line": 30,
 				"command": "(false); echo $?",
 				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"subshell-exit-isolation": [
+			{
+				"line": 95,
+				"command": "(exit 42); echo $?",
+				"stdout": "42\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 98,
+				"command": "(exit 0); echo \"continued\"",
+				"stdout": "continued\n",
 				"stderr": "",
 				"exit_code": 0
 			}

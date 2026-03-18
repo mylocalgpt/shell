@@ -91,6 +91,26 @@ $ for ext in txt log csv; do echo ".$ext"; done
 .log
 .csv
 
+## subshell-exit-isolation
+$ (exit 42); echo $?
+42
+
+$ (exit 0); echo "continued"
+continued
+
+## pipe-to-while-read
+$ printf "a\nb\nc\n" | while read line; do echo "got: $line"; done
+got: a
+got: b
+got: c
+
+## pipe-to-brace-read
+$ echo "hello" | { read word; echo "got: $word"; }
+got: hello
+
+$ echo "a b c" | { read x y z; echo "$x|$y|$z"; }
+a|b|c
+
 ## redirect-to-dev-null
 $ echo "visible"; echo "hidden" > /dev/null
 visible

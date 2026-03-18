@@ -263,22 +263,37 @@ function builtinRead(args: string[], ctx: InterpreterContext): CommandResult {
 		varNames.push('REPLY');
 	}
 
-	const input = ctx.stdin;
+	// Use direct stdin, or fall back to pending stdin from compound commands
+	let input = ctx.stdin;
+	let usePending = false;
+	if (input.length === 0) {
+		input = ctx.interpreter.getPendingStdin();
+		usePending = true;
+	}
 	if (input.length === 0) {
 		return { exitCode: 1, stdout: '', stderr: '' };
 	}
 
 	// Read until delimiter
 	let line = '';
+	let consumed = 0;
 	if (count >= 0) {
 		line = input.slice(0, count);
+		consumed = count;
 	} else {
 		const delimIdx = input.indexOf(delimiter);
 		if (delimIdx >= 0) {
 			line = input.slice(0, delimIdx);
+			consumed = delimIdx + delimiter.length;
 		} else {
 			line = input;
+			consumed = input.length;
 		}
+	}
+
+	// Advance pending stdin past consumed data
+	if (usePending) {
+		ctx.interpreter.setPendingStdin(input.slice(consumed));
 	}
 
 	// Handle backslash escaping
