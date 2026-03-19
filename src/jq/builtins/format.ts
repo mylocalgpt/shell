@@ -166,12 +166,8 @@ export function csvFormat(input: JsonValue): string {
 	for (let i = 0; i < input.length; i++) {
 		const v = input[i];
 		if (typeof v === 'string') {
-			// Quote if contains comma, quote, or newline
-			if (v.includes(',') || v.includes('"') || v.includes('\n')) {
-				fields.push(`"${v.replace(/"/g, '""')}"`);
-			} else {
-				fields.push(v);
-			}
+			// jq always quotes string fields in CSV
+			fields.push(`"${v.replace(/"/g, '""')}"`);
 		} else if (v === null) {
 			fields.push('');
 		} else {

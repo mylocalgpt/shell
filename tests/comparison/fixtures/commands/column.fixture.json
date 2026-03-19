@@ -1,21 +1,21 @@
 {
-  "source": "tests/comparison/commands/column.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:48.065862+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "column-table": [
-      {
-        "line": 2,
-        "command": "printf \"a b c\\n1 2 3\\n\" | column -t",
-        "stdout": "a  b  c\n1  2  3\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/commands/column.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:24.26439+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"column-table": [
+			{
+				"line": 2,
+				"command": "printf \"a b c\\n1 2 3\\n\" | column -t",
+				"stdout": "a  b  c\n1  2  3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

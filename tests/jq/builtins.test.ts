@@ -63,7 +63,7 @@ describe('jq builtins (phase 4)', () => {
 		});
 
 		it('@csv formats array', () => {
-			expect(run('["a","b,c",1]', '@csv')).toBe('"a,\\"b,c\\",1"');
+			expect(run('["a","b,c",1]', '@csv')).toBe('"\\"a\\",\\"b,c\\",1"');
 		});
 
 		it('@tsv formats array', () => {

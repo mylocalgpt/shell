@@ -1,21 +1,21 @@
 {
-  "source": "tests/comparison/commands/date.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:48.105739+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "date-format": [
-      {
-        "line": 2,
-        "command": "date +%Y-%m-%d",
-        "stdout": "2026-03-19\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/commands/date.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:24.304763+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"date-format": [
+			{
+				"line": 2,
+				"command": "date +%Y-%m-%d",
+				"stdout": "2026-03-19\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

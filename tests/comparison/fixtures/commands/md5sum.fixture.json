@@ -1,21 +1,21 @@
 {
-  "source": "tests/comparison/commands/md5sum.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:48.357137+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "md5sum": [
-      {
-        "line": 2,
-        "command": "echo -n \"hello\" | md5sum",
-        "stdout": "5d41402abc4b2a76b9719d911017c592  -\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/commands/md5sum.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:24.508259+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"md5sum": [
+			{
+				"line": 2,
+				"command": "echo -n \"hello\" | md5sum",
+				"stdout": "5d41402abc4b2a76b9719d911017c592  -\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

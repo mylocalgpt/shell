@@ -1,21 +1,21 @@
 {
-  "source": "tests/comparison/commands/expand.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:48.142932+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "expand-basic": [
-      {
-        "line": 2,
-        "command": "printf \"\\thello\\n\" | expand",
-        "stdout": "        hello\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/commands/expand.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:24.339622+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"expand-basic": [
+			{
+				"line": 2,
+				"command": "printf \"\\thello\\n\" | expand",
+				"stdout": "        hello\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

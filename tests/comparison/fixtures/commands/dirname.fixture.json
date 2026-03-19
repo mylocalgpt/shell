@@ -1,21 +1,21 @@
 {
-  "source": "tests/comparison/commands/dirname.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:48.121239+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "dirname": [
-      {
-        "line": 2,
-        "command": "dirname /usr/local/bin/file.txt",
-        "stdout": "/usr/local/bin\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/commands/dirname.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:24.319363+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"dirname": [
+			{
+				"line": 2,
+				"command": "dirname /usr/local/bin/file.txt",
+				"stdout": "/usr/local/bin\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

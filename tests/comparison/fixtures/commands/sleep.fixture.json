@@ -1,21 +1,21 @@
 {
-  "source": "tests/comparison/commands/sleep.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:48.56858+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "sleep-returns-zero": [
-      {
-        "line": 2,
-        "command": "sleep 0; echo $?",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/commands/sleep.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:24.706875+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"sleep-returns-zero": [
+			{
+				"line": 2,
+				"command": "sleep 0; echo $?",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

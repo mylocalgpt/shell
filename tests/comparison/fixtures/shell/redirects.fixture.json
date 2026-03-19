@@ -1,166 +1,166 @@
 {
-  "source": "tests/comparison/shell/redirects.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:49.767337+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "basic-file-ops": [
-      {
-        "line": 2,
-        "command": "echo \"hello\" \u003e /tmp/shelltest1; cat /tmp/shelltest1",
-        "stdout": "hello\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 5,
-        "command": "echo \"line1\" \u003e /tmp/shelltest2; echo \"line2\" \u003e\u003e /tmp/shelltest2; cat /tmp/shelltest2",
-        "stdout": "line1\nline2\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "conditional-file-ops": [
-      {
-        "line": 63,
-        "command": "echo \"data\" \u003e /tmp/shelltest6; if [ -f /tmp/shelltest6 ]; then echo exists; fi",
-        "stdout": "exists\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 66,
-        "command": "if [ -f /tmp/nonexistent_file_xyz ]; then echo exists; else echo missing; fi",
-        "stdout": "missing\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "dev-null": [
-      {
-        "line": 14,
-        "command": "echo \"gone\" \u003e /dev/null",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 16,
-        "command": "cat /dev/null",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "here-string-with-var": [
-      {
-        "line": 49,
-        "command": "x=world; cat \u003c\u003c\u003c \"hello $x\"",
-        "stdout": "hello world\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "heredoc-quoted-no-expand": [
-      {
-        "line": 33,
-        "command": "cat \u003c\u003c'END'",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "heredoc-tabstrip": [
-      {
-        "line": 41,
-        "command": "cat \u003c\u003c-EOF",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "heredoc-with-vars": [
-      {
-        "line": 23,
-        "command": "x=WORLD; cat \u003c\u003cEOF",
-        "stdout": "",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "input-redirect": [
-      {
-        "line": 19,
-        "command": "echo \"from file\" \u003e /tmp/shelltest3; cat \u003c /tmp/shelltest3",
-        "stdout": "from file\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "multiple-redirects": [
-      {
-        "line": 53,
-        "command": "echo \"both\" \u003e /tmp/shelltest4 2\u003e\u00261; cat /tmp/shelltest4",
-        "stdout": "both\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "pipe-to-file": [
-      {
-        "line": 57,
-        "command": "echo -e \"c\\na\\nb\" | sort \u003e /tmp/shelltest5; cat /tmp/shelltest5",
-        "stdout": "a\nb\nc\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "redirect-stderr": [
-      {
-        "line": 10,
-        "command": "echo \"out\"; echo \"err\" \u003e\u00262",
-        "stdout": "out\n",
-        "stderr": "err\n",
-        "exit_code": 0
-      }
-    ],
-    "set-noclobber": [
-      {
-        "line": 79,
-        "command": "echo first \u003e /tmp/noclobber_test; set -C; { echo second \u003e /tmp/noclobber_test; } 2\u003e/dev/null; echo $?; cat /tmp/noclobber_test; set +C; rm -f /tmp/noclobber_test",
-        "stdout": "1\nfirst\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "stderr-through-pipe": [
-      {
-        "line": 84,
-        "command": "{ echo \"out\"; echo \"err\" \u003e\u00262; } 2\u003e\u00261 | sort",
-        "stdout": "err\nout\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "write-and-process": [
-      {
-        "line": 70,
-        "command": "echo -e \"3\\n1\\n2\" \u003e /tmp/shelltest7; sort -n /tmp/shelltest7",
-        "stdout": "1\n2\n3\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 75,
-        "command": "echo \"hello world\" \u003e /tmp/shelltest8; wc -w \u003c /tmp/shelltest8",
-        "stdout": "       2\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/shell/redirects.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:26.020359+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"basic-file-ops": [
+			{
+				"line": 2,
+				"command": "echo \"hello\" \u003e /tmp/shelltest1; cat /tmp/shelltest1",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "echo \"line1\" \u003e /tmp/shelltest2; echo \"line2\" \u003e\u003e /tmp/shelltest2; cat /tmp/shelltest2",
+				"stdout": "line1\nline2\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"conditional-file-ops": [
+			{
+				"line": 63,
+				"command": "echo \"data\" \u003e /tmp/shelltest6; if [ -f /tmp/shelltest6 ]; then echo exists; fi",
+				"stdout": "exists\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 66,
+				"command": "if [ -f /tmp/nonexistent_file_xyz ]; then echo exists; else echo missing; fi",
+				"stdout": "missing\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"dev-null": [
+			{
+				"line": 14,
+				"command": "echo \"gone\" \u003e /dev/null",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 16,
+				"command": "cat /dev/null",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"here-string-with-var": [
+			{
+				"line": 49,
+				"command": "x=world; cat \u003c\u003c\u003c \"hello $x\"",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"heredoc-quoted-no-expand": [
+			{
+				"line": 33,
+				"command": "cat \u003c\u003c'END'",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"heredoc-tabstrip": [
+			{
+				"line": 41,
+				"command": "cat \u003c\u003c-EOF",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"heredoc-with-vars": [
+			{
+				"line": 23,
+				"command": "x=WORLD; cat \u003c\u003cEOF",
+				"stdout": "",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"input-redirect": [
+			{
+				"line": 19,
+				"command": "echo \"from file\" \u003e /tmp/shelltest3; cat \u003c /tmp/shelltest3",
+				"stdout": "from file\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"multiple-redirects": [
+			{
+				"line": 53,
+				"command": "echo \"both\" \u003e /tmp/shelltest4 2\u003e\u00261; cat /tmp/shelltest4",
+				"stdout": "both\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"pipe-to-file": [
+			{
+				"line": 57,
+				"command": "echo -e \"c\\na\\nb\" | sort \u003e /tmp/shelltest5; cat /tmp/shelltest5",
+				"stdout": "a\nb\nc\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"redirect-stderr": [
+			{
+				"line": 10,
+				"command": "echo \"out\"; echo \"err\" \u003e\u00262",
+				"stdout": "out\n",
+				"stderr": "err\n",
+				"exit_code": 0
+			}
+		],
+		"set-noclobber": [
+			{
+				"line": 79,
+				"command": "echo first \u003e /tmp/noclobber_test; set -C; { echo second \u003e /tmp/noclobber_test; } 2\u003e/dev/null; echo $?; cat /tmp/noclobber_test; set +C; rm -f /tmp/noclobber_test",
+				"stdout": "1\nfirst\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"stderr-through-pipe": [
+			{
+				"line": 84,
+				"command": "{ echo \"out\"; echo \"err\" \u003e\u00262; } 2\u003e\u00261 | sort",
+				"stdout": "err\nout\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"write-and-process": [
+			{
+				"line": 70,
+				"command": "echo -e \"3\\n1\\n2\" \u003e /tmp/shelltest7; sort -n /tmp/shelltest7",
+				"stdout": "1\n2\n3\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 75,
+				"command": "echo \"hello world\" \u003e /tmp/shelltest8; wc -w \u003c /tmp/shelltest8",
+				"stdout": "       2\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

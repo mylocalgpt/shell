@@ -1,21 +1,21 @@
 {
-  "source": "tests/comparison/commands/tree.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:48.67044+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "tree-basic": [
-      {
-        "line": 2,
-        "command": "mkdir -p /tmp/treedir/sub; touch /tmp/treedir/file.txt /tmp/treedir/sub/nested.txt; tree /tmp/treedir",
-        "stdout": "/tmp/treedir\n├── file.txt\n└── sub\n    └── nested.txt\n\n2 directories, 2 files\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/commands/tree.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:24.80713+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"tree-basic": [
+			{
+				"line": 2,
+				"command": "mkdir -p /tmp/treedir/sub; touch /tmp/treedir/file.txt /tmp/treedir/sub/nested.txt; tree /tmp/treedir",
+				"stdout": "/tmp/treedir\n├── file.txt\n└── sub\n    └── nested.txt\n\n2 directories, 2 files\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

@@ -67,7 +67,7 @@ $ echo '"aGVsbG8="' | jq '@base64d'
 $ echo '"hello world"' | jq '@uri'
 "hello%20world"
 
-## format-csv (xfail: @csv format escaping differs)
+## format-csv
 $ echo '[["a","b"],[1,2]]' | jq '.[] | @csv'
 "\"a\",\"b\""
 "1,2"
@@ -81,7 +81,7 @@ $ echo '[["a","b"],[1,2]]' | jq '.[] | @tsv'
 $ echo '"<b>bold</b>"' | jq '@html'
 "&lt;b&gt;bold&lt;/b&gt;"
 
-## env-access (xfail: env object access not passed through to jq)
+## env-access
 $ export JQ_TEST_VAR=hello; echo 'null' | jq -n 'env.JQ_TEST_VAR'
 "hello"
 

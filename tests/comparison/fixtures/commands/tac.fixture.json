@@ -1,21 +1,21 @@
 {
-  "source": "tests/comparison/commands/tac.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:48.629393+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "tac-basic": [
-      {
-        "line": 2,
-        "command": "printf \"a\\nb\\nc\\n\" | tac",
-        "stdout": "c\nb\na\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/commands/tac.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:24.76804+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"tac-basic": [
+			{
+				"line": 2,
+				"command": "printf \"a\\nb\\nc\\n\" | tac",
+				"stdout": "c\nb\na\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

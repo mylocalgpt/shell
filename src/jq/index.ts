@@ -47,6 +47,8 @@ export interface JqOptions {
 	argjson?: Record<string, JsonValue>;
 	/** Execution limits. */
 	limits?: Partial<JqLimits>;
+	/** Environment variables (for $ENV access). */
+	env?: Map<string, string>;
 }
 
 /**
@@ -63,6 +65,11 @@ export interface JqOptions {
 export function jq(input: string, filter: string, options?: JqOptions): string {
 	const ast = parseJq(filter);
 	const env = createEnv(options?.limits);
+
+	// Pass environment variables for $ENV access
+	if (options?.env) {
+		env.envVars = options.env;
+	}
 
 	// Bind user args
 	if (options?.args) {

@@ -1,28 +1,28 @@
 {
-  "source": "tests/comparison/commands/tee.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:48.636669+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "tee-command": [
-      {
-        "line": 2,
-        "command": "echo \"hello\" | tee /tmp/shelltest9 \u003e /dev/null; cat /tmp/shelltest9",
-        "stdout": "hello\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 5,
-        "command": "echo \"world\" | tee /tmp/shelltest10",
-        "stdout": "world\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/commands/tee.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:24.774091+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"tee-command": [
+			{
+				"line": 2,
+				"command": "echo \"hello\" | tee /tmp/shelltest9 \u003e /dev/null; cat /tmp/shelltest9",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "echo \"world\" | tee /tmp/shelltest10",
+				"stdout": "world\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

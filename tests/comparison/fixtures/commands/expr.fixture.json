@@ -1,44 +1,44 @@
 {
-  "source": "tests/comparison/commands/expr.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T13:00:48.148749+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "expr-backslash-multiply": [
-      {
-        "line": 2,
-        "command": "expr 4 \\* 5",
-        "stdout": "20\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "expr-basic": [
-      {
-        "line": 6,
-        "command": "expr 3 + 4",
-        "stdout": "7\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 9,
-        "command": "expr 10 - 3",
-        "stdout": "7\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 12,
-        "command": "expr 10 / 2",
-        "stdout": "5\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/commands/expr.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T13:02:24.345249+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"expr-backslash-multiply": [
+			{
+				"line": 2,
+				"command": "expr 4 \\* 5",
+				"stdout": "20\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"expr-basic": [
+			{
+				"line": 6,
+				"command": "expr 3 + 4",
+				"stdout": "7\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 9,
+				"command": "expr 10 - 3",
+				"stdout": "7\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 12,
+				"command": "expr 10 / 2",
+				"stdout": "5\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

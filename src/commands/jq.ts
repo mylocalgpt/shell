@@ -262,6 +262,7 @@ export const jqCommand: Command = {
 				slurp,
 				args: mergedArgs,
 				argjson: mergedArgjson,
+				env: ctx.env,
 			});
 
 			let stdout: string;
