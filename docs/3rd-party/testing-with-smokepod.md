@@ -95,4 +95,4 @@ hello
 
 ## Fixture Files
 
-Recorded fixtures live in `tests/comparison/fixtures/{shell,commands,jq}/*.fixture.json`, mirroring the test file structure. Each file contains recording metadata and per-section arrays of `{ command, stdout, stderr, exit_code }`.
+Recorded fixtures live in `tests/comparison/fixtures/{shell,commands,jq}/*.fixture.json`, mirroring the test file structure. Each file contains per-section arrays of `{ command, stdout, stderr, exit_code }`.
