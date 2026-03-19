@@ -1,5 +1,25 @@
 import type { FileSystem } from '../fs/types.js';
 
+/** Options for a network request made by curl. */
+export interface NetworkRequest {
+  method: string;
+  headers: Record<string, string>;
+  body?: string;
+}
+
+/** Response from a network handler. */
+export interface NetworkResponse {
+  status: number;
+  body: string;
+  headers: Record<string, string>;
+}
+
+/** Network configuration for commands that need HTTP access. */
+export interface NetworkConfig {
+  handler: (url: string, options: NetworkRequest) => Promise<NetworkResponse>;
+  allowlist?: string[];
+}
+
 /**
  * Result of executing a command.
  */
@@ -33,6 +53,8 @@ export interface CommandContext {
    * Enables command implementations to invoke other commands.
    */
   exec: (cmd: string) => Promise<CommandResult>;
+  /** Network configuration for HTTP access. Undefined when no handler is provided. */
+  network?: NetworkConfig;
 }
 
 /**

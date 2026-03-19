@@ -2,7 +2,15 @@
 export type { FileStat, FileSystem, LazyFileContent } from './fs/types.js';
 
 // Types - commands
-export type { Command, CommandContext, CommandResult, LazyCommandDef } from './commands/types.js';
+export type {
+  Command,
+  CommandContext,
+  CommandResult,
+  LazyCommandDef,
+  NetworkConfig,
+  NetworkRequest,
+  NetworkResponse,
+} from './commands/types.js';
 
 // Types - security
 export type { ExecutionLimits } from './security/limits.js';
@@ -68,7 +76,7 @@ export { registerBuiltins } from './interpreter/builtins.js';
 
 import { registerDefaultCommands } from './commands/defaults.js';
 import { CommandRegistry } from './commands/registry.js';
-import type { Command, CommandContext, CommandResult } from './commands/types.js';
+import type { Command, CommandContext, CommandResult, NetworkConfig } from './commands/types.js';
 import { InMemoryFs } from './fs/memory.js';
 import type { FileSystem, LazyFileContent } from './fs/types.js';
 import { registerBuiltins } from './interpreter/builtins.js';
@@ -203,6 +211,12 @@ export interface ShellOptions {
    * When set, only the listed commands are available; all others are removed from the registry.
    */
   enabledCommands?: string[];
+  /**
+   * Network configuration for commands like curl.
+   * Provides a handler function for HTTP requests and an optional hostname allowlist.
+   * The shell never makes real HTTP requests; all network access is delegated to this handler.
+   */
+  network?: NetworkConfig;
 }
 
 /**
@@ -274,6 +288,7 @@ export class Shell {
   private readonly _onCommandResult:
     | ((cmd: string, result: CommandResult) => CommandResult)
     | undefined;
+  private readonly _network: NetworkConfig | undefined;
   private interpreter: Interpreter | null = null;
 
   constructor(options?: ShellOptions) {
@@ -303,6 +318,7 @@ export class Shell {
     this._onOutput = options?.onOutput;
     this._onBeforeCommand = options?.onBeforeCommand;
     this._onCommandResult = options?.onCommandResult;
+    this._network = options?.network;
 
     // Set up command registry
     this.registry = new CommandRegistry();
@@ -572,6 +588,7 @@ export class Shell {
           onBeforeCommand: this._onBeforeCommand,
           onCommandResult: this._onCommandResult,
         },
+        this._network,
       );
       registerBuiltins(this.interpreter);
     }
