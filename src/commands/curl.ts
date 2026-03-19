@@ -6,33 +6,25 @@ function resolvePath(p: string, cwd: string): string {
   return cwd === '/' ? `/${p}` : `${cwd}/${p}`;
 }
 
-/** Extract hostname from a URL without URL constructor. */
+/** Extract hostname from a URL string. */
 function extractHostname(url: string): string {
-  // 1. Strip scheme
-  const schemeIdx = url.indexOf('://');
-  const remainder = schemeIdx >= 0 ? url.slice(schemeIdx + 3) : url;
-  // 2. Strip path
-  const slashIdx = remainder.indexOf('/');
-  const authority = slashIdx >= 0 ? remainder.slice(0, slashIdx) : remainder;
-  // 3. Strip user:pass@
-  const atIdx = authority.lastIndexOf('@');
-  const hostPort = atIdx >= 0 ? authority.slice(atIdx + 1) : authority;
-  // 4. Strip :port
-  const colonIdx = hostPort.lastIndexOf(':');
-  return colonIdx >= 0 ? hostPort.slice(0, colonIdx) : hostPort;
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return '';
+  }
 }
 
 /** Extract filename from URL path's last segment. */
 function extractFilename(url: string): string {
-  const schemeIdx = url.indexOf('://');
-  const remainder = schemeIdx >= 0 ? url.slice(schemeIdx + 3) : url;
-  const slashIdx = remainder.indexOf('/');
-  const path = slashIdx >= 0 ? remainder.slice(slashIdx) : '/';
-  const queryIdx = path.indexOf('?');
-  const cleanPath = queryIdx >= 0 ? path.slice(0, queryIdx) : path;
-  const lastSlash = cleanPath.lastIndexOf('/');
-  const filename = lastSlash >= 0 ? cleanPath.slice(lastSlash + 1) : cleanPath;
-  return filename || 'index.html';
+  try {
+    const pathname = new URL(url).pathname;
+    const lastSlash = pathname.lastIndexOf('/');
+    const filename = lastSlash >= 0 ? pathname.slice(lastSlash + 1) : pathname;
+    return filename || 'index.html';
+  } catch {
+    return 'index.html';
+  }
 }
 
 export const curl: Command = {

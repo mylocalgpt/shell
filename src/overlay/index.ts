@@ -413,7 +413,7 @@ export class OverlayFs implements FileSystem {
       // Check that resolved path is within root
       const resolvedNorm = nodePath.normalize(resolved);
       const rootNorm = nodePath.normalize(this.root);
-      if (!resolvedNorm.startsWith(rootNorm)) {
+      if (resolvedNorm !== rootNorm && !resolvedNorm.startsWith(`${rootNorm}/`)) {
         throw new FsError('EACCES', p, `realpath: resolved path escapes root: ${p}`);
       }
       return p;
