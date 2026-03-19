@@ -1,7 +1,7 @@
 {
   "source": "tests/comparison/commands/realpath.test",
   "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T12:53:14.283471+03:00",
+  "recorded_at": "2026-03-19T13:00:48.462166+03:00",
   "platform": {
     "os": "darwin",
     "arch": "arm64",
@@ -11,8 +11,8 @@
     "realpath-basic": [
       {
         "line": 2,
-        "command": "realpath /tmp",
-        "stdout": "/private/tmp\n",
+        "command": "mkdir -p /tmp/rp_test; realpath /tmp/rp_test; rm -rf /tmp/rp_test",
+        "stdout": "/private/tmp/rp_test\n",
         "stderr": "",
         "exit_code": 0
       }

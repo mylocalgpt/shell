@@ -103,6 +103,14 @@ export const du: Command = {
 				stderr += `du: cannot access '${paths[p]}': No such file or directory\n`;
 				continue;
 			}
+			// Check if it's a regular file (not a directory)
+			try {
+				const st = ctx.fs.stat(resolved);
+				if (!st.isDirectory()) {
+					stdout += `${formatSize(st.size, human)}\t${paths[p]}\n`;
+					continue;
+				}
+			} catch {}
 			const result = calcSize(resolved, paths[p], ctx, 0, maxDepth, human, summaryOnly);
 			if (summaryOnly) {
 				stdout += `${formatSize(result.total, human)}\t${paths[p]}\n`;

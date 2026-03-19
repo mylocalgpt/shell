@@ -1,7 +1,7 @@
 {
   "source": "tests/comparison/commands/echo.test",
   "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T12:53:13.996107+03:00",
+  "recorded_at": "2026-03-19T13:00:48.1313+03:00",
   "platform": {
     "os": "darwin",
     "arch": "arm64",

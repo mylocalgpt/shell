@@ -208,6 +208,9 @@ function listDir(
 
 	if (!showAll) {
 		entries = entries.filter((e) => !e.startsWith('.'));
+	} else {
+		// Add . and .. entries when -a is set (like coreutils ls)
+		entries = ['.', '..', ...entries];
 	}
 
 	// Sort

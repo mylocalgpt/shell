@@ -3,7 +3,7 @@ $ mkdir -p /tmp/lsd; touch /tmp/lsd/a.txt /tmp/lsd/b.txt; ls /tmp/lsd
 a.txt
 b.txt
 
-## ls-hidden (xfail: ls -a does not include . and .. entries)
+## ls-hidden
 $ mkdir -p /tmp/lsh; touch /tmp/lsh/.hidden /tmp/lsh/visible; ls -a /tmp/lsh | sort
 .
 ..

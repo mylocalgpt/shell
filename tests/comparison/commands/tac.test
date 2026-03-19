@@ -1,4 +1,4 @@
-## tac-basic (xfail: tac output differs in trailing newline handling)
+## tac-basic
 $ printf "a\nb\nc\n" | tac
 c
 b

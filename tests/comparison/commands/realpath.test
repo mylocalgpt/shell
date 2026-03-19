@@ -1,3 +1,3 @@
-## realpath-basic (xfail: virtual fs has no /tmp by default)
-$ realpath /tmp
-/private/tmp (re)
+## realpath-basic
+$ mkdir -p /tmp/rp_test; realpath /tmp/rp_test; rm -rf /tmp/rp_test
+.+ (re)

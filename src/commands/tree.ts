@@ -53,7 +53,7 @@ export const tree: Command = {
 
 			const counts = printTree(resolved, '', 0, maxDepth, dirsOnly, showAll, ctx);
 			stdout += counts.output;
-			totalDirs += counts.dirs;
+			totalDirs += counts.dirs + 1; // +1 for the root directory itself
 			totalFiles += counts.files;
 		}
 

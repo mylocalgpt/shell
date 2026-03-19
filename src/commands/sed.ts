@@ -489,6 +489,9 @@ export const sed: Command = {
 						if (result !== null) line = result;
 						break;
 					}
+					case '=':
+						stdout += `${lineNum}\n`;
+						break;
 				}
 
 				if (deleted) break;

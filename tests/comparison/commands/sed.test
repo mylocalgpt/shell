@@ -47,6 +47,6 @@ b
 c
 d
 
-## sed-print-line-number (xfail: sed = command not implemented)
+## sed-print-line-number
 $ echo -e "foo\nbar\nbaz" | sed -n '/bar/='
 2

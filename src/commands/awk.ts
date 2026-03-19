@@ -296,6 +296,24 @@ function executeStatement(stmt: string, state: AwkState): void {
 		return;
 	}
 
+	// Post-increment/decrement as statement (e.g., count++)
+	const postMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*(\+\+|--)$/);
+	if (postMatch) {
+		const varName = postMatch[1];
+		const current = Number.parseFloat(resolveAwkVar(varName, state)) || 0;
+		setAwkVar(varName, String(postMatch[2] === '++' ? current + 1 : current - 1), state);
+		return;
+	}
+
+	// Pre-increment/decrement as statement (e.g., ++count)
+	const preMatch = trimmed.match(/^(\+\+|--)([a-zA-Z_]\w*)$/);
+	if (preMatch) {
+		const varName = preMatch[2];
+		const current = Number.parseFloat(resolveAwkVar(varName, state)) || 0;
+		setAwkVar(varName, String(preMatch[1] === '++' ? current + 1 : current - 1), state);
+		return;
+	}
+
 	// Fallback: evaluate as expression (for side effects like function calls)
 	evaluateExpr(trimmed, state);
 }
@@ -491,7 +509,19 @@ function evaluateExpr(expr: string, state: AwkState): string {
 		return resultStr;
 	}
 
-	// Check for comparison operators FIRST (before atomics)
+	// Ternary (lower precedence than comparisons, so checked first in recursive descent)
+	const ternIdx = findOperator(trimmed, '?');
+	if (ternIdx >= 0) {
+		const colonIdx = findOperator(trimmed.slice(ternIdx + 1), ':');
+		if (colonIdx >= 0) {
+			const cond = evaluateExpr(trimmed.slice(0, ternIdx), state);
+			const trueExpr = trimmed.slice(ternIdx + 1, ternIdx + 1 + colonIdx);
+			const falseExpr = trimmed.slice(ternIdx + 1 + colonIdx + 1);
+			return isTruthy(cond) ? evaluateExpr(trueExpr, state) : evaluateExpr(falseExpr, state);
+		}
+	}
+
+	// Check for comparison operators (before atomics)
 	for (const op of ['==', '!=', '>=', '<=', '>', '<']) {
 		const opIdx = findOperator(trimmed, op);
 		if (opIdx >= 0) {
@@ -557,18 +587,6 @@ function evaluateExpr(expr: string, state: AwkState): string {
 		}
 	}
 
-	// Ternary
-	const ternIdx = findOperator(trimmed, '?');
-	if (ternIdx >= 0) {
-		const colonIdx = findOperator(trimmed.slice(ternIdx + 1), ':');
-		if (colonIdx >= 0) {
-			const cond = evaluateExpr(trimmed.slice(0, ternIdx), state);
-			const trueExpr = trimmed.slice(ternIdx + 1, ternIdx + 1 + colonIdx);
-			const falseExpr = trimmed.slice(ternIdx + 1 + colonIdx + 1);
-			return isTruthy(cond) ? evaluateExpr(trueExpr, state) : evaluateExpr(falseExpr, state);
-		}
-	}
-
 	// String concatenation
 	const concatParts = splitConcat(trimmed);
 	if (concatParts.length > 1) {
@@ -580,6 +598,25 @@ function evaluateExpr(expr: string, state: AwkState): string {
 	}
 
 	// === Atomic values below ===
+
+	// Post-increment/decrement (var++ / var--)
+	const postIncrMatch = trimmed.match(/^([a-zA-Z_]\w*)(\+\+|--)$/);
+	if (postIncrMatch) {
+		const varName = postIncrMatch[1];
+		const current = Number.parseFloat(resolveAwkVar(varName, state)) || 0;
+		setAwkVar(varName, String(postIncrMatch[2] === '++' ? current + 1 : current - 1), state);
+		return String(current);
+	}
+
+	// Pre-increment/decrement (++var / --var)
+	const preIncrMatch = trimmed.match(/^(\+\+|--)([a-zA-Z_]\w*)$/);
+	if (preIncrMatch) {
+		const varName = preIncrMatch[2];
+		const current = Number.parseFloat(resolveAwkVar(varName, state)) || 0;
+		const newVal = preIncrMatch[1] === '++' ? current + 1 : current - 1;
+		setAwkVar(varName, String(newVal), state);
+		return String(newVal);
+	}
 
 	// Field reference $N (only when it's a pure field reference)
 	if (trimmed[0] === '$') {
