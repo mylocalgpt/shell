@@ -1,5 +1,5 @@
 import type { CommandRegistry } from '../commands/registry.js';
-import type { Command, CommandContext, CommandResult } from '../commands/types.js';
+import type { Command, CommandContext, CommandResult, NetworkConfig } from '../commands/types.js';
 import { findSimilarCommands } from '../errors.js';
 import type { FileSystem } from '../fs/types.js';
 import type {
@@ -126,6 +126,7 @@ export class Interpreter {
     (args: string[], ctx: InterpreterContext) => Promise<CommandResult>
   >;
   private readonly hooks: InterpreterHooks;
+  private readonly network?: NetworkConfig;
 
   constructor(
     fs: FileSystem,
@@ -134,6 +135,7 @@ export class Interpreter {
     cwd?: string,
     limits?: Partial<ExecutionLimits>,
     hooks?: InterpreterHooks,
+    network?: NetworkConfig,
   ) {
     this.fs = fs;
     this.registry = registry;
@@ -156,6 +158,7 @@ export class Interpreter {
     this.pendingStdin = '';
     this.builtins = new Map();
     this.hooks = hooks ?? {};
+    this.network = network;
 
     // Expose output limit so commands can read it via env
     this.env.set('SHELL_MAX_OUTPUT', String(this.limits.maxOutputSize));
@@ -650,6 +653,7 @@ export class Interpreter {
         env: this.env,
         stdin,
         exec: (cmd: string) => this.executeString(cmd),
+        network: this.network,
       };
       return cmd.execute(args, ctx);
     }

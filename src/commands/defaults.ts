@@ -272,6 +272,12 @@ export function registerDefaultCommands(registry: CommandRegistry): void {
     load: () => import('./xxd.js').then((m) => m.xxd),
   });
 
+  // Network commands
+  registry.register({
+    name: 'curl',
+    load: () => import('./curl.js').then((m) => m.curl),
+  });
+
   // JSON processing
   registry.register({
     name: 'jq',
