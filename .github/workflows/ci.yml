@@ -42,11 +42,7 @@ jobs:
         run: node -e "require('./dist/index.cjs')"
 
       - name: Verify no node imports in dist
-        run: |
-          if grep -rE "(from|require\()\s*['\"]node:" dist/ --include='*.mjs' --include='*.cjs' --include='*.js' --exclude-dir=overlay 2>/dev/null; then
-            echo "ERROR: found node: imports in dist/ (excluding overlay)"
-            exit 1
-          fi
+        run: bash scripts/check-node-imports.sh
 
       - name: Comparison tests
         run: pnpm test:comparison

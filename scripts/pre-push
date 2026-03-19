@@ -13,6 +13,9 @@ pnpm test
 echo "pre-push: build"
 pnpm build
 
+echo "pre-push: verify no node imports in dist"
+bash scripts/check-node-imports.sh
+
 echo "pre-push: comparison tests"
 pnpm test:comparison
 

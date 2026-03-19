@@ -82,11 +82,7 @@ jobs:
         run: node -e "require('./dist/index.cjs')"
 
       - name: Verify no node imports in dist (overlay excluded)
-        run: |
-          if grep -rE "(from|require\()\s*['\"]node:" dist/ --include='*.mjs' --include='*.cjs' --include='*.js' --exclude-dir=overlay 2>/dev/null; then
-            echo "ERROR: found node: imports in dist/ (overlay excluded)"
-            exit 1
-          fi
+        run: bash scripts/check-node-imports.sh
 
       - name: Verify version matches tag
         run: |
