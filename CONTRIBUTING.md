@@ -54,17 +54,11 @@ When fixing a bug, add the failing test first, then fix the code.
 
 ## Releasing
 
-Releases are published to npm via GitHub Actions when a version tag is pushed. The convention is that `package.json` is the source of truth for the version; the tag triggers the pipeline and must match.
+Releases are published to npm via GitHub Actions when a version tag is pushed.
 
-1. Bump the version in `package.json`
-2. Commit: `git commit -am "bump version to X.Y.Z"`
-3. Tag: `git tag vX.Y.Z`
-4. Push: `git push && git push origin vX.Y.Z`
+```bash
+npm version patch   # or minor, major
+git push && git push --tags
+```
 
-The release workflow will:
-
-- Run cross-platform tests (Ubuntu, macOS, Windows; Node 20, 22)
-- Verify the tag matches `package.json`
-- Typecheck, lint, test, and build
-- Verify no `node:` imports leaked into dist
-- Publish to npm with OIDC provenance
+`npm version` bumps `package.json`, commits, and creates the tag. The release workflow then runs cross-platform tests, verifies the tag matches `package.json`, and publishes to npm with OIDC provenance.
