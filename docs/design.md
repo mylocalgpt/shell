@@ -9,8 +9,9 @@ Virtual bash interpreter for AI agents. Hand-written recursive descent parser, s
 | Parser | Lexer, AST, recursive descent | `src/parser/{ast,lexer,parser}.ts` | 3,200 |
 | Interpreter | Execution, pipes, expansion, control flow | `src/interpreter/{interpreter,expansion,builtins}.ts` | 3,800 |
 | Filesystem | In-memory virtual FS, lazy files | `src/fs/{types,memory}.ts` | 760 |
-| Commands | One-file-per-command, lazy registry | `src/commands/*.ts` (61 registered) | ~8,000 |
+| Commands | One-file-per-command, lazy registry | `src/commands/*.ts` (65 registered) | ~8,500 |
 | Security | Execution limits, regex guardrails | `src/security/{limits,regex}.ts` | 275 |
+| OverlayFs | Read-through overlay for host dirs | `src/overlay/{index,types}.ts` | ~400 |
 | jq | Full jq processor, generator-based | `src/jq/*.ts` | 5,500 |
 | Utils | Glob, diff, printf (hand-written) | `src/utils/{glob,diff,printf}.ts` | 1,300 |
 
@@ -19,7 +20,7 @@ Virtual bash interpreter for AI agents. Hand-written recursive descent parser, s
 ```
 input string -> parse() -> AST -> execute()
   -> expand words (7 phases)
-  -> resolve builtins (27) or commands (61)
+  -> resolve builtins (27) or commands (65)
   -> pipe stdout as string to next command
   -> CommandResult { stdout, stderr, exitCode }
 ```
@@ -41,12 +42,16 @@ Flat `Map<string, FileNode>` keyed by normalized paths. Lazy file content (sync 
 → [design/filesystem.md](design/filesystem.md)
 
 ### Commands
-One file per command, lazy-loaded on first use. Dual-track registry (definitions Map + cache Map). 61 default commands, 27 builtins. Custom commands via `ShellOptions.commands` or `defineCommand()`.
+One file per command, lazy-loaded on first use. Dual-track registry (definitions Map + cache Map). 65 default commands, 27 builtins. Custom commands via `ShellOptions.commands` or `defineCommand()`.
 → [design/commands.md](design/commands.md)
 
 ### Security
 Prevents resource exhaustion and ReDoS from untrusted scripts. 7 execution limits with configurable caps. Regex guardrails detect nested quantifiers and backreferences in quantified groups before executing patterns.
 → [design/security.md](design/security.md)
+
+### OverlayFs
+Read-through filesystem that overlays a host directory. Reads from host via sync `node:fs`, writes to an in-memory Map. Host is never modified. `getChanges()` returns created/modified/deleted changeset. Separate entry point at `@mylocalgpt/shell/overlay`.
+-> [design/filesystem.md](design/filesystem.md)
 
 ### jq
 Independent module with generator-based evaluator. 31 AST node types, 12-level precedence parser, 80+ builtins. Separate `JqLimits` with higher defaults. Full format string support.
@@ -61,3 +66,5 @@ Independent module with generator-based evaluator. 31 AST node types, 12-level p
 - **No `node:` imports in core** - pure ECMAScript for portability. Node APIs only in test harness and build scripts.
 - **Generator-based jq** - `yield*` composes multiple outputs naturally. Matches jq's semantics where filters produce zero or more values.
 - **Lazy command loading** - commands imported on first use via dynamic `import()`. Reduces startup cost for scripts that use few commands.
+- **Read-through OverlayFs** - overlays a host directory in memory. Uses sync `node:fs` APIs because the FileSystem interface allows `string | Promise<string>` returns and sync is simpler for a read-through layer. Host is never written to.
+- **Network delegation** - curl never makes real HTTP requests. All network access is delegated to a consumer-provided handler function via `ShellOptions.network`.

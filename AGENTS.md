@@ -19,7 +19,7 @@ Virtual bash interpreter for AI agents. Pure ECMAScript, zero runtime dependenci
   - `tests/comparison/commands/` - one file per command
   - `tests/comparison/jq/` - jq processor tests
 - **Validation gate:** `pnpm test:all` runs unit + comparison + lint + typecheck
-- **CI:** macOS + Linux + Windows
+- **CI:** macOS + Linux + Windows + Bun
 
 ## Docs
 
@@ -29,7 +29,7 @@ Design docs for AI agents in `docs/`. Read on-demand, not required.
 - [`docs/design/parser.md`](docs/design/parser.md) - Lexer, AST types, recursive descent parser
 - [`docs/design/interpreter.md`](docs/design/interpreter.md) - Execution, pipes, expansion phases, control flow signals
 - [`docs/design/commands.md`](docs/design/commands.md) - Registry, adding commands, custom command API
-- [`docs/design/filesystem.md`](docs/design/filesystem.md) - InMemoryFs, lazy files, virtual devices, symlinks
+- [`docs/design/filesystem.md`](docs/design/filesystem.md) - InMemoryFs, OverlayFs, lazy files, virtual devices, symlinks
 - [`docs/design/security.md`](docs/design/security.md) - Execution limits, regex guardrails, threat model
 - [`docs/design/jq.md`](docs/design/jq.md) - Generator evaluator, builtins, format strings
 - [`docs/3rd-party/testing-with-smokepod.md`](docs/3rd-party/testing-with-smokepod.md) - Comparison test workflow

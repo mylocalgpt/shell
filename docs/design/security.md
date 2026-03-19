@@ -65,6 +65,21 @@ Separate `JqLimits` type in `src/jq/evaluator.ts` with higher defaults (jq opera
 | maxArraySize | 100,000 | 100,000 |
 | maxOutputSize | 10,000,000 | 10,000,000 |
 
+## Network Allowlist
+
+The curl command delegates all HTTP requests to a consumer-provided handler. An optional `allowlist` on `ShellOptions.network` restricts which hostnames curl can reach:
+- Hostnames are extracted from URLs without the URL constructor (for runtime portability)
+- Patterns use the project's glob matcher (e.g. `*.example.com`)
+- Rejected requests return exit code 7
+
+## OverlayFs Security
+
+- Host writes are architecturally impossible (no writeFileSync calls in overlay)
+- `realpath` rejects paths that resolve outside the root directory via symlink
+- `allowPaths`/`denyPaths` options filter which host paths are readable
+
+See also: [THREAT_MODEL.md](../../THREAT_MODEL.md) for the full security model.
+
 ## Gotchas
 
 - **Regex guardrails are heuristic.** They catch common ReDoS patterns but cannot detect all possible exponential-time regexes. The input caps provide a hard backstop.
