@@ -79,7 +79,7 @@ $ sum=0; for i in 1 2 3 4 5; do sum=$((sum + i)); done; echo $sum
 $ fact=1; for i in $(seq 1 5); do fact=$((fact * i)); done; echo $fact
 120
 
-## declare-integer (xfail: declare -i does not evaluate arithmetic)
+## declare-integer
 $ declare -i num=5+3; echo $num
 8
 

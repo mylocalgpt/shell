@@ -540,6 +540,15 @@ export class Interpreter {
 			}
 		}
 		const redirState = this.applyRedirections(node.redirections, stdin);
+
+		// Check for redirection errors (e.g., noclobber)
+		// The shell's redirection error bypasses output redirections (bash behavior:
+		// noclobber errors are emitted by the shell, not the command)
+		if (redirState.error) {
+			this.exitCode = 1;
+			return makeResult(1, '', redirState.error);
+		}
+
 		const effectiveStdin = redirState.stdin;
 
 		// 4. Apply temp env
@@ -1166,6 +1175,7 @@ export class Interpreter {
 			mergeStdoutToStderr: false,
 			discardStdout: false,
 			discardStderr: false,
+			error: null,
 		};
 
 		for (let i = 0; i < redirections.length; i++) {
@@ -1197,11 +1207,17 @@ export class Interpreter {
 					if (fd === 2) state.discardStderr = true;
 					else state.discardStdout = true;
 				} else {
+					const resolved = this.resolvePath(target);
+					// noclobber check: > on an existing file is an error when set -C is active
+					if (this.options.noclobber && this.fs.exists(resolved)) {
+						state.error = `@mylocalgpt/shell: ${target}: cannot overwrite existing file\n`;
+						continue;
+					}
 					if (fd === 2) {
-						state.stderrFile = this.resolvePath(target);
+						state.stderrFile = resolved;
 						state.stderrAppend = false;
 					} else {
-						state.stdoutFile = this.resolvePath(target);
+						state.stdoutFile = resolved;
 						state.stdoutAppend = false;
 					}
 				}
@@ -1347,4 +1363,5 @@ interface RedirectionState {
 	mergeStdoutToStderr: boolean;
 	discardStdout: boolean;
 	discardStderr: boolean;
+	error: string | null;
 }

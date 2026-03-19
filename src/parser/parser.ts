@@ -1161,6 +1161,26 @@ class Parser {
 		while (i < raw.length) {
 			const ch = raw[i];
 
+			// Backslash escape: treat next char as literal (no glob expansion)
+			if (ch === '\\' && i + 1 < raw.length) {
+				const escaped = raw[i + 1];
+				// For glob-significant characters, wrap in a QuotedWord to prevent
+				// glob expansion while preserving the literal value
+				if (escaped === '*' || escaped === '?' || escaped === '[') {
+					flushLiteral();
+					parts.push({
+						type: 'QuotedWord',
+						parts: [{ type: 'LiteralWord', value: escaped, pos }],
+						quoteType: 'single',
+						pos,
+					});
+				} else {
+					literal += escaped;
+				}
+				i += 2;
+				continue;
+			}
+
 			// Tilde at start
 			if (ch === '~' && i === 0 && parts.length === 0 && literal.length === 0) {
 				flushLiteral();

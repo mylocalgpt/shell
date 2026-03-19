@@ -143,7 +143,7 @@ olleh
 $ echo "hello world" | awk '{print $2}'
 world
 
-## awk-sum-field (xfail: awk += operator not handled)
+## awk-sum-field
 $ printf "a 1\nb 2\nc 3\n" | awk '{sum += $2} END {print sum}'
 6
 
@@ -151,7 +151,7 @@ $ printf "a 1\nb 2\nc 3\n" | awk '{sum += $2} END {print sum}'
 $ echo "hello world" | sed 's/\(hello\)/[\1]/'
 [hello] world
 
-## sort-field (xfail: sort -k field sorting not implemented)
+## sort-field
 $ printf "apple 3\nbanana 1\ncherry 2\n" | sort -k2 -n
 banana 1
 cherry 2
@@ -161,7 +161,7 @@ apple 3
 $ printf '%d + %d = %d\n' 3 4 7
 3 + 4 = 7
 
-## uniq-count-format (xfail: uniq -c uses wider padding than bash)
+## uniq-count-format
 $ printf "a\na\nb\n" | uniq -c
       2 a
       1 b
@@ -170,7 +170,7 @@ $ printf "a\na\nb\n" | uniq -c
 $ echo "heeelllo" | tr -s 'el'
 helo
 
-## expr-backslash-multiply (xfail: backslash not stripped before passing to expr)
+## expr-backslash-multiply
 $ expr 4 \* 5
 20
 

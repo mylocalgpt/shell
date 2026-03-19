@@ -3,16 +3,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"description": "Virtual bash interpreter for AI agents. Pure TypeScript, zero dependencies.",
-	"keywords": [
-		"bash",
-		"shell",
-		"interpreter",
-		"virtual",
-		"sandbox",
-		"agent",
-		"ai",
-		"jq"
-	],
+	"keywords": ["bash", "shell", "interpreter", "virtual", "sandbox", "agent", "ai", "jq"],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/mylocalgpt/shell"
@@ -30,16 +21,12 @@
 			"require": "./dist/jq/index.cjs"
 		}
 	},
-	"files": [
-		"dist",
-		"README.md",
-		"LICENSE",
-		"AGENTS.md"
-	],
+	"files": ["dist", "README.md", "LICENSE", "AGENTS.md"],
 	"packageManager": "pnpm@10.32.1",
 	"scripts": {
 		"build": "tsdown",
 		"test": "vitest run",
+		"test:all": "vitest run && smokepod verify --target node --target-arg scripts/smokepod-adapter.mjs --mode process --tests tests/comparison/ --fixtures tests/fixtures/ && biome check . && tsc --noEmit",
 		"test:comparison": "smokepod verify --target node --target-arg scripts/smokepod-adapter.mjs --mode process --tests tests/comparison/ --fixtures tests/fixtures/",
 		"test:record-fixtures": "smokepod record --target /bin/bash --tests tests/comparison/ --fixtures tests/fixtures/",
 		"lint": "biome check .",
@@ -58,10 +45,6 @@
 	},
 	"license": "Apache-2.0",
 	"pnpm": {
-		"onlyBuiltDependencies": [
-			"@biomejs/biome",
-			"esbuild",
-			"smokepod"
-		]
+		"onlyBuiltDependencies": ["@biomejs/biome", "esbuild", "smokepod"]
 	}
 }

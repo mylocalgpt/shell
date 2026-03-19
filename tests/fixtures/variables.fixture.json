@@ -1,234 +1,234 @@
 {
-  "source": "tests/comparison/variables.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T01:23:36.146062+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "append": [
-      {
-        "line": 19,
-        "command": "x=1; x+=2; echo $x",
-        "stdout": "12\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "assignment-and-echo": [
-      {
-        "line": 2,
-        "command": "x=hello; echo $x",
-        "stdout": "hello\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 5,
-        "command": "x=\"hello world\"; echo \"$x\"",
-        "stdout": "hello world\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 8,
-        "command": "x=hello; y=world; echo \"$x $y\"",
-        "stdout": "hello world\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "declare-export": [
-      {
-        "line": 96,
-        "command": "declare -x MYVAR=hello; echo $MYVAR",
-        "stdout": "hello\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "export-and-env": [
-      {
-        "line": 12,
-        "command": "export FOO=bar; echo $FOO",
-        "stdout": "bar\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 15,
-        "command": "FOO=override echo ok",
-        "stdout": "ok\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "parameter-expansion-alternate": [
-      {
-        "line": 58,
-        "command": "x=set; echo ${x:+alternate}",
-        "stdout": "alternate\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 61,
-        "command": "echo ${UNSET_VAR:+alternate}",
-        "stdout": "\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "parameter-expansion-assign": [
-      {
-        "line": 53,
-        "command": "echo ${newvar:=fallback}; echo $newvar",
-        "stdout": "fallback\nfallback\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "parameter-expansion-default": [
-      {
-        "line": 37,
-        "command": "echo ${UNSET_VAR:-default}",
-        "stdout": "default\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 40,
-        "command": "x=\"\"; echo ${x:-default}",
-        "stdout": "default\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 43,
-        "command": "x=value; echo ${x:-default}",
-        "stdout": "value\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 46,
-        "command": "echo ${UNSET_VAR-default}",
-        "stdout": "default\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 49,
-        "command": "x=\"\"; echo ${x-default}",
-        "stdout": "\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "parameter-expansion-length": [
-      {
-        "line": 65,
-        "command": "x=hello; echo ${#x}",
-        "stdout": "5\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 68,
-        "command": "x=\"\"; echo ${#x}",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "parameter-expansion-replace": [
-      {
-        "line": 89,
-        "command": "x=\"hello world hello\"; echo ${x/hello/goodbye}",
-        "stdout": "goodbye world hello\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 92,
-        "command": "x=\"hello world hello\"; echo ${x//hello/goodbye}",
-        "stdout": "goodbye world goodbye\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "parameter-expansion-strip": [
-      {
-        "line": 82,
-        "command": "x=hello.tar.gz; echo ${x%.gz}",
-        "stdout": "hello.tar\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 85,
-        "command": "x=/usr/local/bin; echo ${x#*/}",
-        "stdout": "usr/local/bin\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "parameter-expansion-substring": [
-      {
-        "line": 72,
-        "command": "x=hello; echo ${x:1}",
-        "stdout": "ello\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 75,
-        "command": "x=hello; echo ${x:1:3}",
-        "stdout": "ell\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 78,
-        "command": "x=abcdef; echo ${x:0:3}",
-        "stdout": "abc\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "special-variables": [
-      {
-        "line": 27,
-        "command": "echo $?",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 30,
-        "command": "false; echo $?",
-        "stdout": "1\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 33,
-        "command": "true; echo $?",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "unset": [
-      {
-        "line": 23,
-        "command": "x=hello; unset x; echo \"\u003e${x}\u003c\"",
-        "stdout": "\u003e\u003c\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/variables.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T01:23:36.146062+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"append": [
+			{
+				"line": 19,
+				"command": "x=1; x+=2; echo $x",
+				"stdout": "12\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"assignment-and-echo": [
+			{
+				"line": 2,
+				"command": "x=hello; echo $x",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "x=\"hello world\"; echo \"$x\"",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 8,
+				"command": "x=hello; y=world; echo \"$x $y\"",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"declare-export": [
+			{
+				"line": 96,
+				"command": "declare -x MYVAR=hello; echo $MYVAR",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"export-and-env": [
+			{
+				"line": 12,
+				"command": "export FOO=bar; echo $FOO",
+				"stdout": "bar\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 15,
+				"command": "FOO=override echo ok",
+				"stdout": "ok\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-alternate": [
+			{
+				"line": 58,
+				"command": "x=set; echo ${x:+alternate}",
+				"stdout": "alternate\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 61,
+				"command": "echo ${UNSET_VAR:+alternate}",
+				"stdout": "\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-assign": [
+			{
+				"line": 53,
+				"command": "echo ${newvar:=fallback}; echo $newvar",
+				"stdout": "fallback\nfallback\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-default": [
+			{
+				"line": 37,
+				"command": "echo ${UNSET_VAR:-default}",
+				"stdout": "default\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 40,
+				"command": "x=\"\"; echo ${x:-default}",
+				"stdout": "default\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 43,
+				"command": "x=value; echo ${x:-default}",
+				"stdout": "value\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 46,
+				"command": "echo ${UNSET_VAR-default}",
+				"stdout": "default\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 49,
+				"command": "x=\"\"; echo ${x-default}",
+				"stdout": "\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-length": [
+			{
+				"line": 65,
+				"command": "x=hello; echo ${#x}",
+				"stdout": "5\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 68,
+				"command": "x=\"\"; echo ${#x}",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-replace": [
+			{
+				"line": 89,
+				"command": "x=\"hello world hello\"; echo ${x/hello/goodbye}",
+				"stdout": "goodbye world hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 92,
+				"command": "x=\"hello world hello\"; echo ${x//hello/goodbye}",
+				"stdout": "goodbye world goodbye\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-strip": [
+			{
+				"line": 82,
+				"command": "x=hello.tar.gz; echo ${x%.gz}",
+				"stdout": "hello.tar\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 85,
+				"command": "x=/usr/local/bin; echo ${x#*/}",
+				"stdout": "usr/local/bin\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-substring": [
+			{
+				"line": 72,
+				"command": "x=hello; echo ${x:1}",
+				"stdout": "ello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 75,
+				"command": "x=hello; echo ${x:1:3}",
+				"stdout": "ell\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 78,
+				"command": "x=abcdef; echo ${x:0:3}",
+				"stdout": "abc\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"special-variables": [
+			{
+				"line": 27,
+				"command": "echo $?",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 30,
+				"command": "false; echo $?",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 33,
+				"command": "true; echo $?",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"unset": [
+			{
+				"line": 23,
+				"command": "x=hello; unset x; echo \"\u003e${x}\u003c\"",
+				"stdout": "\u003e\u003c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

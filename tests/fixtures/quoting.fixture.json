@@ -1,230 +1,230 @@
 {
-  "source": "tests/comparison/quoting.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T01:23:35.916556+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "ansi-c-quoting-newline": [
-      {
-        "line": 80,
-        "command": "echo $'hello\\nworld'",
-        "stdout": "hello\nworld\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "ansi-c-quoting-tab": [
-      {
-        "line": 85,
-        "command": "echo $'col1\\tcol2'",
-        "stdout": "col1\tcol2\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "double-quotes": [
-      {
-        "line": 25,
-        "command": "x=world; echo \"hello $x\"",
-        "stdout": "hello world\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 28,
-        "command": "echo \"two\\nwords\"",
-        "stdout": "two\\nwords\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 31,
-        "command": "echo \"$(echo embedded)\"",
-        "stdout": "embedded\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "empty-strings": [
-      {
-        "line": 45,
-        "command": "echo \"\"",
-        "stdout": "\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 47,
-        "command": "echo ''",
-        "stdout": "\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "escape-sequences": [
-      {
-        "line": 89,
-        "command": "echo \"hello\\\"world\"",
-        "stdout": "hello\"world\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 92,
-        "command": "echo \"back\\\\slash\"",
-        "stdout": "back\\slash\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 95,
-        "command": "echo \"dollar\\$sign\"",
-        "stdout": "dollar$sign\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "mixed-quoting": [
-      {
-        "line": 35,
-        "command": "echo \"it's a test\"",
-        "stdout": "it's a test\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 38,
-        "command": "echo 'say \"hello\"'",
-        "stdout": "say \"hello\"\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 41,
-        "command": "echo \"mix 'single' and \\\"double\\\"\"",
-        "stdout": "mix 'single' and \"double\"\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "multiline-string-in-var": [
-      {
-        "line": 75,
-        "command": "x=$(printf \"hello\\nworld\"); echo \"$x\"",
-        "stdout": "hello\nworld\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "single-quote-special-chars": [
-      {
-        "line": 12,
-        "command": "echo 'pipe | here'",
-        "stdout": "pipe | here\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 15,
-        "command": "echo 'backslash \\ here'",
-        "stdout": "backslash \\ here\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 18,
-        "command": "echo '{braces} and (parens)'",
-        "stdout": "{braces} and (parens)\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 21,
-        "command": "echo 'a // b + c'",
-        "stdout": "a // b + c\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "single-quotes": [
-      {
-        "line": 2,
-        "command": "echo 'hello world'",
-        "stdout": "hello world\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 5,
-        "command": "echo '$not_a_variable'",
-        "stdout": "$not_a_variable\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 8,
-        "command": "echo 'no $(command) expansion'",
-        "stdout": "no $(command) expansion\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "whitespace-preservation": [
-      {
-        "line": 59,
-        "command": "echo \"  spaces  \"",
-        "stdout": "  spaces  \n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 62,
-        "command": "x=\"  hello  \"; echo \"$x\"",
-        "stdout": "  hello  \n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 65,
-        "command": "x=\"a  b  c\"; echo \"$x\"",
-        "stdout": "a  b  c\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 68,
-        "command": "x=$(echo \"  spaces  \"); echo \"\u003e$x\u003c\"",
-        "stdout": "\u003e  spaces  \u003c\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 71,
-        "command": "x=hello; x+=\" world\"; echo \"$x\"",
-        "stdout": "hello world\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "word-splitting": [
-      {
-        "line": 50,
-        "command": "x=\"a b c\"; for word in $x; do echo $word; done",
-        "stdout": "a\nb\nc\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 55,
-        "command": "x=\"a b c\"; echo \"$x\"",
-        "stdout": "a b c\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/quoting.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T01:23:35.916556+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"ansi-c-quoting-newline": [
+			{
+				"line": 80,
+				"command": "echo $'hello\\nworld'",
+				"stdout": "hello\nworld\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"ansi-c-quoting-tab": [
+			{
+				"line": 85,
+				"command": "echo $'col1\\tcol2'",
+				"stdout": "col1\tcol2\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"double-quotes": [
+			{
+				"line": 25,
+				"command": "x=world; echo \"hello $x\"",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 28,
+				"command": "echo \"two\\nwords\"",
+				"stdout": "two\\nwords\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 31,
+				"command": "echo \"$(echo embedded)\"",
+				"stdout": "embedded\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"empty-strings": [
+			{
+				"line": 45,
+				"command": "echo \"\"",
+				"stdout": "\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 47,
+				"command": "echo ''",
+				"stdout": "\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"escape-sequences": [
+			{
+				"line": 89,
+				"command": "echo \"hello\\\"world\"",
+				"stdout": "hello\"world\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 92,
+				"command": "echo \"back\\\\slash\"",
+				"stdout": "back\\slash\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 95,
+				"command": "echo \"dollar\\$sign\"",
+				"stdout": "dollar$sign\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"mixed-quoting": [
+			{
+				"line": 35,
+				"command": "echo \"it's a test\"",
+				"stdout": "it's a test\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 38,
+				"command": "echo 'say \"hello\"'",
+				"stdout": "say \"hello\"\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 41,
+				"command": "echo \"mix 'single' and \\\"double\\\"\"",
+				"stdout": "mix 'single' and \"double\"\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"multiline-string-in-var": [
+			{
+				"line": 75,
+				"command": "x=$(printf \"hello\\nworld\"); echo \"$x\"",
+				"stdout": "hello\nworld\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"single-quote-special-chars": [
+			{
+				"line": 12,
+				"command": "echo 'pipe | here'",
+				"stdout": "pipe | here\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 15,
+				"command": "echo 'backslash \\ here'",
+				"stdout": "backslash \\ here\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 18,
+				"command": "echo '{braces} and (parens)'",
+				"stdout": "{braces} and (parens)\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 21,
+				"command": "echo 'a // b + c'",
+				"stdout": "a // b + c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"single-quotes": [
+			{
+				"line": 2,
+				"command": "echo 'hello world'",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "echo '$not_a_variable'",
+				"stdout": "$not_a_variable\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 8,
+				"command": "echo 'no $(command) expansion'",
+				"stdout": "no $(command) expansion\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"whitespace-preservation": [
+			{
+				"line": 59,
+				"command": "echo \"  spaces  \"",
+				"stdout": "  spaces  \n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 62,
+				"command": "x=\"  hello  \"; echo \"$x\"",
+				"stdout": "  hello  \n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 65,
+				"command": "x=\"a  b  c\"; echo \"$x\"",
+				"stdout": "a  b  c\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 68,
+				"command": "x=$(echo \"  spaces  \"); echo \"\u003e$x\u003c\"",
+				"stdout": "\u003e  spaces  \u003c\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 71,
+				"command": "x=hello; x+=\" world\"; echo \"$x\"",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"word-splitting": [
+			{
+				"line": 50,
+				"command": "x=\"a b c\"; for word in $x; do echo $word; done",
+				"stdout": "a\nb\nc\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 55,
+				"command": "x=\"a b c\"; echo \"$x\"",
+				"stdout": "a b c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }

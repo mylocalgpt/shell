@@ -148,6 +148,7 @@ interface AwkState {
 	fields: string[];
 	line: string;
 	output: string;
+	vars: Map<string, string>;
 }
 
 function splitFields(line: string, fs: string): string[] {
@@ -246,24 +247,40 @@ function executeStatement(stmt: string, state: AwkState): void {
 		return;
 	}
 
-	// Variable assignment
-	const assignMatch = trimmed.match(/^(OFS|ORS|FS|RS)\s*=\s*(.+)$/);
-	if (assignMatch) {
-		const val = evaluateExpr(assignMatch[2], state);
-		switch (assignMatch[1]) {
-			case 'OFS':
-				state.ofs = val;
+	// Compound assignment operators (+=, -=, *=, /=)
+	const compoundMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*(\+=|-=|\*=|\/=)\s*(.+)$/);
+	if (compoundMatch) {
+		const varName = compoundMatch[1];
+		const op = compoundMatch[2];
+		const rhs = Number.parseFloat(evaluateExpr(compoundMatch[3], state)) || 0;
+		const current = Number.parseFloat(resolveAwkVar(varName, state)) || 0;
+		let result: number;
+		switch (op) {
+			case '+=':
+				result = current + rhs;
 				break;
-			case 'ORS':
-				state.ors = val;
+			case '-=':
+				result = current - rhs;
 				break;
-			case 'FS':
-				state.fs = val;
+			case '*=':
+				result = current * rhs;
 				break;
-			case 'RS':
-				state.rs = val;
+			case '/=':
+				result = rhs === 0 ? 0 : current / rhs;
 				break;
+			default:
+				result = current;
 		}
+		setAwkVar(varName, String(result), state);
+		return;
+	}
+
+	// Variable assignment (= but not ==)
+	const assignMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*=(?!=)\s*(.+)$/);
+	if (assignMatch) {
+		const varName = assignMatch[1];
+		const val = evaluateExpr(assignMatch[2], state);
+		setAwkVar(varName, val, state);
 		return;
 	}
 
@@ -386,6 +403,46 @@ function splitPrintArgs(expr: string): string[] {
 	return parts;
 }
 
+function resolveAwkVar(name: string, state: AwkState): string {
+	switch (name) {
+		case 'NR':
+			return String(state.nr);
+		case 'NF':
+			return String(state.nf);
+		case 'FS':
+			return state.fs;
+		case 'OFS':
+			return state.ofs;
+		case 'RS':
+			return state.rs;
+		case 'ORS':
+			return state.ors;
+		case 'FILENAME':
+			return state.filename;
+		default:
+			return state.vars.get(name) ?? '0';
+	}
+}
+
+function setAwkVar(name: string, value: string, state: AwkState): void {
+	switch (name) {
+		case 'OFS':
+			state.ofs = value;
+			break;
+		case 'ORS':
+			state.ors = value;
+			break;
+		case 'FS':
+			state.fs = value;
+			break;
+		case 'RS':
+			state.rs = value;
+			break;
+		default:
+			state.vars.set(name, value);
+	}
+}
+
 function evaluateExpr(expr: string, state: AwkState): string {
 	const trimmed = expr.trim();
 
@@ -397,6 +454,41 @@ function evaluateExpr(expr: string, state: AwkState): string {
 	// Parenthesized expression (check early)
 	if (trimmed.startsWith('(') && findMatchingParen(trimmed, 0) === trimmed.length - 1) {
 		return evaluateExpr(trimmed.slice(1, -1), state);
+	}
+
+	// Compound assignment operators (+=, -=, *=, /=) and simple assignment in expressions
+	// Use (?!=) negative lookahead to avoid matching == as assignment
+	const exprAssignMatch = trimmed.match(/^([a-zA-Z_]\w*)\s*(\+=|-=|\*=|\/=|=(?!=))\s*(.+)$/);
+	if (exprAssignMatch) {
+		const varName = exprAssignMatch[1];
+		const op = exprAssignMatch[2];
+		const rhsVal = evaluateExpr(exprAssignMatch[3], state);
+		if (op === '=') {
+			setAwkVar(varName, rhsVal, state);
+			return rhsVal;
+		}
+		const rhs = Number.parseFloat(rhsVal) || 0;
+		const current = Number.parseFloat(resolveAwkVar(varName, state)) || 0;
+		let result: number;
+		switch (op) {
+			case '+=':
+				result = current + rhs;
+				break;
+			case '-=':
+				result = current - rhs;
+				break;
+			case '*=':
+				result = current * rhs;
+				break;
+			case '/=':
+				result = rhs === 0 ? 0 : current / rhs;
+				break;
+			default:
+				result = current;
+		}
+		const resultStr = String(result);
+		setAwkVar(varName, resultStr, state);
+		return resultStr;
 	}
 
 	// Check for comparison operators FIRST (before atomics)
@@ -585,6 +677,11 @@ function evaluateExpr(expr: string, state: AwkState): string {
 			}
 		}
 		return '';
+	}
+
+	// User variable
+	if (/^[a-zA-Z_]\w*$/.test(trimmed)) {
+		return state.vars.get(trimmed) ?? '0';
 	}
 
 	// Unknown - return as-is (could be an unquoted string)
@@ -899,6 +996,7 @@ export const awk: Command = {
 			fields: [],
 			line: '',
 			output: '',
+			vars: new Map(),
 		};
 
 		// Execute BEGIN rules

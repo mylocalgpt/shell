@@ -553,7 +553,13 @@ export class Lexer {
 			if (ch === '\\') {
 				this.advance(); // backslash
 				if (this.pos < this.input.length && this.peek() !== '\n') {
-					value += this.advance();
+					const escaped = this.advance();
+					// Preserve backslash for glob-significant characters so the
+					// parser treats them as literal, not as glob patterns
+					if (escaped === '*' || escaped === '?' || escaped === '[') {
+						value += '\\';
+					}
+					value += escaped;
 					wordLen++;
 				}
 				// Line continuation: backslash-newline is removed

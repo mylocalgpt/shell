@@ -30,8 +30,8 @@ function parseHumanNumeric(s: string): number {
 	return Number.isNaN(num) ? 0 : num;
 }
 
-function getField(line: string, fieldNum: number, delimiter: string): string {
-	const fields = line.split(delimiter);
+function getField(line: string, fieldNum: number, delimiter: string | null): string {
+	const fields = delimiter !== null ? line.split(delimiter) : line.trim().split(/\s+/);
 	if (fieldNum <= 0 || fieldNum > fields.length) return '';
 	return fields[fieldNum - 1];
 }
@@ -133,7 +133,7 @@ export const sort: Command = {
 			lines.pop();
 		}
 
-		const sep = delimiter || '\t';
+		const sep = delimiter || null;
 
 		// Build comparison function
 		const compare = (a: string, b: string): number => {

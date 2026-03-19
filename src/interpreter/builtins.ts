@@ -4,6 +4,7 @@ import { parse } from '../parser/parser.js';
 import { checkRegexSafety, checkSubjectLength } from '../security/regex.js';
 import { globMatch } from '../utils/glob.js';
 import { BreakSignal, ContinueSignal, ExitSignal, ReturnSignal } from './errors.js';
+import { type ShellState, evaluateArithmetic } from './expansion.js';
 import type { Interpreter, InterpreterContext } from './interpreter.js';
 
 /** All builtin names. */
@@ -560,6 +561,8 @@ function applyFlag(
 // ── declare / typeset ──
 
 function builtinDeclare(args: string[], ctx: InterpreterContext): CommandResult {
+	let isInteger = false;
+
 	for (let i = 0; i < args.length; i++) {
 		const arg = args[i];
 		if (arg === '-A') {
@@ -570,22 +573,38 @@ function builtinDeclare(args: string[], ctx: InterpreterContext): CommandResult 
 		if (arg === '-n') {
 			return err('declare: -n (namerefs) not supported; use eval or indirect expansion instead\n');
 		}
-		if (arg === '-a' || arg === '-i' || arg === '-r' || arg === '-x') {
-			continue; // Accept flags silently for now
+		if (arg === '-i') {
+			isInteger = true;
+			continue;
+		}
+		if (arg === '-a' || arg === '-r' || arg === '-x') {
+			continue;
 		}
 		if (arg === '-p') {
-			// Print declarations (simplified)
 			continue;
 		}
 		if (arg === '-f' || arg === '-F') {
-			// List functions (simplified)
 			continue;
 		}
 
 		const eqIdx = arg.indexOf('=');
 		if (eqIdx >= 0) {
 			const name = arg.slice(0, eqIdx);
-			const value = arg.slice(eqIdx + 1);
+			let value = arg.slice(eqIdx + 1);
+			if (isInteger) {
+				const arithState: ShellState = {
+					env: ctx.env,
+					positionalParams: ctx.interpreter.getPositionalParams(),
+					arrays: new Map(),
+					lastExitCode: 0,
+					pid: 1,
+					bgPid: 0,
+					cwd: ctx.cwd,
+					options: { nounset: false, noglob: false },
+					fs: ctx.fs,
+				};
+				value = String(evaluateArithmetic(value, arithState));
+			}
 			ctx.interpreter.setVar(name, value);
 		} else if (!arg.startsWith('-')) {
 			ctx.interpreter.setVar(arg, '');

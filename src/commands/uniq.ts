@@ -98,7 +98,7 @@ export const uniq: Command = {
 			if (showCount) {
 				const countStr = String(g.count);
 				let pad = '';
-				for (let p = countStr.length; p < 7; p++) pad += ' ';
+				for (let p = countStr.length; p < 4; p++) pad += ' ';
 				stdout += `${pad}${countStr} ${g.line}\n`;
 			} else {
 				stdout += `${g.line}\n`;

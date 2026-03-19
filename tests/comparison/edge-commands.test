@@ -34,7 +34,7 @@ $ printf '%o\n' 8
 $ set -f; echo *; set +f
 *
 
-## set-noclobber (xfail: set -C does not prevent overwriting)
+## set-noclobber (xfail: noclobber works but stderr prefix differs from bash)
 $ echo first > /tmp/noclobber_test; set -C; echo second > /tmp/noclobber_test 2>/dev/null; echo $?; cat /tmp/noclobber_test; set +C; rm -f /tmp/noclobber_test
 1
 first

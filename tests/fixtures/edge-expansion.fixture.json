@@ -1,181 +1,181 @@
 {
-  "source": "tests/comparison/edge-expansion.test",
-  "recorded_with": "/bin/bash",
-  "recorded_at": "2026-03-19T01:23:35.530216+03:00",
-  "platform": {
-    "os": "darwin",
-    "arch": "arm64",
-    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-  },
-  "sections": {
-    "arithmetic-command": [
-      {
-        "line": 29,
-        "command": "x=0; ((x = 5)); echo $x",
-        "stdout": "5\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 32,
-        "command": "x=5; ((x++)); echo $x",
-        "stdout": "6\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 35,
-        "command": "if ((1)); then echo yes; fi",
-        "stdout": "yes\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 38,
-        "command": "if ((0)); then echo yes; else echo no; fi",
-        "stdout": "no\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "arithmetic-in-strings": [
-      {
-        "line": 22,
-        "command": "echo \"result: $((2+2))\"",
-        "stdout": "result: 4\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 25,
-        "command": "x=10; echo \"double: $((x*2))\"",
-        "stdout": "double: 20\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "brace-expansion-combos": [
-      {
-        "line": 2,
-        "command": "echo {a,b}{1,2}",
-        "stdout": "a1 a2 b1 b2\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 5,
-        "command": "echo {a..c}{1..3}",
-        "stdout": "a1 a2 a3 b1 b2 b3 c1 c2 c3\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 8,
-        "command": "echo pre{A,B}post",
-        "stdout": "preApost preBpost\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 11,
-        "command": "echo {1..5}",
-        "stdout": "1 2 3 4 5\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 14,
-        "command": "echo {z..a}",
-        "stdout": "z y x w v u t s r q p o n m l k j i h g f e d c b a\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "glob-no-match": [
-      {
-        "line": 18,
-        "command": "echo /nonexistent_path_xyz_*",
-        "stdout": "/nonexistent_path_xyz_*\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "here-string": [
-      {
-        "line": 60,
-        "command": "cat \u003c\u003c\u003c \"hello\"",
-        "stdout": "hello\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "nested-default-expansion": [
-      {
-        "line": 42,
-        "command": "unset a b c; echo \"${a:-${b:-${c:-final}}}\"",
-        "stdout": "final\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "null-command": [
-      {
-        "line": 46,
-        "command": ": ; echo $?",
-        "stdout": "0\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "recursive-function": [
-      {
-        "line": 64,
-        "command": "countdown() { if [ $1 -le 0 ]; then echo done; return; fi; echo $1; countdown $(($1 - 1)); }; countdown 3",
-        "stdout": "3\n2\n1\ndone\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "sed-global-flag": [
-      {
-        "line": 75,
-        "command": "echo \"foo:bar:baz\" | sed 's/:/ /g'",
-        "stdout": "foo bar baz\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "sed-transliterate": [
-      {
-        "line": 71,
-        "command": "echo abc | sed 'y/abc/xyz/'",
-        "stdout": "xyz\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ],
-    "set-positional": [
-      {
-        "line": 50,
-        "command": "set -- a b c; echo \"$@\"",
-        "stdout": "a b c\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 53,
-        "command": "set -- a b c; echo $#",
-        "stdout": "3\n",
-        "stderr": "",
-        "exit_code": 0
-      },
-      {
-        "line": 56,
-        "command": "set -- a b c; echo $2",
-        "stdout": "b\n",
-        "stderr": "",
-        "exit_code": 0
-      }
-    ]
-  }
+	"source": "tests/comparison/edge-expansion.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T01:23:35.530216+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"arithmetic-command": [
+			{
+				"line": 29,
+				"command": "x=0; ((x = 5)); echo $x",
+				"stdout": "5\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 32,
+				"command": "x=5; ((x++)); echo $x",
+				"stdout": "6\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 35,
+				"command": "if ((1)); then echo yes; fi",
+				"stdout": "yes\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 38,
+				"command": "if ((0)); then echo yes; else echo no; fi",
+				"stdout": "no\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"arithmetic-in-strings": [
+			{
+				"line": 22,
+				"command": "echo \"result: $((2+2))\"",
+				"stdout": "result: 4\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 25,
+				"command": "x=10; echo \"double: $((x*2))\"",
+				"stdout": "double: 20\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"brace-expansion-combos": [
+			{
+				"line": 2,
+				"command": "echo {a,b}{1,2}",
+				"stdout": "a1 a2 b1 b2\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "echo {a..c}{1..3}",
+				"stdout": "a1 a2 a3 b1 b2 b3 c1 c2 c3\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 8,
+				"command": "echo pre{A,B}post",
+				"stdout": "preApost preBpost\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 11,
+				"command": "echo {1..5}",
+				"stdout": "1 2 3 4 5\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 14,
+				"command": "echo {z..a}",
+				"stdout": "z y x w v u t s r q p o n m l k j i h g f e d c b a\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"glob-no-match": [
+			{
+				"line": 18,
+				"command": "echo /nonexistent_path_xyz_*",
+				"stdout": "/nonexistent_path_xyz_*\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"here-string": [
+			{
+				"line": 60,
+				"command": "cat \u003c\u003c\u003c \"hello\"",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"nested-default-expansion": [
+			{
+				"line": 42,
+				"command": "unset a b c; echo \"${a:-${b:-${c:-final}}}\"",
+				"stdout": "final\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"null-command": [
+			{
+				"line": 46,
+				"command": ": ; echo $?",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"recursive-function": [
+			{
+				"line": 64,
+				"command": "countdown() { if [ $1 -le 0 ]; then echo done; return; fi; echo $1; countdown $(($1 - 1)); }; countdown 3",
+				"stdout": "3\n2\n1\ndone\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"sed-global-flag": [
+			{
+				"line": 75,
+				"command": "echo \"foo:bar:baz\" | sed 's/:/ /g'",
+				"stdout": "foo bar baz\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"sed-transliterate": [
+			{
+				"line": 71,
+				"command": "echo abc | sed 'y/abc/xyz/'",
+				"stdout": "xyz\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"set-positional": [
+			{
+				"line": 50,
+				"command": "set -- a b c; echo \"$@\"",
+				"stdout": "a b c\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 53,
+				"command": "set -- a b c; echo $#",
+				"stdout": "3\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 56,
+				"command": "set -- a b c; echo $2",
+				"stdout": "b\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
 }
