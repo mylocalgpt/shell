@@ -124,8 +124,15 @@ export type CommandHandler = (
  */
 export interface ShellOptions {
   /**
+   * Custom filesystem implementation to use instead of the default InMemoryFs.
+   * When provided, the `files` option is ignored.
+   * Enables injecting any FileSystem implementation (e.g. OverlayFs).
+   */
+  fs?: FileSystem;
+  /**
    * Initial files to populate in the filesystem.
    * Values can be strings (immediate content) or functions (lazy-loaded on first read).
+   * Ignored when `fs` is provided.
    */
   files?: Record<string, string | (() => string | Promise<string>)>;
   /** Initial environment variables. Merged with defaults (HOME, USER, PATH, etc.). */
@@ -248,26 +255,30 @@ export class Shell {
   private interpreter: Interpreter | null = null;
 
   constructor(options?: ShellOptions) {
-    // Initialize filesystem
-    const fsInstance = new InMemoryFs();
-    this._fs = fsInstance;
-    this.initialCwd = '/';
-    this._limits = options?.limits ?? {};
-    this._onOutput = options?.onOutput;
+    // Initialize filesystem: use provided fs or create InMemoryFs
+    if (options?.fs) {
+      this._fs = options.fs;
+    } else {
+      const fsInstance = new InMemoryFs();
+      this._fs = fsInstance;
 
-    // Populate files (supports both string and lazy content)
-    if (options?.files) {
-      const paths = Object.keys(options.files);
-      for (let i = 0; i < paths.length; i++) {
-        const filePath = paths[i];
-        const content = options.files[filePath];
-        if (typeof content === 'function') {
-          fsInstance.addLazyFile(filePath, content as () => string | Promise<string>);
-        } else {
-          fsInstance.writeFile(filePath, content);
+      // Populate files (supports both string and lazy content)
+      if (options?.files) {
+        const paths = Object.keys(options.files);
+        for (let i = 0; i < paths.length; i++) {
+          const filePath = paths[i];
+          const content = options.files[filePath];
+          if (typeof content === 'function') {
+            fsInstance.addLazyFile(filePath, content as () => string | Promise<string>);
+          } else {
+            fsInstance.writeFile(filePath, content);
+          }
         }
       }
     }
+    this.initialCwd = '/';
+    this._limits = options?.limits ?? {};
+    this._onOutput = options?.onOutput;
 
     // Set up command registry
     this.registry = new CommandRegistry();

@@ -33,4 +33,5 @@ Design docs for AI agents in `docs/`. Read on-demand, not required.
 - [`docs/design/security.md`](docs/design/security.md) - Execution limits, regex guardrails, threat model
 - [`docs/design/jq.md`](docs/design/jq.md) - Generator evaluator, builtins, format strings
 - [`docs/3rd-party/testing-with-smokepod.md`](docs/3rd-party/testing-with-smokepod.md) - Comparison test workflow
+- [`THREAT_MODEL.md`](THREAT_MODEL.md) - Security model, protections, threat analysis, non-goals
 

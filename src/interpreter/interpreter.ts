@@ -144,6 +144,9 @@ export class Interpreter {
     this.readonlyVars = new Set();
     this.pendingStdin = '';
     this.builtins = new Map();
+
+    // Expose output limit so commands can read it via env
+    this.env.set('SHELL_MAX_OUTPUT', String(this.limits.maxOutputSize));
   }
 
   /** Get the current shell state for the expansion engine. */

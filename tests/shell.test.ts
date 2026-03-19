@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Shell } from '../src/index.js';
+import { InMemoryFs, Shell } from '../src/index.js';
 
 describe('Shell.exec()', () => {
   describe('acceptance criteria', () => {
@@ -190,6 +190,25 @@ describe('Shell.exec()', () => {
       expect(result.stdout).toBe('agent\n');
     });
 
+    it('accepts custom fs implementation', async () => {
+      const customFs = new InMemoryFs();
+      customFs.writeFile('/custom/file.txt', 'from custom fs');
+      const shell = new Shell({ fs: customFs });
+      const result = await shell.exec('cat /custom/file.txt');
+      expect(result.stdout).toBe('from custom fs');
+      expect(shell.fs).toBe(customFs);
+    });
+
+    it('ignores files option when fs is provided', async () => {
+      const customFs = new InMemoryFs();
+      const shell = new Shell({
+        fs: customFs,
+        files: { '/should-not-exist.txt': 'ignored' },
+      });
+      const result = await shell.exec('cat /should-not-exist.txt');
+      expect(result.exitCode).not.toBe(0);
+    });
+
     it('enabledCommands filters available commands', async () => {
       const shell = new Shell({ enabledCommands: ['echo'] });
       const echoResult = await shell.exec('echo hello');
@@ -204,6 +223,18 @@ describe('Shell.exec()', () => {
       const shell = new Shell();
       const result = await shell.exec('echo $HOME');
       expect(result.stdout).toBe('/root\n');
+    });
+
+    it('SHELL_MAX_OUTPUT env var reflects output limit', async () => {
+      const shell = new Shell();
+      const result = await shell.exec('echo $SHELL_MAX_OUTPUT');
+      expect(result.stdout.trim()).toBe('10000000');
+    });
+
+    it('SHELL_MAX_OUTPUT reflects custom limit', async () => {
+      const shell = new Shell({ limits: { maxOutputSize: 5000 } });
+      const result = await shell.exec('echo $SHELL_MAX_OUTPUT');
+      expect(result.stdout.trim()).toBe('5000');
     });
   });
 
