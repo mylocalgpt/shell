@@ -197,11 +197,49 @@ export const curl: Command = {
             currentBody = undefined;
           }
 
-          finalUrl = location;
+          // Resolve relative Location against current URL
+          try {
+            finalUrl = new URL(location, finalUrl).href;
+          } catch {
+            finalUrl = location;
+          }
           redirectCount++;
+
+          // Re-check allowlist for redirect target
+          if (ctx.network.allowlist) {
+            const redirectHost = extractHostname(finalUrl);
+            let redirectAllowed = false;
+            for (let i = 0; i < ctx.network.allowlist.length; i++) {
+              if (globMatch(ctx.network.allowlist[i], redirectHost, true)) {
+                redirectAllowed = true;
+                break;
+              }
+            }
+            if (!redirectAllowed) {
+              return {
+                exitCode: 7,
+                stdout: '',
+                stderr: `curl: (7) Failed to connect to ${redirectHost}: host not in allowlist\n`,
+              };
+            }
+          }
+
+          // Strip sensitive headers on cross-origin redirects
+          let reqHeaders = headers;
+          if (extractHostname(finalUrl) !== extractHostname(url)) {
+            const filtered: Record<string, string> = {};
+            const skip = new Set(['authorization', 'cookie']);
+            for (const key of Object.keys(headers)) {
+              if (!skip.has(key.toLowerCase())) {
+                filtered[key] = headers[key];
+              }
+            }
+            reqHeaders = filtered;
+          }
+
           response = await ctx.network.handler(finalUrl, {
             method: currentMethod,
-            headers,
+            headers: reqHeaders,
             body: currentBody,
           });
         }

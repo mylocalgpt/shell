@@ -62,7 +62,15 @@ export class OverlayFs implements FileSystem {
   private readonly memorySymlinks: Map<string, string> = new Map();
 
   constructor(root: string, options?: OverlayFsOptions) {
-    this.root = nodePath.resolve(root);
+    // Resolve symlinks in root itself so safeHostPath checks work on macOS
+    // where /tmp -> /private/tmp
+    let resolvedRoot = nodePath.resolve(root);
+    try {
+      resolvedRoot = nodeFs.realpathSync(resolvedRoot);
+    } catch {
+      // Root doesn't exist yet; use the unresolved path
+    }
+    this.root = resolvedRoot;
     this.allowPaths = options?.allowPaths;
     this.denyPaths = options?.denyPaths;
     // Root always exists as a directory in the overlay
@@ -90,10 +98,31 @@ export class OverlayFs implements FileSystem {
     return true;
   }
 
+  /**
+   * Resolve a host path via realpathSync and verify it stays under root.
+   * Returns the resolved absolute host path, or throws EACCES if it escapes.
+   */
+  private safeHostPath(virtualPath: string): string {
+    const raw = this.hostPath(virtualPath);
+    let resolved: string;
+    try {
+      resolved = nodeFs.realpathSync(raw);
+    } catch {
+      // Path doesn't exist on host; return raw (caller handles ENOENT)
+      return raw;
+    }
+    const resolvedNorm = nodePath.normalize(resolved);
+    const rootNorm = nodePath.normalize(this.root);
+    if (resolvedNorm !== rootNorm && !resolvedNorm.startsWith(`${rootNorm}/`)) {
+      throw new FsError('EACCES', virtualPath, `path escapes overlay root: ${virtualPath}`);
+    }
+    return resolved;
+  }
+
   /** Check if a path exists on the host filesystem. */
   private hostExists(virtualPath: string): boolean {
     try {
-      nodeFs.statSync(this.hostPath(virtualPath));
+      nodeFs.statSync(this.safeHostPath(virtualPath));
       return true;
     } catch {
       return false;
@@ -134,10 +163,11 @@ export class OverlayFs implements FileSystem {
       throw new FsError('ENOENT', p);
     }
 
-    // Read from host
+    // Read from host (safeHostPath checks symlinks don't escape root)
     try {
-      return nodeFs.readFileSync(this.hostPath(p), 'utf-8');
+      return nodeFs.readFileSync(this.safeHostPath(p), 'utf-8');
     } catch (err) {
+      if (err instanceof FsError) throw err;
       throw translateError(err, p);
     }
   }
@@ -228,7 +258,7 @@ export class OverlayFs implements FileSystem {
 
     // Host filesystem
     try {
-      const hostStat = nodeFs.statSync(this.hostPath(p));
+      const hostStat = nodeFs.statSync(this.safeHostPath(p));
       const mode = this.memoryModes.get(p) ?? hostStat.mode & 0o7777;
       return {
         isFile: () => hostStat.isFile(),
@@ -255,7 +285,7 @@ export class OverlayFs implements FileSystem {
     // Host entries
     if (this.isAllowed(p)) {
       try {
-        const hostEntries = nodeFs.readdirSync(this.hostPath(p));
+        const hostEntries = nodeFs.readdirSync(this.safeHostPath(p));
         for (let i = 0; i < hostEntries.length; i++) {
           const childPath = p === '/' ? `/${hostEntries[i]}` : `${p}/${hostEntries[i]}`;
           if (!this.deletedPaths.has(childPath)) {
@@ -410,13 +440,14 @@ export class OverlayFs implements FileSystem {
     // For host paths, resolve and ensure it stays within root
     try {
       const resolved = nodeFs.realpathSync(this.hostPath(p));
-      // Check that resolved path is within root
       const resolvedNorm = nodePath.normalize(resolved);
       const rootNorm = nodePath.normalize(this.root);
       if (resolvedNorm !== rootNorm && !resolvedNorm.startsWith(`${rootNorm}/`)) {
         throw new FsError('EACCES', p, `realpath: resolved path escapes root: ${p}`);
       }
-      return p;
+      // Return canonical virtual path (resolved host path relative to root)
+      if (resolvedNorm === rootNorm) return '/';
+      return `/${nodePath.relative(rootNorm, resolvedNorm).split(nodePath.sep).join('/')}`;
     } catch (err) {
       if (err instanceof FsError) throw err;
       throw translateError(err, p);
@@ -443,7 +474,7 @@ export class OverlayFs implements FileSystem {
     if (memTarget !== undefined) return memTarget;
 
     try {
-      return nodeFs.readlinkSync(this.hostPath(p), 'utf-8');
+      return nodeFs.readlinkSync(this.safeHostPath(p), 'utf-8');
     } catch (err) {
       throw translateError(err, p);
     }
