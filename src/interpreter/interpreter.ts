@@ -42,6 +42,15 @@ import {
   expandWord,
 } from './expansion.js';
 
+/** Hooks that fire per-command during interpretation. */
+export interface InterpreterHooks {
+  onBeforeCommand?: (
+    cmd: string,
+    args: string[],
+  ) => boolean | undefined | Promise<boolean | undefined>;
+  onCommandResult?: (cmd: string, result: CommandResult) => CommandResult;
+}
+
 /** Shell runtime options (separate from ShellOptions in index.ts). */
 export interface ShellRuntimeOptions {
   errexit: boolean;
@@ -116,6 +125,7 @@ export class Interpreter {
     string,
     (args: string[], ctx: InterpreterContext) => Promise<CommandResult>
   >;
+  private readonly hooks: InterpreterHooks;
 
   constructor(
     fs: FileSystem,
@@ -123,6 +133,7 @@ export class Interpreter {
     env?: Map<string, string>,
     cwd?: string,
     limits?: Partial<ExecutionLimits>,
+    hooks?: InterpreterHooks,
   ) {
     this.fs = fs;
     this.registry = registry;
@@ -144,6 +155,7 @@ export class Interpreter {
     this.readonlyVars = new Set();
     this.pendingStdin = '';
     this.builtins = new Map();
+    this.hooks = hooks ?? {};
 
     // Expose output limit so commands can read it via env
     this.env.set('SHELL_MAX_OUTPUT', String(this.limits.maxOutputSize));
@@ -526,6 +538,16 @@ export class Interpreter {
     const cmdName = expandedWords[0];
     const cmdArgs = expandedWords.slice(1);
 
+    // Hook: onBeforeCommand - allows blocking commands before dispatch
+    if (this.hooks.onBeforeCommand) {
+      const allowed = await this.hooks.onBeforeCommand(cmdName, cmdArgs);
+      if (allowed === false) {
+        const blocked = makeResult(126, '', 'permission denied\n');
+        this.exitCode = 126;
+        return blocked;
+      }
+    }
+
     // 3. Pre-expand here-string targets (<<<), then apply redirections
     for (let i = 0; i < node.redirections.length; i++) {
       const redir = node.redirections[i];
@@ -574,6 +596,11 @@ export class Interpreter {
           this.env.set(key, val);
         }
       }
+    }
+
+    // Hook: onCommandResult - allows modifying command output before redirections
+    if (this.hooks.onCommandResult) {
+      result = this.hooks.onCommandResult(cmdName, result);
     }
 
     // Apply output redirections
