@@ -1,6 +1,6 @@
 {
   "name": "@mylocalgpt/shell",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "description": "Virtual bash interpreter for AI agents. Pure TypeScript, zero dependencies.",
   "keywords": ["bash", "shell", "interpreter", "virtual", "sandbox", "agent", "ai", "jq"],
@@ -33,7 +33,8 @@
     "lint:fix": "biome check --write .",
     "typecheck": "tsc --noEmit",
     "dev": "tsx watch src/index.ts",
-    "bundle-size": "node scripts/check-bundle-size.mjs"
+    "bundle-size": "node scripts/check-bundle-size.mjs",
+    "postversion": "biome check --write package.json && git add package.json && git commit --amend --no-edit"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
