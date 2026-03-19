@@ -1,0 +1,29 @@
+{
+  "source": "tests/comparison/commands/timeout.test",
+  "recorded_with": "bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "timeout-basic": [
+      {
+        "line": 2,
+        "command": "timeout 10 echo hello",
+        "stdout": "hello\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "timeout-printf": [
+      {
+        "line": 6,
+        "command": "timeout 10 printf \"ok\"",
+        "stdout": "ok",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
+}

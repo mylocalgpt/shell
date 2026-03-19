@@ -1,0 +1,29 @@
+{
+  "source": "tests/comparison/commands/yes.test",
+  "recorded_with": "bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "yes-custom-head": [
+      {
+        "line": 8,
+        "command": "yes hello | head -2",
+        "stdout": "hello\nhello\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "yes-head": [
+      {
+        "line": 2,
+        "command": "yes | head -3",
+        "stdout": "y\ny\ny\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
+}

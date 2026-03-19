@@ -259,6 +259,18 @@ export function registerDefaultCommands(registry: CommandRegistry): void {
     name: 'sleep',
     load: () => import('./sleep.js').then((m) => m.sleep),
   });
+  registry.register({
+    name: 'yes',
+    load: () => import('./yes.js').then((m) => m.yes),
+  });
+  registry.register({
+    name: 'timeout',
+    load: () => import('./timeout.js').then((m) => m.timeout),
+  });
+  registry.register({
+    name: 'xxd',
+    load: () => import('./xxd.js').then((m) => m.xxd),
+  });
 
   // JSON processing
   registry.register({

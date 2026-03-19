@@ -1,0 +1,38 @@
+{
+  "source": "tests/comparison/commands/xxd.test",
+  "recorded_with": "bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "xxd-basic": [
+      {
+        "line": 2,
+        "command": "echo -n \"Hello\" | xxd",
+        "stdout": "00000000: 4865 6c6c 6f                             Hello\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "xxd-limit": [
+      {
+        "line": 6,
+        "command": "echo -n \"Hello, World!\" | xxd -l 5",
+        "stdout": "00000000: 4865 6c6c 6f                             Hello\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "xxd-offset": [
+      {
+        "line": 10,
+        "command": "echo -n \"Hello, World!\" | xxd -s 7",
+        "stdout": "00000007: 576f 726c 6421                           World!\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
+}

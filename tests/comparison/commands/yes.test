@@ -1,0 +1,10 @@
+## yes-head
+$ yes | head -3
+y
+y
+y
+
+## yes-custom-head
+$ yes hello | head -2
+hello
+hello
