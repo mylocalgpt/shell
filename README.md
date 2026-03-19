@@ -36,7 +36,8 @@ const shell = new Shell(options?: ShellOptions);
 
 | Option | Type | Description |
 |--------|------|-------------|
-| `files` | `Record<string, string \| (() => string \| Promise<string>)>` | Initial filesystem contents. Values can be strings or lazy-loaded functions. |
+| `fs` | `FileSystem` | Custom filesystem implementation. When provided, `files` is ignored. |
+| `files` | `Record<string, string \| (() => string \| Promise<string>)>` | Initial filesystem contents. Values can be strings or lazy-loaded functions. Ignored when `fs` is provided. |
 | `env` | `Record<string, string>` | Environment variables. Merged with defaults (HOME, USER, PATH, SHELL). |
 | `limits` | `Partial<ExecutionLimits>` | Execution limits. Merged with safe defaults. |
 | `commands` | `Record<string, CommandHandler>` | Custom commands to register. |
@@ -252,6 +253,8 @@ const shell = new Shell({
 ```
 
 ## Security Model
+
+See [THREAT_MODEL.md](THREAT_MODEL.md) for the full security model, threat analysis, and explicit non-goals.
 
 **What we do:**
 
