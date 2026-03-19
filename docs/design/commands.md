@@ -1,6 +1,6 @@
 # Commands
 
-One file per command, lazy-loaded on first use. 61 registered default commands + 27 shell builtins.
+One file per command, lazy-loaded on first use. 65 registered default commands + 27 shell builtins.
 
 ## Files
 
@@ -8,7 +8,7 @@ One file per command, lazy-loaded on first use. 61 registered default commands +
 |------|------|
 | `src/commands/types.ts` | Core types: Command, CommandContext, CommandResult, LazyCommandDef |
 | `src/commands/registry.ts` | Dual-track registry with lazy loading and caching |
-| `src/commands/defaults.ts` | 61 default command registrations |
+| `src/commands/defaults.ts` | 65 default command registrations |
 | `src/commands/<name>.ts` | One implementation file per command |
 
 ## Key Types
@@ -116,9 +116,23 @@ const shell = new Shell({
 
 Custom commands participate fully in pipes, redirections, and all shell features.
 
-## Default Commands (61)
+## Default Commands (65)
 
-awk, base64, basename, cat, chmod, column, comm, cp, cut, date, diff, dirname, du, echo, env, expand, expr, file, find, fold, grep, head, hostname, join, jq, ln, ls, md5sum, mkdir, mv, nl, od, paste, printenv, printf, pwd, readlink, realpath, rev, rm, rmdir, sed, seq, sha1sum, sha256sum, sleep, sort, stat, strings, tac, tail, tee, touch, tr, tree, unexpand, uniq, wc, which, whoami, xargs
+awk, base64, basename, cat, chmod, column, comm, cp, curl, cut, date, diff, dirname, du, echo, env, expand, expr, file, find, fold, grep, head, hostname, join, jq, ln, ls, md5sum, mkdir, mv, nl, od, paste, printenv, printf, pwd, readlink, realpath, rev, rm, rmdir, sed, seq, sha1sum, sha256sum, sleep, sort, stat, strings, tac, tail, tee, timeout, touch, tr, tree, unexpand, uniq, wc, which, whoami, xargs, xxd, yes
+
+## New in v0.1.0
+
+### curl
+Network requests via consumer-provided handler. Core stays network-free. Supports `-X`, `-H`, `-d`, `-o`, `-O`, `-s`, `-L`, `-f`, `-w`. Body from file with `-d @path`. Hostname allowlist via glob matching. Exit 7 on allowlist rejection.
+
+### timeout
+Races `ctx.exec(cmd)` against `setTimeout`. Exit 124 on timeout. Duration 0 means no timeout.
+
+### yes
+Repeats a string (default `y`) up to `SHELL_MAX_OUTPUT` limit. Output capped to prevent unbounded growth.
+
+### xxd
+Basic hex dump: 16 bytes per line, 8-digit offset, paired hex bytes, ASCII sidebar. Supports `-l` (limit) and `-s` (offset).
 
 ## Gotchas
 

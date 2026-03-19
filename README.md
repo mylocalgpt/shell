@@ -1,11 +1,12 @@
 # @mylocalgpt/shell
 
-Virtual bash interpreter for AI agents. Pure TypeScript, zero runtime dependencies. Runs in any JavaScript runtime - browsers, Node.js, Deno, Bun, and Cloudflare Workers. Ships with 60+ commands, a full jq implementation, and an under 40KB gzipped entry point.
+Virtual bash interpreter for AI agents. Pure TypeScript, zero runtime dependencies. Runs in any JavaScript runtime - browsers, Node.js, Deno, Bun, and Cloudflare Workers. Ships with 65+ commands, a full jq implementation, and an under 40KB gzipped entry point.
 
 - Pure JS, under 40KB gzipped, zero dependencies, runs anywhere
-- 60+ commands including grep, sed, awk, find, xargs, and a full jq implementation
+- 65+ commands including grep, sed, awk, find, xargs, curl, and a full jq implementation
 - Pipes, redirections, variables, control flow, functions, arithmetic
 - Configurable execution limits, regex guardrails, no eval
+- OverlayFs: read-through overlay on real directories with change tracking
 
 ## Install
 
@@ -46,6 +47,9 @@ const shell = new Shell(options?: ShellOptions);
 | `hostname` | `string` | Virtual hostname (used by `hostname` command). |
 | `username` | `string` | Virtual username (used by `whoami` command). |
 | `enabledCommands` | `string[]` | Restrict available commands to this allowlist. |
+| `network` | `NetworkConfig` | Network handler for curl. See [Network Config](#network-config). |
+| `onBeforeCommand` | `(cmd, args) => boolean \| void` | Hook before each command (return false to block). |
+| `onCommandResult` | `(cmd, result) => CommandResult` | Hook after each command (can modify result). |
 
 ### shell.exec(command, options?)
 
@@ -175,6 +179,10 @@ Clear environment and functions, reset working directory. Filesystem is kept int
 | `which` | Locate a command |
 | `tee` | Duplicate stdin to file and stdout |
 | `sleep` | Pause execution |
+| `yes` | Repeat a string (output-capped) |
+| `timeout` | Run command with time limit |
+| `xxd` | Hex dump (-l, -s) |
+| `curl` | HTTP requests via network handler |
 | `jq` | JSON processor (full implementation) |
 
 ## jq Support
@@ -250,6 +258,46 @@ const shell = new Shell({
     stdout: result.stdout.slice(0, 30000), // truncate large output
   }),
 });
+```
+
+## OverlayFs
+
+Read-through overlay that reads from a real host directory and writes to memory. The host filesystem is never modified.
+
+```typescript
+import { Shell } from '@mylocalgpt/shell';
+import { OverlayFs } from '@mylocalgpt/shell/overlay';
+
+const overlay = new OverlayFs('/path/to/project', {
+  denyPaths: ['*.env', '*.key', 'node_modules/**'],
+});
+const shell = new Shell({ fs: overlay });
+
+await shell.exec('cat src/index.ts | wc -l');
+await shell.exec('echo "new file" > output.txt');
+
+const changes = overlay.getChanges();
+// { created: [{ path: '/output.txt', content: 'new file\n' }], modified: [], deleted: [] }
+```
+
+Available as a separate entry point at `@mylocalgpt/shell/overlay`. Requires Node.js (uses `node:fs`).
+
+## Network Config
+
+curl delegates all HTTP requests to a consumer-provided handler. The shell never makes real network requests.
+
+```typescript
+const shell = new Shell({
+  network: {
+    handler: async (url, opts) => {
+      const res = await fetch(url, { method: opts.method, headers: opts.headers, body: opts.body });
+      return { status: res.status, body: await res.text(), headers: {} };
+    },
+    allowlist: ['api.example.com', '*.internal.corp'],
+  },
+});
+
+await shell.exec('curl -s https://api.example.com/data | jq .results');
 ```
 
 ## Security Model

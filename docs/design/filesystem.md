@@ -1,6 +1,6 @@
 # Filesystem
 
-In-memory virtual filesystem. Flat Map storage, lazy file content, no real OS interaction.
+Two filesystem implementations: InMemoryFs (default, pure ECMAScript) and OverlayFs (read-through overlay on host directory, uses node:fs).
 
 ## Files
 
@@ -8,6 +8,8 @@ In-memory virtual filesystem. Flat Map storage, lazy file content, no real OS in
 |------|-------|------|
 | `src/fs/types.ts` | 172 | FileSystem interface, FsError, LazyFileContent type |
 | `src/fs/memory.ts` | 592 | InMemoryFs implementation |
+| `src/overlay/index.ts` | ~350 | OverlayFs implementation |
+| `src/overlay/types.ts` | 20 | OverlayFsOptions, ChangeSet, FileChange |
 
 ## Storage Model
 
@@ -91,3 +93,43 @@ All virtual devices have mode `0o666`.
 - **chmod is informational only.** Mode bits are stored but never enforced. `cat` reads any file regardless of permissions. This is intentional - permission enforcement adds complexity without real security value in a virtual FS.
 - **No hard links.** Only symlinks are supported.
 - **Directory listing is O(n).** Scans all map keys with matching prefix. Fine for typical AI agent scripts, but not for filesystems with millions of entries.
+
+## OverlayFs
+
+Read-through overlay that combines a real host directory with an in-memory write layer. Available as `@mylocalgpt/shell/overlay`.
+
+### Two-Layer Architecture
+
+```
+Read:   memory Map -> host FS (read-only, via node:fs)
+Write:  always to memory Map
+Delete: adds to deletedPaths Set, shadows host files
+```
+
+The host filesystem is never modified. All mutations stay in memory.
+
+### getChanges()
+
+Returns a `ChangeSet` with three arrays:
+- `created`: files written to memory that did not exist on host at first-write time
+- `modified`: files written to memory that did exist on host at first-write time
+- `deleted`: paths marked as deleted (shadowing host files)
+
+Host existence is checked at write time (not construction time) to handle files created on host after overlay initialization.
+
+### Path Filtering
+
+`allowPaths` and `denyPaths` options use glob patterns to control which host paths are readable:
+- `denyPaths`: matching paths return ENOENT even if they exist on host
+- `allowPaths`: only matching paths are readable; everything else returns ENOENT
+- Neither set: all paths readable
+
+### Sync node:fs APIs
+
+OverlayFs uses `readFileSync`, `statSync`, `readdirSync` because the FileSystem interface allows sync string returns and sync is simpler for a read-through layer. This is the only part of the project that imports `node:` modules.
+
+### Security Properties
+
+- Host writes are architecturally impossible (no `writeFileSync` calls)
+- `realpath` rejects paths that resolve outside the root directory (prevents symlink escape)
+- Path filtering via allowPaths/denyPaths blocks unauthorized reads
