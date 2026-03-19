@@ -1,0 +1,34 @@
+## sed-basic
+$ echo "hello world" | sed 's/world/earth/'
+hello earth
+
+$ echo "aaa" | sed 's/a/b/'
+baa
+
+$ echo "aaa" | sed 's/a/b/g'
+bbb
+
+## sed-delete
+$ echo -e "a\nb\nc" | sed '2d'
+a
+c
+
+$ echo -e "a\nb\nc" | sed '/b/d'
+a
+c
+
+## sed-capture-groups
+$ echo "hello world" | sed 's/\(hello\)/[\1]/'
+[hello] world
+
+## sed-advanced
+$ echo -e "line1\nline2\nline3" | sed -n '2p'
+line2
+
+## sed-transliterate
+$ echo abc | sed 'y/abc/xyz/'
+xyz
+
+## sed-global-flag
+$ echo "foo:bar:baz" | sed 's/:/ /g'
+foo bar baz

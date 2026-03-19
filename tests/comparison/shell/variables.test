@@ -1,0 +1,184 @@
+## assignment-and-echo
+$ x=hello; echo $x
+hello
+
+$ x="hello world"; echo "$x"
+hello world
+
+$ x=hello; y=world; echo "$x $y"
+hello world
+
+## export-and-env
+$ export FOO=bar; echo $FOO
+bar
+
+$ FOO=override echo ok
+ok
+
+## append
+$ x=1; x+=2; echo $x
+12
+
+## unset
+$ x=hello; unset x; echo ">${x}<"
+><
+
+## special-variables
+$ echo $?
+0
+
+$ false; echo $?
+1
+
+$ true; echo $?
+0
+
+## parameter-expansion-default
+$ echo ${UNSET_VAR:-default}
+default
+
+$ x=""; echo ${x:-default}
+default
+
+$ x=value; echo ${x:-default}
+value
+
+$ echo ${UNSET_VAR-default}
+default
+
+$ x=""; echo ${x-default}
+
+## parameter-expansion-assign
+$ echo ${newvar:=fallback}; echo $newvar
+fallback
+fallback
+
+## parameter-expansion-alternate
+$ x=set; echo ${x:+alternate}
+alternate
+
+$ echo ${UNSET_VAR:+alternate}
+
+## parameter-expansion-length
+$ x=hello; echo ${#x}
+5
+
+$ x=""; echo ${#x}
+0
+
+## parameter-expansion-substring
+$ x=hello; echo ${x:1}
+ello
+
+$ x=hello; echo ${x:1:3}
+ell
+
+$ x=abcdef; echo ${x:0:3}
+abc
+
+## parameter-expansion-strip
+$ x=hello.tar.gz; echo ${x%.gz}
+hello.tar
+
+$ x=/usr/local/bin; echo ${x#*/}
+usr/local/bin
+
+## parameter-expansion-replace
+$ x="hello world hello"; echo ${x/hello/goodbye}
+goodbye world hello
+
+$ x="hello world hello"; echo ${x//hello/goodbye}
+goodbye world goodbye
+
+## declare-export
+$ declare -x MYVAR=hello; echo $MYVAR
+hello
+
+## nested-substitution
+$ x=world; echo "hello $(echo $x)"
+hello world
+
+$ echo "$(echo "$(echo deep)")"
+deep
+
+$ x=abc; echo "${#x} chars"
+3 chars
+
+## empty-and-special
+$ echo "${empty_var}"
+
+$ echo "before${empty_var}after"
+beforeafter
+
+$ x=""; echo "[$x]"
+[]
+
+$ x=""; if [ -z "$x" ]; then echo empty; fi
+empty
+
+## default-chains
+$ a=first; echo "${a:-${b:-fallback}}"
+first
+
+## expansion-in-assignment
+$ x=$(echo hello); echo "$x"
+hello
+
+$ x="val_$(echo suffix)"; echo "$x"
+val_suffix
+
+$ x=5; y=$((x * 2)); echo $y
+10
+
+## special-chars-in-values
+$ x='hello"world'; echo "$x"
+hello"world
+
+$ x="has'quote"; echo "$x"
+has'quote
+
+$ x='$not_expanded'; echo "$x"
+$not_expanded
+
+## variable-indirection
+$ x=hello; y=x; echo ${!y}
+hello
+
+## readonly-var
+$ readonly RO=42; echo $RO
+42
+
+## glob-strip-greedy
+$ x=hello.tar.gz; echo ${x%%.*}
+hello
+
+$ x=/usr/local/bin; echo ${x##*/}
+bin
+
+## array-element-access
+$ arr=(a b c); echo ${arr[0]}
+a
+
+## array-all-elements
+$ arr=(a b c); echo ${arr[@]}
+a b c
+
+## array-length
+$ arr=(a b c); echo ${#arr[@]}
+3
+
+## array-index-assign (xfail: arr[N]=val not recognized as assignment)
+$ arr=(a b c); arr[1]=B; echo ${arr[@]}
+a B c
+
+## command-sub-in-replacement (xfail: command substitution in replacement is empty)
+$ x=hello; echo "${x/hel/$(echo good)}"
+goodlo
+
+## brace-expansion-with-var (xfail: variable inside brace expansion not resolved)
+$ x=3; echo {1..$x}
+{1..3}
+
+## ifs-and-word-splitting
+$ x="a  b  c"; echo $x
+a b c

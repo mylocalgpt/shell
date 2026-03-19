@@ -1,0 +1,6 @@
+## base64-roundtrip
+$ echo -n "hello" | base64
+aGVsbG8=
+
+$ echo "aGVsbG8=" | base64 -d
+hello

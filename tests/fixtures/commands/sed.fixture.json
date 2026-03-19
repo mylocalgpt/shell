@@ -1,0 +1,87 @@
+{
+	"source": "tests/comparison/commands/sed.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T11:57:59.87141+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"sed-advanced": [
+			{
+				"line": 25,
+				"command": "echo -e \"line1\\nline2\\nline3\" | sed -n '2p'",
+				"stdout": "line2\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"sed-basic": [
+			{
+				"line": 2,
+				"command": "echo \"hello world\" | sed 's/world/earth/'",
+				"stdout": "hello earth\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "echo \"aaa\" | sed 's/a/b/'",
+				"stdout": "baa\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 8,
+				"command": "echo \"aaa\" | sed 's/a/b/g'",
+				"stdout": "bbb\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"sed-capture-groups": [
+			{
+				"line": 21,
+				"command": "echo \"hello world\" | sed 's/\\(hello\\)/[\\1]/'",
+				"stdout": "[hello] world\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"sed-delete": [
+			{
+				"line": 12,
+				"command": "echo -e \"a\\nb\\nc\" | sed '2d'",
+				"stdout": "a\nc\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 16,
+				"command": "echo -e \"a\\nb\\nc\" | sed '/b/d'",
+				"stdout": "a\nc\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"sed-global-flag": [
+			{
+				"line": 33,
+				"command": "echo \"foo:bar:baz\" | sed 's/:/ /g'",
+				"stdout": "foo bar baz\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"sed-transliterate": [
+			{
+				"line": 29,
+				"command": "echo abc | sed 'y/abc/xyz/'",
+				"stdout": "xyz\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

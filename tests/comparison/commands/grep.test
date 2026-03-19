@@ -1,0 +1,35 @@
+## grep-basic
+$ echo -e "apple\nbanana\ncherry" | grep an
+banana
+
+$ echo -e "apple\nbanana\ncherry" | grep -v an
+apple
+cherry
+
+$ echo -e "Apple\napple\nAPPLE" | grep -i apple
+Apple
+apple
+APPLE
+
+$ echo -e "hello world\nfoo bar" | grep -o "hello"
+hello
+
+## grep-count
+$ echo -e "a\nb\na\nc\na" | grep -c a
+3
+
+## grep-regex
+$ echo -e "abc\ndef\nabc123" | grep '^abc'
+abc
+abc123
+
+$ echo -e "foo123\nbar456\nbaz" | grep '[0-9]'
+foo123
+bar456
+
+$ echo -e "hello\nworld" | grep -c 'o'
+1
+
+$ echo "hello world" | grep -oE '[a-z]+'
+hello
+world

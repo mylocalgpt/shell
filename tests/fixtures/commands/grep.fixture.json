@@ -1,0 +1,81 @@
+{
+	"source": "tests/comparison/commands/grep.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T11:57:59.798414+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"grep-basic": [
+			{
+				"line": 2,
+				"command": "echo -e \"apple\\nbanana\\ncherry\" | grep an",
+				"stdout": "banana\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "echo -e \"apple\\nbanana\\ncherry\" | grep -v an",
+				"stdout": "apple\ncherry\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 9,
+				"command": "echo -e \"Apple\\napple\\nAPPLE\" | grep -i apple",
+				"stdout": "Apple\napple\nAPPLE\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 14,
+				"command": "echo -e \"hello world\\nfoo bar\" | grep -o \"hello\"",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"grep-count": [
+			{
+				"line": 18,
+				"command": "echo -e \"a\\nb\\na\\nc\\na\" | grep -c a",
+				"stdout": "3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"grep-regex": [
+			{
+				"line": 22,
+				"command": "echo -e \"abc\\ndef\\nabc123\" | grep '^abc'",
+				"stdout": "abc\nabc123\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 26,
+				"command": "echo -e \"foo123\\nbar456\\nbaz\" | grep '[0-9]'",
+				"stdout": "foo123\nbar456\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 30,
+				"command": "echo -e \"hello\\nworld\" | grep -c 'o'",
+				"stdout": "2\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 33,
+				"command": "echo \"hello world\" | grep -oE '[a-z]+'",
+				"stdout": "hello\nworld\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

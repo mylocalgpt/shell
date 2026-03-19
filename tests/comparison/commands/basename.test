@@ -1,0 +1,7 @@
+## basename
+$ basename /usr/local/bin/file.txt
+file.txt
+
+$ basename /usr/local/bin/file.txt .txt
+file
+

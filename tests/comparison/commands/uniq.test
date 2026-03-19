@@ -1,0 +1,15 @@
+## uniq-basic
+$ echo -e "a\na\nb\nb\nc" | uniq
+a
+b
+c
+
+$ echo -e "a\na\nb\nc\nc" | uniq
+a
+b
+c
+
+## uniq-count-format
+$ printf "a\na\nb\n" | uniq -c
+      2 a
+      1 b

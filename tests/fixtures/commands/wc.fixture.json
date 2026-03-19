@@ -1,0 +1,44 @@
+{
+	"source": "tests/comparison/commands/wc.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T11:57:59.982153+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"wc-basic": [
+			{
+				"line": 2,
+				"command": "echo \"hello world\" | wc -w",
+				"stdout": "       2\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "echo -e \"a\\nb\\nc\" | wc -l",
+				"stdout": "       3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"wc-modes": [
+			{
+				"line": 9,
+				"command": "echo -e \"one two three\\nfour five\" | wc -w",
+				"stdout": "       5\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 12,
+				"command": "echo -n \"hello\" | wc -c",
+				"stdout": "       5\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

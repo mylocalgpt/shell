@@ -1,0 +1,13 @@
+## tr-basic
+$ echo "hello" | tr 'a-z' 'A-Z'
+HELLO
+
+$ echo "HELLO" | tr 'A-Z' 'a-z'
+hello
+
+$ echo "hello123world" | tr -d '0-9'
+helloworld
+
+## tr-squeeze
+$ echo "heeelllo" | tr -s 'el'
+helo

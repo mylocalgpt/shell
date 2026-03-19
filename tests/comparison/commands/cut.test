@@ -1,0 +1,16 @@
+## cut-basic
+$ echo "a:b:c" | cut -d: -f2
+b
+
+$ echo "a:b:c" | cut -d: -f1,3
+a:c
+
+$ echo "hello" | cut -c1-3
+hel
+
+## cut-advanced
+$ echo "2024-01-15" | cut -d- -f1
+2024
+
+$ echo "2024-01-15" | cut -d- -f2-
+01-15

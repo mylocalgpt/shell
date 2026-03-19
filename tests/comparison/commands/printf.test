@@ -1,0 +1,38 @@
+## printf-basic
+$ printf "%s\n" hello
+hello
+
+$ printf "%d\n" 42
+42
+
+$ printf "%05d\n" 42
+00042
+
+$ printf "%s=%s\n" key value
+key=value
+
+## printf-format
+$ printf "%.2f\n" 3.14159
+3.14
+
+$ printf "%10s\n" right
+     right
+
+$ printf "%-10s|\n" left
+left      |
+
+## printf-multiple-args
+$ printf '%d + %d = %d\n' 3 4 7
+3 + 4 = 7
+
+## printf-edge-cases
+$ printf '%s\n' a b c
+a
+b
+c
+
+$ printf '%x\n' 255
+ff
+
+$ printf '%o\n' 8
+10

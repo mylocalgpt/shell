@@ -1,0 +1,3 @@
+## find-xargs-pattern
+$ mkdir -p /tmp/tdir; touch /tmp/tdir/a.txt /tmp/tdir/b.log; find /tmp/tdir -name '*.txt' -type f
+/tmp/tdir/a.txt

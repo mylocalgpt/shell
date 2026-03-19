@@ -1,0 +1,7 @@
+## awk-print-field
+$ echo "hello world" | awk '{print $2}'
+world
+
+## awk-sum-field
+$ printf "a 1\nb 2\nc 3\n" | awk '{sum += $2} END {print sum}'
+6

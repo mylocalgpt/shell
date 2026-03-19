@@ -1,0 +1,13 @@
+## wc-basic
+$ echo "hello world" | wc -w
+(re)
+
+$ echo -e "a\nb\nc" | wc -l
+(re)
+
+## wc-modes
+$ echo -e "one two three\nfour five" | wc -w
+(re)
+
+$ echo -n "hello" | wc -c
+(re)

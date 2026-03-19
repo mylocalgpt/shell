@@ -1,0 +1,33 @@
+## sort-basic
+$ echo -e "banana\napple\ncherry" | sort
+apple
+banana
+cherry
+
+$ echo -e "3\n1\n2" | sort -n
+1
+2
+3
+
+$ echo -e "1\n2\n3" | sort -rn
+3
+2
+1
+
+## sort-field
+$ printf "apple 3\nbanana 1\ncherry 2\n" | sort -k2 -n
+banana 1
+cherry 2
+apple 3
+
+## sort-advanced
+$ echo -e "banana\napple\ncherry\napple" | sort -u
+apple
+banana
+cherry
+
+$ echo -e "10\n2\n1\n20" | sort -n
+1
+2
+10
+20

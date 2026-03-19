@@ -1,0 +1,30 @@
+{
+	"source": "tests/comparison/commands/awk.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T11:57:59.71017+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"awk-print-field": [
+			{
+				"line": 2,
+				"command": "echo \"hello world\" | awk '{print $2}'",
+				"stdout": "world\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-sum-field": [
+			{
+				"line": 6,
+				"command": "printf \"a 1\\nb 2\\nc 3\\n\" | awk '{sum += $2} END {print sum}'",
+				"stdout": "6\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

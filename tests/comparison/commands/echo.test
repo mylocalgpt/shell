@@ -1,0 +1,18 @@
+## echo-flags
+$ echo -n "no newline"
+no newline
+
+$ echo -e "hello\nworld"
+hello
+world
+
+$ echo -e "tab\there"
+tab	here
+
+## echo-basic
+$ echo hello
+hello
+
+## echo-multiple-args
+$ echo hello world
+hello world

@@ -1,0 +1,439 @@
+{
+	"source": "tests/comparison/shell/variables.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T11:58:00.576658+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"append": [
+			{
+				"line": 19,
+				"command": "x=1; x+=2; echo $x",
+				"stdout": "12\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"array-all-elements": [
+			{
+				"line": 163,
+				"command": "arr=(a b c); echo ${arr[@]}",
+				"stdout": "a b c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"array-element-access": [
+			{
+				"line": 159,
+				"command": "arr=(a b c); echo ${arr[0]}",
+				"stdout": "a\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"array-index-assign": [
+			{
+				"line": 171,
+				"command": "arr=(a b c); arr[1]=B; echo ${arr[@]}",
+				"stdout": "a B c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"array-length": [
+			{
+				"line": 167,
+				"command": "arr=(a b c); echo ${#arr[@]}",
+				"stdout": "3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"assignment-and-echo": [
+			{
+				"line": 2,
+				"command": "x=hello; echo $x",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 5,
+				"command": "x=\"hello world\"; echo \"$x\"",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 8,
+				"command": "x=hello; y=world; echo \"$x $y\"",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"brace-expansion-with-var": [
+			{
+				"line": 179,
+				"command": "x=3; echo {1..$x}",
+				"stdout": "{1..3}\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"command-sub-in-replacement": [
+			{
+				"line": 175,
+				"command": "x=hello; echo \"${x/hel/$(echo good)}\"",
+				"stdout": "goodlo\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"declare-export": [
+			{
+				"line": 94,
+				"command": "declare -x MYVAR=hello; echo $MYVAR",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"default-chains": [
+			{
+				"line": 120,
+				"command": "a=first; echo \"${a:-${b:-fallback}}\"",
+				"stdout": "first\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"empty-and-special": [
+			{
+				"line": 108,
+				"command": "echo \"${empty_var}\"",
+				"stdout": "\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 110,
+				"command": "echo \"before${empty_var}after\"",
+				"stdout": "beforeafter\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 113,
+				"command": "x=\"\"; echo \"[$x]\"",
+				"stdout": "[]\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 116,
+				"command": "x=\"\"; if [ -z \"$x\" ]; then echo empty; fi",
+				"stdout": "empty\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"expansion-in-assignment": [
+			{
+				"line": 124,
+				"command": "x=$(echo hello); echo \"$x\"",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 127,
+				"command": "x=\"val_$(echo suffix)\"; echo \"$x\"",
+				"stdout": "val_suffix\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 130,
+				"command": "x=5; y=$((x * 2)); echo $y",
+				"stdout": "10\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"export-and-env": [
+			{
+				"line": 12,
+				"command": "export FOO=bar; echo $FOO",
+				"stdout": "bar\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 15,
+				"command": "FOO=override echo ok",
+				"stdout": "ok\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"glob-strip-greedy": [
+			{
+				"line": 152,
+				"command": "x=hello.tar.gz; echo ${x%%.*}",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 155,
+				"command": "x=/usr/local/bin; echo ${x##*/}",
+				"stdout": "bin\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"ifs-and-word-splitting": [
+			{
+				"line": 183,
+				"command": "x=\"a  b  c\"; echo $x",
+				"stdout": "a b c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"nested-substitution": [
+			{
+				"line": 98,
+				"command": "x=world; echo \"hello $(echo $x)\"",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 101,
+				"command": "echo \"$(echo \"$(echo deep)\")\"",
+				"stdout": "deep\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 104,
+				"command": "x=abc; echo \"${#x} chars\"",
+				"stdout": "3 chars\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-alternate": [
+			{
+				"line": 57,
+				"command": "x=set; echo ${x:+alternate}",
+				"stdout": "alternate\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 60,
+				"command": "echo ${UNSET_VAR:+alternate}",
+				"stdout": "\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-assign": [
+			{
+				"line": 52,
+				"command": "echo ${newvar:=fallback}; echo $newvar",
+				"stdout": "fallback\nfallback\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-default": [
+			{
+				"line": 37,
+				"command": "echo ${UNSET_VAR:-default}",
+				"stdout": "default\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 40,
+				"command": "x=\"\"; echo ${x:-default}",
+				"stdout": "default\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 43,
+				"command": "x=value; echo ${x:-default}",
+				"stdout": "value\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 46,
+				"command": "echo ${UNSET_VAR-default}",
+				"stdout": "default\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 49,
+				"command": "x=\"\"; echo ${x-default}",
+				"stdout": "\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-length": [
+			{
+				"line": 63,
+				"command": "x=hello; echo ${#x}",
+				"stdout": "5\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 66,
+				"command": "x=\"\"; echo ${#x}",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-replace": [
+			{
+				"line": 87,
+				"command": "x=\"hello world hello\"; echo ${x/hello/goodbye}",
+				"stdout": "goodbye world hello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 90,
+				"command": "x=\"hello world hello\"; echo ${x//hello/goodbye}",
+				"stdout": "goodbye world goodbye\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-strip": [
+			{
+				"line": 80,
+				"command": "x=hello.tar.gz; echo ${x%.gz}",
+				"stdout": "hello.tar\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 83,
+				"command": "x=/usr/local/bin; echo ${x#*/}",
+				"stdout": "usr/local/bin\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"parameter-expansion-substring": [
+			{
+				"line": 70,
+				"command": "x=hello; echo ${x:1}",
+				"stdout": "ello\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 73,
+				"command": "x=hello; echo ${x:1:3}",
+				"stdout": "ell\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 76,
+				"command": "x=abcdef; echo ${x:0:3}",
+				"stdout": "abc\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"readonly-var": [
+			{
+				"line": 148,
+				"command": "readonly RO=42; echo $RO",
+				"stdout": "42\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"special-chars-in-values": [
+			{
+				"line": 134,
+				"command": "x='hello\"world'; echo \"$x\"",
+				"stdout": "hello\"world\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 137,
+				"command": "x=\"has'quote\"; echo \"$x\"",
+				"stdout": "has'quote\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 140,
+				"command": "x='$not_expanded'; echo \"$x\"",
+				"stdout": "$not_expanded\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"special-variables": [
+			{
+				"line": 27,
+				"command": "echo $?",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 30,
+				"command": "false; echo $?",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 33,
+				"command": "true; echo $?",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"unset": [
+			{
+				"line": 23,
+				"command": "x=hello; unset x; echo \"\u003e${x}\u003c\"",
+				"stdout": "\u003e\u003c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"variable-indirection": [
+			{
+				"line": 144,
+				"command": "x=hello; y=x; echo ${!y}",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

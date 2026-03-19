@@ -1,0 +1,6 @@
+## tee-command
+$ echo "hello" | tee /tmp/shelltest9 > /dev/null; cat /tmp/shelltest9
+hello
+
+$ echo "world" | tee /tmp/shelltest10
+world
