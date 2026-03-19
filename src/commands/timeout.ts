@@ -31,10 +31,16 @@ export const timeout: Command = {
     const ms = seconds * 1000;
     const TIMEOUT_RESULT: CommandResult = { exitCode: 124, stdout: '', stderr: '' };
 
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const execPromise = ctx.exec(cmd);
+    execPromise.catch(() => {}); // prevent unhandled rejection if timer wins
     const result = await Promise.race([
-      ctx.exec(cmd),
-      new Promise<CommandResult>((resolve) => setTimeout(() => resolve(TIMEOUT_RESULT), ms)),
+      execPromise,
+      new Promise<CommandResult>((resolve) => {
+        timer = setTimeout(() => resolve(TIMEOUT_RESULT), ms);
+      }),
     ]);
+    if (timer !== undefined) clearTimeout(timer);
 
     return result;
   },

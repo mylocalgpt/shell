@@ -68,7 +68,7 @@ Separate `JqLimits` type in `src/jq/evaluator.ts` with higher defaults (jq opera
 ## Network Allowlist
 
 The curl command delegates all HTTP requests to a consumer-provided handler. An optional `allowlist` on `ShellOptions.network` restricts which hostnames curl can reach:
-- Hostnames are extracted from URLs without the URL constructor (for runtime portability)
+- Hostnames are extracted from URLs using the `URL` constructor
 - Patterns use the project's glob matcher (e.g. `*.example.com`)
 - Rejected requests return exit code 7
 
