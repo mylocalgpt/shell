@@ -178,6 +178,22 @@ export interface ShellOptions {
    * ```
    */
   onOutput?: (result: ExecResult) => ExecResult;
+  /**
+   * Hook called before each command executes (including each stage of a pipeline).
+   * Receives the command name and arguments after word expansion.
+   * Return `false` to block the command (exit code 126, "permission denied").
+   * Async-capable for external policy checks.
+   */
+  onBeforeCommand?: (
+    cmd: string,
+    args: string[],
+  ) => boolean | undefined | Promise<boolean | undefined>;
+  /**
+   * Hook called after each command executes (including each stage of a pipeline).
+   * Receives the command name and result. Return a (possibly modified) result.
+   * Synchronous to prevent unhandled promise rejections in pipe chains.
+   */
+  onCommandResult?: (cmd: string, result: CommandResult) => CommandResult;
   /** Hostname for the virtual shell (used by the hostname command). */
   hostname?: string;
   /** Username for the virtual shell (used by the whoami command). */
@@ -252,6 +268,12 @@ export class Shell {
   private readonly _limits: Partial<ExecutionLimits>;
   private readonly registry: CommandRegistry;
   private readonly _onOutput: ((result: ExecResult) => ExecResult) | undefined;
+  private readonly _onBeforeCommand:
+    | ((cmd: string, args: string[]) => boolean | undefined | Promise<boolean | undefined>)
+    | undefined;
+  private readonly _onCommandResult:
+    | ((cmd: string, result: CommandResult) => CommandResult)
+    | undefined;
   private interpreter: Interpreter | null = null;
 
   constructor(options?: ShellOptions) {
@@ -279,6 +301,8 @@ export class Shell {
     this.initialCwd = '/';
     this._limits = options?.limits ?? {};
     this._onOutput = options?.onOutput;
+    this._onBeforeCommand = options?.onBeforeCommand;
+    this._onCommandResult = options?.onCommandResult;
 
     // Set up command registry
     this.registry = new CommandRegistry();
@@ -544,6 +568,10 @@ export class Shell {
         env,
         this.initialCwd,
         this._limits,
+        {
+          onBeforeCommand: this._onBeforeCommand,
+          onCommandResult: this._onCommandResult,
+        },
       );
       registerBuiltins(this.interpreter);
     }
