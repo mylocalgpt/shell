@@ -1,39 +1,38 @@
 {
-	"source": "tests/comparison/commands/find.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.359139+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"find-maxdepth": [
-			{
-				"line": 11,
-				"command": "mkdir -p /tmp/fdir2/a/b; touch /tmp/fdir2/x.txt /tmp/fdir2/a/y.txt /tmp/fdir2/a/b/z.txt; find /tmp/fdir2 -maxdepth 1 -name '*.txt'",
-				"stdout": "/tmp/fdir2/x.txt\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"find-type-directory": [
-			{
-				"line": 6,
-				"command": "mkdir -p /tmp/fdir/sub; touch /tmp/fdir/file.txt; find /tmp/fdir -type d | sort",
-				"stdout": "/tmp/fdir\n/tmp/fdir/sub\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"find-xargs-pattern": [
-			{
-				"line": 2,
-				"command": "mkdir -p /tmp/tdir; touch /tmp/tdir/a.txt /tmp/tdir/b.log; find /tmp/tdir -name '*.txt' -type f",
-				"stdout": "/tmp/tdir/a.txt\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/find.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "find-maxdepth": [
+      {
+        "line": 11,
+        "command": "mkdir -p /tmp/fdir2/a/b; touch /tmp/fdir2/x.txt /tmp/fdir2/a/y.txt /tmp/fdir2/a/b/z.txt; find /tmp/fdir2 -maxdepth 1 -name '*.txt'",
+        "stdout": "/tmp/fdir2/x.txt\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "find-type-directory": [
+      {
+        "line": 6,
+        "command": "mkdir -p /tmp/fdir/sub; touch /tmp/fdir/file.txt; find /tmp/fdir -type d | sort",
+        "stdout": "/tmp/fdir\n/tmp/fdir/sub\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "find-xargs-pattern": [
+      {
+        "line": 2,
+        "command": "mkdir -p /tmp/tdir; touch /tmp/tdir/a.txt /tmp/tdir/b.log; find /tmp/tdir -name '*.txt' -type f",
+        "stdout": "/tmp/tdir/a.txt\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

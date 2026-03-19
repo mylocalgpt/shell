@@ -1,53 +1,52 @@
 {
-	"source": "tests/comparison/commands/echo.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.329217+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"echo-basic": [
-			{
-				"line": 13,
-				"command": "echo hello",
-				"stdout": "hello\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"echo-flags": [
-			{
-				"line": 2,
-				"command": "echo -n \"no newline\"",
-				"stdout": "no newline",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 5,
-				"command": "echo -e \"hello\\nworld\"",
-				"stdout": "hello\nworld\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 9,
-				"command": "echo -e \"tab\\there\"",
-				"stdout": "tab\there\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"echo-multiple-args": [
-			{
-				"line": 17,
-				"command": "echo hello world",
-				"stdout": "hello world\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/echo.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "echo-basic": [
+      {
+        "line": 13,
+        "command": "echo hello",
+        "stdout": "hello\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "echo-flags": [
+      {
+        "line": 2,
+        "command": "echo -n \"no newline\"",
+        "stdout": "no newline",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 5,
+        "command": "echo -e \"hello\\nworld\"",
+        "stdout": "hello\nworld\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 9,
+        "command": "echo -e \"tab\\there\"",
+        "stdout": "tab\there\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "echo-multiple-args": [
+      {
+        "line": 17,
+        "command": "echo hello world",
+        "stdout": "hello world\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

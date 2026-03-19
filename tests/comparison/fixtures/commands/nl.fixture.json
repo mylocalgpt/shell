@@ -1,21 +1,20 @@
 {
-	"source": "tests/comparison/commands/nl.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.543303+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"nl-basic": [
-			{
-				"line": 2,
-				"command": "printf \"a\\nb\\nc\\n\" | nl",
-				"stdout": "     1\ta\n     2\tb\n     3\tc\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/nl.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "nl-basic": [
+      {
+        "line": 2,
+        "command": "printf \"a\\nb\\nc\\n\" | nl",
+        "stdout": "     1\ta\n     2\tb\n     3\tc\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

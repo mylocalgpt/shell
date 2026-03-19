@@ -1,21 +1,20 @@
 {
-	"source": "tests/comparison/commands/readlink.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.591523+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"readlink-basic": [
-			{
-				"line": 2,
-				"command": "echo \"x\" \u003e /tmp/rlt; ln -s /tmp/rlt /tmp/rll; readlink /tmp/rll; rm /tmp/rll /tmp/rlt",
-				"stdout": "/tmp/rlt\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/readlink.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "readlink-basic": [
+      {
+        "line": 2,
+        "command": "echo \"x\" > /tmp/rlt; ln -s /tmp/rlt /tmp/rll; readlink /tmp/rll; rm /tmp/rll /tmp/rlt",
+        "stdout": "/tmp/rlt\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

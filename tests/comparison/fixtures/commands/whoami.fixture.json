@@ -1,21 +1,20 @@
 {
-	"source": "tests/comparison/commands/whoami.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.899749+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"whoami-basic": [
-			{
-				"line": 2,
-				"command": "whoami",
-				"stdout": "chief\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/whoami.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "whoami-basic": [
+      {
+        "line": 2,
+        "command": "whoami",
+        "stdout": "chief\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

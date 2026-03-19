@@ -1,50 +1,51 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"organizeImports": {
-		"enabled": true
-	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true,
-			"security": {
-				"noGlobalEval": "error"
-			},
-			"nursery": {
-				"noRestrictedImports": {
-					"level": "error",
-					"options": {
-						"paths": {
-							"node:fs": "node: imports are banned in core. Use InMemoryFs instead.",
-							"node:path": "node: imports are banned in core. Use hand-written path utilities.",
-							"node:child_process": "node: imports are banned in core.",
-							"node:os": "node: imports are banned in core.",
-							"node:util": "node: imports are banned in core.",
-							"node:stream": "node: imports are banned in core.",
-							"node:buffer": "node: imports are banned in core.",
-							"node:crypto": "node: imports are banned in core.",
-							"node:zlib": "node: imports are banned in core.",
-							"fs": "node: imports are banned in core. Use InMemoryFs instead.",
-							"path": "node: imports are banned in core.",
-							"child_process": "node: imports are banned in core.",
-							"os": "node: imports are banned in core."
-						}
-					}
-				}
-			}
-		}
-	},
-	"formatter": {
-		"indentStyle": "tab",
-		"lineWidth": 100
-	},
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "single",
-			"semicolons": "always"
-		}
-	},
-	"files": {
-		"ignore": ["dist/", "node_modules/", "_docs/", "scripts/", "*.tsbuildinfo"]
-	}
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "security": {
+        "noGlobalEval": "error"
+      },
+      "nursery": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "node:fs": "node: imports are banned in core. Use InMemoryFs instead.",
+              "node:path": "node: imports are banned in core. Use hand-written path utilities.",
+              "node:child_process": "node: imports are banned in core.",
+              "node:os": "node: imports are banned in core.",
+              "node:util": "node: imports are banned in core.",
+              "node:stream": "node: imports are banned in core.",
+              "node:buffer": "node: imports are banned in core.",
+              "node:crypto": "node: imports are banned in core.",
+              "node:zlib": "node: imports are banned in core.",
+              "fs": "node: imports are banned in core. Use InMemoryFs instead.",
+              "path": "node: imports are banned in core.",
+              "child_process": "node: imports are banned in core.",
+              "os": "node: imports are banned in core."
+            }
+          }
+        }
+      }
+    }
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "always"
+    }
+  },
+  "files": {
+    "ignore": ["dist/", "node_modules/", "_docs/", "scripts/", "*.tsbuildinfo"]
+  }
 }

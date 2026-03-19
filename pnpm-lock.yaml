@@ -12,8 +12,8 @@ importers:
         specifier: ^1.9.4
         version: 1.9.4
       smokepod:
-        specifier: ^1.0.10
-        version: 1.0.10
+        specifier: ^1.1.2
+        version: 1.1.2
       tsdown:
         specifier: ^0.21.0
         version: 0.21.4(typescript@5.9.3)
@@ -291,33 +291,33 @@ packages:
   '@oxc-project/types@0.115.0':
     resolution: {integrity: sha512-4n91DKnebUS4yjUHl2g3/b2T+IUdCfmoZGhmwsovZCDaJSs+QkVAM+0AqqTxHSsHfeiMuueT75cZaZcT/m0pSw==}
 
-  '@peteretelej/smokepod-darwin-arm64@1.0.10':
-    resolution: {integrity: sha512-/dDsp3+BA4/Af6qMNxx715ya49fFJLYf/0Tx7ghw/KRtFVtXwZibBQwWlz3H5iiaX1Ad5rLTk8F2H59CfWXzDA==}
+  '@peteretelej/smokepod-darwin-arm64@1.1.2':
+    resolution: {integrity: sha512-S/xG4br81mO7MhWvioPnW0Zu6NB6Ff+UgNLWZWzEIVLnf2akSpzbyygYRCUIw+KS3HZXBwbvX/NpuGfVa/kpPQ==}
     cpu: [arm64]
     os: [darwin]
 
-  '@peteretelej/smokepod-darwin-x64@1.0.10':
-    resolution: {integrity: sha512-NyqJ+DtoKw0/U5pfbDY0bMHOokQ/Xtx94u1nESfgQTGkZPbZ/+N8H3fu6TTaLDvonUNALH1tg12i/PLUgg9Yuw==}
+  '@peteretelej/smokepod-darwin-x64@1.1.2':
+    resolution: {integrity: sha512-exSB5ZL5OvqqlIgoO6zHxYJCZ+eNn/+80HDzHE3nbgDY3Z2ws2124yeCzd1+Gz+aeKL/mpLAKtj6K2FGBQkGUQ==}
     cpu: [x64]
     os: [darwin]
 
-  '@peteretelej/smokepod-linux-arm64@1.0.10':
-    resolution: {integrity: sha512-U4/Vvbwb4rfs/EfEd5tShczGE8T9Vx7b1DDIVqTnDvJrvFI9sW2DGKaLAdoFImgbYUX+6WojdEKxycpy63RZKA==}
+  '@peteretelej/smokepod-linux-arm64@1.1.2':
+    resolution: {integrity: sha512-fwROemhTkJtBlpQWp8ou859tENQYE1N/EzsvBWXpPscPrZcdKYqveyptL46QzgYlkGIma228O97WfFmlnUDDNg==}
     cpu: [arm64]
     os: [linux]
 
-  '@peteretelej/smokepod-linux-x64@1.0.10':
-    resolution: {integrity: sha512-eDmoapSGyOXqa8E13kXUxmp1EvTRBLvzMBZ2PH1wVCAdcppH+bXSx1ezESzWcPoPDtgkGZ5m48BgDSl6C0Ocsg==}
+  '@peteretelej/smokepod-linux-x64@1.1.2':
+    resolution: {integrity: sha512-Oid0yW15mjXflINIzfKQC7YU8i1SkdQ6OMFo1r+nJGRyN7w06Mvv4ZpJsMT/gyXWSRR4YjOeYbnEFkKSiyr2Yw==}
     cpu: [x64]
     os: [linux]
 
-  '@peteretelej/smokepod-win32-arm64@1.0.10':
-    resolution: {integrity: sha512-BGMlcfHx8yv8ownKc2/kcir0hFyYTs4DMCqQYJHbIbGrbUnccTQT8dF+RsOkt+Aa1NFeJRvyV0L8qGqkJ/6v9w==}
+  '@peteretelej/smokepod-win32-arm64@1.1.2':
+    resolution: {integrity: sha512-6+6B4UPL1agLnRgP3LqA+lBRSGzonZFFjPNKzZDHUe3ey4POx6q7LgPE4FXycbkJn9xmS/eSndJPYKm7lmo7Ag==}
     cpu: [arm64]
     os: [win32]
 
-  '@peteretelej/smokepod-win32-x64@1.0.10':
-    resolution: {integrity: sha512-bpXN5DvbukP+4GKfFgBLC3ctTGKECYH7oKtgEuo9oKvgaQ/gLVTlKoj5osAa6yyc63DA06e6ZaynVndY81TsKw==}
+  '@peteretelej/smokepod-win32-x64@1.1.2':
+    resolution: {integrity: sha512-qx64EtWI6ORVcrmOEKFGhTAAuduGG0RzZBDbmfyhzAfbhT6XwW2DheoWs/OoisBOzwiiEcHM/ucoLzqtw/oC1Q==}
     cpu: [x64]
     os: [win32]
 
@@ -793,8 +793,8 @@ packages:
   siginfo@2.0.0:
     resolution: {integrity: sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==}
 
-  smokepod@1.0.10:
-    resolution: {integrity: sha512-0RhJnptviNEpEEnP7wcN/1z5LK/BM0tuO77yO4xBV9HTat11ariV3bAMtiAA5DgLIzgLFVl4RhtVYL4+ZcUt2A==}
+  smokepod@1.1.2:
+    resolution: {integrity: sha512-aj2pP2E++6+KP7aRFISVuMkyTE55RorJinRWRPy1FelxKh/Pk0Q+mgwLwRdnRZLPLhfsSrbvsq25RN4seLshmQ==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -1149,22 +1149,22 @@ snapshots:
 
   '@oxc-project/types@0.115.0': {}
 
-  '@peteretelej/smokepod-darwin-arm64@1.0.10':
+  '@peteretelej/smokepod-darwin-arm64@1.1.2':
     optional: true
 
-  '@peteretelej/smokepod-darwin-x64@1.0.10':
+  '@peteretelej/smokepod-darwin-x64@1.1.2':
     optional: true
 
-  '@peteretelej/smokepod-linux-arm64@1.0.10':
+  '@peteretelej/smokepod-linux-arm64@1.1.2':
     optional: true
 
-  '@peteretelej/smokepod-linux-x64@1.0.10':
+  '@peteretelej/smokepod-linux-x64@1.1.2':
     optional: true
 
-  '@peteretelej/smokepod-win32-arm64@1.0.10':
+  '@peteretelej/smokepod-win32-arm64@1.1.2':
     optional: true
 
-  '@peteretelej/smokepod-win32-x64@1.0.10':
+  '@peteretelej/smokepod-win32-x64@1.1.2':
     optional: true
 
   '@quansync/fs@1.0.0':
@@ -1553,14 +1553,14 @@ snapshots:
 
   siginfo@2.0.0: {}
 
-  smokepod@1.0.10:
+  smokepod@1.1.2:
     optionalDependencies:
-      '@peteretelej/smokepod-darwin-arm64': 1.0.10
-      '@peteretelej/smokepod-darwin-x64': 1.0.10
-      '@peteretelej/smokepod-linux-arm64': 1.0.10
-      '@peteretelej/smokepod-linux-x64': 1.0.10
-      '@peteretelej/smokepod-win32-arm64': 1.0.10
-      '@peteretelej/smokepod-win32-x64': 1.0.10
+      '@peteretelej/smokepod-darwin-arm64': 1.1.2
+      '@peteretelej/smokepod-darwin-x64': 1.1.2
+      '@peteretelej/smokepod-linux-arm64': 1.1.2
+      '@peteretelej/smokepod-linux-x64': 1.1.2
+      '@peteretelej/smokepod-win32-arm64': 1.1.2
+      '@peteretelej/smokepod-win32-x64': 1.1.2
 
   source-map-js@1.2.1: {}
 

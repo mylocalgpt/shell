@@ -19,11 +19,11 @@ const PREFIX = '@mylocalgpt/shell';
  * @returns Formatted error string (includes trailing newline)
  */
 export function shellError(message: string, alternative?: string): string {
-	let result = `${PREFIX}: ${message}\n`;
-	if (alternative) {
-		result += `Alternative: ${alternative}\n`;
-	}
-	return result;
+  let result = `${PREFIX}: ${message}\n`;
+  if (alternative) {
+    result += `Alternative: ${alternative}\n`;
+  }
+  return result;
 }
 
 /**
@@ -34,7 +34,7 @@ export function shellError(message: string, alternative?: string): string {
  * @returns Formatted error string (includes trailing newline)
  */
 export function commandError(command: string, message: string): string {
-	return `${command}: ${message}\n`;
+  return `${command}: ${message}\n`;
 }
 
 /**
@@ -44,16 +44,16 @@ export function commandError(command: string, message: string): string {
  * @returns Human-readable description and config key
  */
 export function formatLimitError(limitName: string, maxValue: number): string {
-	const descriptions: Record<string, string> = {
-		maxLoopIterations: `maximum loop iterations (${maxValue}) exceeded. Increase with limits.maxLoopIterations`,
-		maxCallDepth: `maximum call depth (${maxValue}) exceeded. Increase with limits.maxCallDepth`,
-		maxCommandCount: `maximum command count (${maxValue}) exceeded. Increase with limits.maxCommandCount`,
-		maxStringLength: `maximum string length (${maxValue}) exceeded. Increase with limits.maxStringLength`,
-		maxArraySize: `maximum array size (${maxValue}) exceeded. Increase with limits.maxArraySize`,
-		maxOutputSize: `maximum output size (${maxValue}) exceeded. Increase with limits.maxOutputSize`,
-		maxPipelineDepth: `maximum pipeline depth (${maxValue}) exceeded. Increase with limits.maxPipelineDepth`,
-	};
-	return descriptions[limitName] ?? `limit exceeded: ${limitName} (${maxValue})`;
+  const descriptions: Record<string, string> = {
+    maxLoopIterations: `maximum loop iterations (${maxValue}) exceeded. Increase with limits.maxLoopIterations`,
+    maxCallDepth: `maximum call depth (${maxValue}) exceeded. Increase with limits.maxCallDepth`,
+    maxCommandCount: `maximum command count (${maxValue}) exceeded. Increase with limits.maxCommandCount`,
+    maxStringLength: `maximum string length (${maxValue}) exceeded. Increase with limits.maxStringLength`,
+    maxArraySize: `maximum array size (${maxValue}) exceeded. Increase with limits.maxArraySize`,
+    maxOutputSize: `maximum output size (${maxValue}) exceeded. Increase with limits.maxOutputSize`,
+    maxPipelineDepth: `maximum pipeline depth (${maxValue}) exceeded. Increase with limits.maxPipelineDepth`,
+  };
+  return descriptions[limitName] ?? `limit exceeded: ${limitName} (${maxValue})`;
 }
 
 /**
@@ -65,47 +65,47 @@ export function formatLimitError(limitName: string, maxValue: number): string {
  * @returns Array of similar command names
  */
 export function findSimilarCommands(
-	name: string,
-	available: string[],
-	maxSuggestions = 3,
+  name: string,
+  available: string[],
+  maxSuggestions = 3,
 ): string[] {
-	if (available.length === 0) return [];
+  if (available.length === 0) return [];
 
-	const scored: Array<{ cmd: string; score: number }> = [];
+  const scored: Array<{ cmd: string; score: number }> = [];
 
-	for (let i = 0; i < available.length; i++) {
-		const cmd = available[i];
-		let score = 0;
+  for (let i = 0; i < available.length; i++) {
+    const cmd = available[i];
+    let score = 0;
 
-		// Exact prefix match scores highest
-		if (cmd.startsWith(name) || name.startsWith(cmd)) {
-			score += 3;
-		}
+    // Exact prefix match scores highest
+    if (cmd.startsWith(name) || name.startsWith(cmd)) {
+      score += 3;
+    }
 
-		// Substring match
-		if (cmd.includes(name) || name.includes(cmd)) {
-			score += 2;
-		}
+    // Substring match
+    if (cmd.includes(name) || name.includes(cmd)) {
+      score += 2;
+    }
 
-		// Edit distance for short names (Levenshtein-like)
-		const dist = simpleDistance(name, cmd);
-		if (dist <= 2) {
-			score += 3 - dist;
-		}
+    // Edit distance for short names (Levenshtein-like)
+    const dist = simpleDistance(name, cmd);
+    if (dist <= 2) {
+      score += 3 - dist;
+    }
 
-		if (score > 0) {
-			scored.push({ cmd, score });
-		}
-	}
+    if (score > 0) {
+      scored.push({ cmd, score });
+    }
+  }
 
-	// Sort by score descending, then alphabetically
-	scored.sort((a, b) => b.score - a.score || a.cmd.localeCompare(b.cmd));
+  // Sort by score descending, then alphabetically
+  scored.sort((a, b) => b.score - a.score || a.cmd.localeCompare(b.cmd));
 
-	const result: string[] = [];
-	for (let i = 0; i < Math.min(scored.length, maxSuggestions); i++) {
-		result.push(scored[i].cmd);
-	}
-	return result;
+  const result: string[] = [];
+  for (let i = 0; i < Math.min(scored.length, maxSuggestions); i++) {
+    result.push(scored[i].cmd);
+  }
+  return result;
 }
 
 /**
@@ -114,33 +114,33 @@ export function findSimilarCommands(
  * expensive computations on very different strings.
  */
 function simpleDistance(a: string, b: string): number {
-	if (Math.abs(a.length - b.length) > 3) return 99;
-	if (a.length > 20 || b.length > 20) return 99;
+  if (Math.abs(a.length - b.length) > 3) return 99;
+  if (a.length > 20 || b.length > 20) return 99;
 
-	const m = a.length;
-	const n = b.length;
+  const m = a.length;
+  const n = b.length;
 
-	// Use single array DP
-	const prev = new Array<number>(n + 1);
-	const curr = new Array<number>(n + 1);
+  // Use single array DP
+  const prev = new Array<number>(n + 1);
+  const curr = new Array<number>(n + 1);
 
-	for (let j = 0; j <= n; j++) {
-		prev[j] = j;
-	}
+  for (let j = 0; j <= n; j++) {
+    prev[j] = j;
+  }
 
-	for (let i = 1; i <= m; i++) {
-		curr[0] = i;
-		for (let j = 1; j <= n; j++) {
-			if (a[i - 1] === b[j - 1]) {
-				curr[j] = prev[j - 1];
-			} else {
-				curr[j] = 1 + Math.min(prev[j - 1], prev[j], curr[j - 1]);
-			}
-		}
-		for (let j = 0; j <= n; j++) {
-			prev[j] = curr[j];
-		}
-	}
+  for (let i = 1; i <= m; i++) {
+    curr[0] = i;
+    for (let j = 1; j <= n; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        curr[j] = prev[j - 1];
+      } else {
+        curr[j] = 1 + Math.min(prev[j - 1], prev[j], curr[j - 1]);
+      }
+    }
+    for (let j = 0; j <= n; j++) {
+      prev[j] = curr[j];
+    }
+  }
 
-	return prev[n];
+  return prev[n];
 }

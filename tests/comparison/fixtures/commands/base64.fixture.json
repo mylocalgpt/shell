@@ -1,28 +1,27 @@
 {
-	"source": "tests/comparison/commands/base64.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.228197+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"base64-roundtrip": [
-			{
-				"line": 2,
-				"command": "echo -n \"hello\" | base64",
-				"stdout": "aGVsbG8=\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 5,
-				"command": "echo \"aGVsbG8=\" | base64 -d",
-				"stdout": "hello",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/base64.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "base64-roundtrip": [
+      {
+        "line": 2,
+        "command": "echo -n \"hello\" | base64",
+        "stdout": "aGVsbG8=\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 5,
+        "command": "echo \"aGVsbG8=\" | base64 -d",
+        "stdout": "hello",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

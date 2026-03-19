@@ -1,21 +1,20 @@
 {
-	"source": "tests/comparison/commands/pwd.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.58813+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"pwd-basic": [
-			{
-				"line": 2,
-				"command": "pwd",
-				"stdout": "/Volumes/SSD/Mac/code/peteretelej/shell\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/pwd.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "pwd-basic": [
+      {
+        "line": 2,
+        "command": "pwd",
+        "stdout": "/Volumes/SSD/Mac/code/peteretelej/shell\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

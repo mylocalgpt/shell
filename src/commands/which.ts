@@ -7,21 +7,21 @@ import type { Command, CommandContext, CommandResult } from './types.js';
  * since all registered commands are available.
  */
 export const which: Command = {
-	name: 'which',
-	async execute(args: string[], _ctx: CommandContext): Promise<CommandResult> {
-		if (args.length === 0) {
-			return { exitCode: 1, stdout: '', stderr: '' };
-		}
+  name: 'which',
+  async execute(args: string[], _ctx: CommandContext): Promise<CommandResult> {
+    if (args.length === 0) {
+      return { exitCode: 1, stdout: '', stderr: '' };
+    }
 
-		let stdout = '';
-		const stderr = '';
-		const exitCode = 0;
+    let stdout = '';
+    const stderr = '';
+    const exitCode = 0;
 
-		for (let i = 0; i < args.length; i++) {
-			// Since we can't check the registry from here, report as found
-			stdout += `/usr/bin/${args[i]}\n`;
-		}
+    for (let i = 0; i < args.length; i++) {
+      // Since we can't check the registry from here, report as found
+      stdout += `/usr/bin/${args[i]}\n`;
+    }
 
-		return { exitCode, stdout, stderr };
-	},
+    return { exitCode, stdout, stderr };
+  },
 };

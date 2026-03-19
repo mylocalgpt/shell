@@ -16,12 +16,12 @@ export { JqError, JqParseError, JqRuntimeError, JqTypeError, JqHaltError } from 
 export type { JqPosition } from './errors.js';
 export { parseJq } from './parser.js';
 export {
-	evaluate,
-	createEnv,
-	jqCompare,
-	jsonStringify,
-	jsonPretty,
-	parseJsonStream,
+  evaluate,
+  createEnv,
+  jqCompare,
+  jsonStringify,
+  jsonPretty,
+  parseJsonStream,
 } from './evaluator.js';
 
 /**
@@ -29,26 +29,26 @@ export {
  * Designed for extension by later phases.
  */
 export interface JqOptions {
-	/** Output strings without quotes. */
-	rawOutput?: boolean;
-	/** Compact output (no whitespace). */
-	compactOutput?: boolean;
-	/** Sort object keys in output. */
-	sortKeys?: boolean;
-	/** Use tabs for indentation. */
-	tab?: boolean;
-	/** Use null as input (ignore actual input). */
-	nullInput?: boolean;
-	/** Collect all inputs into an array before filtering. */
-	slurp?: boolean;
-	/** Bind named variables as strings. */
-	args?: Record<string, string>;
-	/** Bind named variables as parsed JSON. */
-	argjson?: Record<string, JsonValue>;
-	/** Execution limits. */
-	limits?: Partial<JqLimits>;
-	/** Environment variables (for $ENV access). */
-	env?: Map<string, string>;
+  /** Output strings without quotes. */
+  rawOutput?: boolean;
+  /** Compact output (no whitespace). */
+  compactOutput?: boolean;
+  /** Sort object keys in output. */
+  sortKeys?: boolean;
+  /** Use tabs for indentation. */
+  tab?: boolean;
+  /** Use null as input (ignore actual input). */
+  nullInput?: boolean;
+  /** Collect all inputs into an array before filtering. */
+  slurp?: boolean;
+  /** Bind named variables as strings. */
+  args?: Record<string, string>;
+  /** Bind named variables as parsed JSON. */
+  argjson?: Record<string, JsonValue>;
+  /** Execution limits. */
+  limits?: Partial<JqLimits>;
+  /** Environment variables (for $ENV access). */
+  env?: Map<string, string>;
 }
 
 /**
@@ -63,72 +63,72 @@ export interface JqOptions {
  * @throws JqTypeError on type mismatches
  */
 export function jq(input: string, filter: string, options?: JqOptions): string {
-	const ast = parseJq(filter);
-	const env = createEnv(options?.limits);
+  const ast = parseJq(filter);
+  const env = createEnv(options?.limits);
 
-	// Pass environment variables for $ENV access
-	if (options?.env) {
-		env.envVars = options.env;
-	}
+  // Pass environment variables for $ENV access
+  if (options?.env) {
+    env.envVars = options.env;
+  }
 
-	// Bind user args
-	if (options?.args) {
-		const keys = Object.keys(options.args);
-		for (let i = 0; i < keys.length; i++) {
-			env.variables.set(keys[i], options.args[keys[i]]);
-		}
-	}
-	if (options?.argjson) {
-		const keys = Object.keys(options.argjson);
-		for (let i = 0; i < keys.length; i++) {
-			env.variables.set(keys[i], options.argjson[keys[i]]);
-		}
-	}
+  // Bind user args
+  if (options?.args) {
+    const keys = Object.keys(options.args);
+    for (let i = 0; i < keys.length; i++) {
+      env.variables.set(keys[i], options.args[keys[i]]);
+    }
+  }
+  if (options?.argjson) {
+    const keys = Object.keys(options.argjson);
+    for (let i = 0; i < keys.length; i++) {
+      env.variables.set(keys[i], options.argjson[keys[i]]);
+    }
+  }
 
-	// Parse input(s)
-	let inputs: JsonValue[];
-	if (options?.nullInput) {
-		inputs = [null];
-	} else {
-		const trimmed = input.trim();
-		if (trimmed.length === 0) {
-			throw new JqRuntimeError('no input provided');
-		}
-		inputs = parseJsonStream(trimmed);
-		if (inputs.length === 0) {
-			throw new JqRuntimeError('no input provided');
-		}
-	}
+  // Parse input(s)
+  let inputs: JsonValue[];
+  if (options?.nullInput) {
+    inputs = [null];
+  } else {
+    const trimmed = input.trim();
+    if (trimmed.length === 0) {
+      throw new JqRuntimeError('no input provided');
+    }
+    inputs = parseJsonStream(trimmed);
+    if (inputs.length === 0) {
+      throw new JqRuntimeError('no input provided');
+    }
+  }
 
-	if (options?.slurp) {
-		inputs = [inputs];
-	}
+  if (options?.slurp) {
+    inputs = [inputs];
+  }
 
-	// Evaluate
-	const outputs: JsonValue[] = [];
-	for (let i = 0; i < inputs.length; i++) {
-		for (const result of evaluate(ast, inputs[i], env)) {
-			outputs.push(result);
-		}
-	}
+  // Evaluate
+  const outputs: JsonValue[] = [];
+  for (let i = 0; i < inputs.length; i++) {
+    for (const result of evaluate(ast, inputs[i], env)) {
+      outputs.push(result);
+    }
+  }
 
-	// Format output
-	const rawOutput = options?.rawOutput ?? false;
-	const compact = options?.compactOutput ?? false;
-	const sortKeys = options?.sortKeys ?? false;
-	const indent = options?.tab ? '\t' : '  ';
+  // Format output
+  const rawOutput = options?.rawOutput ?? false;
+  const compact = options?.compactOutput ?? false;
+  const sortKeys = options?.sortKeys ?? false;
+  const indent = options?.tab ? '\t' : '  ';
 
-	const lines: string[] = [];
-	for (let i = 0; i < outputs.length; i++) {
-		const v = outputs[i];
-		if (rawOutput && typeof v === 'string') {
-			lines.push(v);
-		} else if (compact) {
-			lines.push(jsonStringify(v, sortKeys));
-		} else {
-			lines.push(jsonPretty(v, indent, sortKeys));
-		}
-	}
+  const lines: string[] = [];
+  for (let i = 0; i < outputs.length; i++) {
+    const v = outputs[i];
+    if (rawOutput && typeof v === 'string') {
+      lines.push(v);
+    } else if (compact) {
+      lines.push(jsonStringify(v, sortKeys));
+    } else {
+      lines.push(jsonPretty(v, indent, sortKeys));
+    }
+  }
 
-	return lines.join('\n');
+  return lines.join('\n');
 }

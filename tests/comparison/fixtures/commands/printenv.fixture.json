@@ -1,30 +1,29 @@
 {
-	"source": "tests/comparison/commands/printenv.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.560997+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"printenv-missing": [
-			{
-				"line": 6,
-				"command": "printenv NONEXISTENT_VAR_XYZ 2\u003e/dev/null; echo $?",
-				"stdout": "1\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"printenv-single": [
-			{
-				"line": 2,
-				"command": "export TESTVAR123=hello; printenv TESTVAR123",
-				"stdout": "hello\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/printenv.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "printenv-missing": [
+      {
+        "line": 6,
+        "command": "printenv NONEXISTENT_VAR_XYZ 2>/dev/null; echo $?",
+        "stdout": "1\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "printenv-single": [
+      {
+        "line": 2,
+        "command": "export TESTVAR123=hello; printenv TESTVAR123",
+        "stdout": "hello\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

@@ -1,30 +1,29 @@
 {
-	"source": "tests/comparison/commands/mv.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.533784+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"mv-basic": [
-			{
-				"line": 2,
-				"command": "echo \"data\" \u003e /tmp/mv1; mv /tmp/mv1 /tmp/mv2; cat /tmp/mv2",
-				"stdout": "data\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"mv-missing-source": [
-			{
-				"line": 6,
-				"command": "mv /tmp/nonexistent_mv_xyz /tmp/mv3 2\u003e\u00261; echo $?",
-				"stdout": "mv: rename /tmp/nonexistent_mv_xyz to /tmp/mv3: No such file or directory\n1\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/mv.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "mv-basic": [
+      {
+        "line": 2,
+        "command": "echo \"data\" > /tmp/mv1; mv /tmp/mv1 /tmp/mv2; cat /tmp/mv2",
+        "stdout": "data\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "mv-missing-source": [
+      {
+        "line": 6,
+        "command": "mv /tmp/nonexistent_mv_xyz /tmp/mv3 2>&1; echo $?",
+        "stdout": "mv: rename /tmp/nonexistent_mv_xyz to /tmp/mv3: No such file or directory\n1\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

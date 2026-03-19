@@ -1,51 +1,50 @@
 {
-	"source": "tests/comparison/commands/cut.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.286527+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"cut-advanced": [
-			{
-				"line": 12,
-				"command": "echo \"2024-01-15\" | cut -d- -f1",
-				"stdout": "2024\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 15,
-				"command": "echo \"2024-01-15\" | cut -d- -f2-",
-				"stdout": "01-15\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"cut-basic": [
-			{
-				"line": 2,
-				"command": "echo \"a:b:c\" | cut -d: -f2",
-				"stdout": "b\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 5,
-				"command": "echo \"a:b:c\" | cut -d: -f1,3",
-				"stdout": "a:c\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 8,
-				"command": "echo \"hello\" | cut -c1-3",
-				"stdout": "hel\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/cut.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "cut-advanced": [
+      {
+        "line": 12,
+        "command": "echo \"2024-01-15\" | cut -d- -f1",
+        "stdout": "2024\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 15,
+        "command": "echo \"2024-01-15\" | cut -d- -f2-",
+        "stdout": "01-15\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "cut-basic": [
+      {
+        "line": 2,
+        "command": "echo \"a:b:c\" | cut -d: -f2",
+        "stdout": "b\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 5,
+        "command": "echo \"a:b:c\" | cut -d: -f1,3",
+        "stdout": "a:c\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 8,
+        "command": "echo \"hello\" | cut -c1-3",
+        "stdout": "hel\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

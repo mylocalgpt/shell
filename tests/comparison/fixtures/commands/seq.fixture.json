@@ -1,35 +1,34 @@
 {
-	"source": "tests/comparison/commands/seq.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.685569+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"seq": [
-			{
-				"line": 2,
-				"command": "seq 5",
-				"stdout": "1\n2\n3\n4\n5\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 9,
-				"command": "seq 2 5",
-				"stdout": "2\n3\n4\n5\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 15,
-				"command": "seq 0 2 10",
-				"stdout": "0\n2\n4\n6\n8\n10\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/seq.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "seq": [
+      {
+        "line": 2,
+        "command": "seq 5",
+        "stdout": "1\n2\n3\n4\n5\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 9,
+        "command": "seq 2 5",
+        "stdout": "2\n3\n4\n5\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 15,
+        "command": "seq 0 2 10",
+        "stdout": "0\n2\n4\n6\n8\n10\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

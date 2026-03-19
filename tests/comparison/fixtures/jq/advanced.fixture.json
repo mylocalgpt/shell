@@ -1,278 +1,277 @@
 {
-	"source": "tests/comparison/jq/advanced.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.92888+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"any-all-with-generator": [
-			{
-				"line": 106,
-				"command": "echo '[1,2,3,4]' | jq '[.[] | . \u003e 2]'",
-				"stdout": "[\n  false,\n  false,\n  true,\n  true\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"ascii-operations": [
-			{
-				"line": 136,
-				"command": "echo '\"abc\"' | jq 'explode'",
-				"stdout": "[\n  97,\n  98,\n  99\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 143,
-				"command": "echo '[97,98,99]' | jq 'implode'",
-				"stdout": "\"abc\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"def-params": [
-			{
-				"line": 44,
-				"command": "echo 'null' | jq 'def greet(name): \"Hello, \" + name; greet(\"world\")'",
-				"stdout": "\"Hello, world\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"def-recursive": [
-			{
-				"line": 48,
-				"command": "echo '5' | jq 'def fact: if . \u003c= 1 then 1 else . * ((. - 1) | fact) end; fact'",
-				"stdout": "120\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"def-simple": [
-			{
-				"line": 40,
-				"command": "echo '5' | jq 'def double: . * 2; double'",
-				"stdout": "10\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"env-access": [
-			{
-				"line": 85,
-				"command": "export JQ_TEST_VAR=hello; echo 'null' | jq -n 'env.JQ_TEST_VAR'",
-				"stdout": "\"hello\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"format-base64": [
-			{
-				"line": 59,
-				"command": "echo '\"hello\"' | jq '@base64'",
-				"stdout": "\"aGVsbG8=\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"format-base64d": [
-			{
-				"line": 63,
-				"command": "echo '\"aGVsbG8=\"' | jq '@base64d'",
-				"stdout": "\"hello\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"format-csv": [
-			{
-				"line": 71,
-				"command": "echo '[[\"a\",\"b\"],[1,2]]' | jq '.[] | @csv'",
-				"stdout": "\"\\\"a\\\",\\\"b\\\"\"\n\"1,2\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"format-html": [
-			{
-				"line": 81,
-				"command": "echo '\"\u003cb\u003ebold\u003c/b\u003e\"' | jq '@html'",
-				"stdout": "\"\u0026lt;b\u0026gt;bold\u0026lt;/b\u0026gt;\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"format-tsv": [
-			{
-				"line": 76,
-				"command": "echo '[[\"a\",\"b\"],[1,2]]' | jq '.[] | @tsv'",
-				"stdout": "\"a\\tb\"\n\"1\\t2\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"format-uri": [
-			{
-				"line": 67,
-				"command": "echo '\"hello world\"' | jq '@uri'",
-				"stdout": "\"hello%20world\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"if-elif": [
-			{
-				"line": 9,
-				"command": "echo '2' | jq 'if . == 1 then \"one\" elif . == 2 then \"two\" else \"other\" end'",
-				"stdout": "\"two\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"if-then-else": [
-			{
-				"line": 2,
-				"command": "echo '5' | jq 'if . \u003e 3 then \"big\" else \"small\" end'",
-				"stdout": "\"big\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 5,
-				"command": "echo '1' | jq 'if . \u003e 3 then \"big\" else \"small\" end'",
-				"stdout": "\"small\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"input-null": [
-			{
-				"line": 89,
-				"command": "echo '' | jq -n '1 + 1'",
-				"stdout": "2\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"map-values": [
-			{
-				"line": 129,
-				"command": "echo '{\"a\":1,\"b\":2}' | jq 'map_values(. + 10)'",
-				"stdout": "{\n  \"a\": 11,\n  \"b\": 12\n}\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"object-from-entries": [
-			{
-				"line": 115,
-				"command": "echo '[{\"key\":\"a\",\"value\":1},{\"key\":\"b\",\"value\":2}]' | jq 'from_entries'",
-				"stdout": "{\n  \"a\": 1,\n  \"b\": 2\n}\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"optional-field": [
-			{
-				"line": 55,
-				"command": "echo '{}' | jq '.a // \"default\"'",
-				"stdout": "\"default\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"optional-operator": [
-			{
-				"line": 52,
-				"command": "echo '{}' | jq '.missing?'",
-				"stdout": "null\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"recurse-builtin": [
-			{
-				"line": 93,
-				"command": "echo '{\"a\":{\"b\":{\"c\":1}}}' | jq '[recurse | .c? // empty]'",
-				"stdout": "[\n  1\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"reduce": [
-			{
-				"line": 20,
-				"command": "echo '[1,2,3,4,5]' | jq 'reduce .[] as $x (0; . + $x)'",
-				"stdout": "15\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"try-catch": [
-			{
-				"line": 13,
-				"command": "echo 'null' | jq 'try error(\"oops\") catch .'",
-				"stdout": "\"oops\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"try-without-catch": [
-			{
-				"line": 17,
-				"command": "echo '\"hello\"' | jq 'try tonumber'",
-				"stdout": "",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"update-add": [
-			{
-				"line": 34,
-				"command": "echo '{\"a\":1}' | jq '.a += 5'",
-				"stdout": "{\n  \"a\": 6\n}\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"update-assign": [
-			{
-				"line": 28,
-				"command": "echo '{\"a\":1}' | jq '.a |= . + 10'",
-				"stdout": "{\n  \"a\": 11\n}\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"variable-binding": [
-			{
-				"line": 24,
-				"command": "echo '5' | jq '. as $x | $x * $x'",
-				"stdout": "25\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"walk-builtin": [
-			{
-				"line": 99,
-				"command": "echo '{\"a\":1,\"b\":2}' | jq 'walk(if type == \"number\" then . * 2 else . end)'",
-				"stdout": "{\n  \"a\": 2,\n  \"b\": 4\n}\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"with-entries": [
-			{
-				"line": 122,
-				"command": "echo '{\"a\":1,\"b\":2}' | jq 'with_entries(.value += 10)'",
-				"stdout": "{\n  \"a\": 11,\n  \"b\": 12\n}\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/jq/advanced.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "any-all-with-generator": [
+      {
+        "line": 106,
+        "command": "echo '[1,2,3,4]' | jq '[.[] | . > 2]'",
+        "stdout": "[\n  false,\n  false,\n  true,\n  true\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "ascii-operations": [
+      {
+        "line": 136,
+        "command": "echo '\"abc\"' | jq 'explode'",
+        "stdout": "[\n  97,\n  98,\n  99\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 143,
+        "command": "echo '[97,98,99]' | jq 'implode'",
+        "stdout": "\"abc\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "def-params": [
+      {
+        "line": 44,
+        "command": "echo 'null' | jq 'def greet(name): \"Hello, \" + name; greet(\"world\")'",
+        "stdout": "\"Hello, world\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "def-recursive": [
+      {
+        "line": 48,
+        "command": "echo '5' | jq 'def fact: if . <= 1 then 1 else . * ((. - 1) | fact) end; fact'",
+        "stdout": "120\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "def-simple": [
+      {
+        "line": 40,
+        "command": "echo '5' | jq 'def double: . * 2; double'",
+        "stdout": "10\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "env-access": [
+      {
+        "line": 85,
+        "command": "export JQ_TEST_VAR=hello; echo 'null' | jq -n 'env.JQ_TEST_VAR'",
+        "stdout": "\"hello\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "format-base64": [
+      {
+        "line": 59,
+        "command": "echo '\"hello\"' | jq '@base64'",
+        "stdout": "\"aGVsbG8=\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "format-base64d": [
+      {
+        "line": 63,
+        "command": "echo '\"aGVsbG8=\"' | jq '@base64d'",
+        "stdout": "\"hello\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "format-csv": [
+      {
+        "line": 71,
+        "command": "echo '[[\"a\",\"b\"],[1,2]]' | jq '.[] | @csv'",
+        "stdout": "\"\\\"a\\\",\\\"b\\\"\"\n\"1,2\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "format-html": [
+      {
+        "line": 81,
+        "command": "echo '\"<b>bold</b>\"' | jq '@html'",
+        "stdout": "\"&lt;b&gt;bold&lt;/b&gt;\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "format-tsv": [
+      {
+        "line": 76,
+        "command": "echo '[[\"a\",\"b\"],[1,2]]' | jq '.[] | @tsv'",
+        "stdout": "\"a\\tb\"\n\"1\\t2\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "format-uri": [
+      {
+        "line": 67,
+        "command": "echo '\"hello world\"' | jq '@uri'",
+        "stdout": "\"hello%20world\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "if-elif": [
+      {
+        "line": 9,
+        "command": "echo '2' | jq 'if . == 1 then \"one\" elif . == 2 then \"two\" else \"other\" end'",
+        "stdout": "\"two\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "if-then-else": [
+      {
+        "line": 2,
+        "command": "echo '5' | jq 'if . > 3 then \"big\" else \"small\" end'",
+        "stdout": "\"big\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 5,
+        "command": "echo '1' | jq 'if . > 3 then \"big\" else \"small\" end'",
+        "stdout": "\"small\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "input-null": [
+      {
+        "line": 89,
+        "command": "echo '' | jq -n '1 + 1'",
+        "stdout": "2\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "map-values": [
+      {
+        "line": 129,
+        "command": "echo '{\"a\":1,\"b\":2}' | jq 'map_values(. + 10)'",
+        "stdout": "{\n  \"a\": 11,\n  \"b\": 12\n}\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "object-from-entries": [
+      {
+        "line": 115,
+        "command": "echo '[{\"key\":\"a\",\"value\":1},{\"key\":\"b\",\"value\":2}]' | jq 'from_entries'",
+        "stdout": "{\n  \"a\": 1,\n  \"b\": 2\n}\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "optional-field": [
+      {
+        "line": 55,
+        "command": "echo '{}' | jq '.a // \"default\"'",
+        "stdout": "\"default\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "optional-operator": [
+      {
+        "line": 52,
+        "command": "echo '{}' | jq '.missing?'",
+        "stdout": "null\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "recurse-builtin": [
+      {
+        "line": 93,
+        "command": "echo '{\"a\":{\"b\":{\"c\":1}}}' | jq '[recurse | .c? // empty]'",
+        "stdout": "[\n  1\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "reduce": [
+      {
+        "line": 20,
+        "command": "echo '[1,2,3,4,5]' | jq 'reduce .[] as $x (0; . + $x)'",
+        "stdout": "15\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "try-catch": [
+      {
+        "line": 13,
+        "command": "echo 'null' | jq 'try error(\"oops\") catch .'",
+        "stdout": "\"oops\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "try-without-catch": [
+      {
+        "line": 17,
+        "command": "echo '\"hello\"' | jq 'try tonumber'",
+        "stdout": "",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "update-add": [
+      {
+        "line": 34,
+        "command": "echo '{\"a\":1}' | jq '.a += 5'",
+        "stdout": "{\n  \"a\": 6\n}\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "update-assign": [
+      {
+        "line": 28,
+        "command": "echo '{\"a\":1}' | jq '.a |= . + 10'",
+        "stdout": "{\n  \"a\": 11\n}\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "variable-binding": [
+      {
+        "line": 24,
+        "command": "echo '5' | jq '. as $x | $x * $x'",
+        "stdout": "25\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "walk-builtin": [
+      {
+        "line": 99,
+        "command": "echo '{\"a\":1,\"b\":2}' | jq 'walk(if type == \"number\" then . * 2 else . end)'",
+        "stdout": "{\n  \"a\": 2,\n  \"b\": 4\n}\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "with-entries": [
+      {
+        "line": 122,
+        "command": "echo '{\"a\":1,\"b\":2}' | jq 'with_entries(.value += 10)'",
+        "stdout": "{\n  \"a\": 11,\n  \"b\": 12\n}\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

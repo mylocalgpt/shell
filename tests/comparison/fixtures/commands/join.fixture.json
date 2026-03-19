@@ -1,21 +1,20 @@
 {
-	"source": "tests/comparison/commands/join.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.478487+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"join-basic": [
-			{
-				"line": 2,
-				"command": "echo -e \"1 apple\\n2 banana\" \u003e /tmp/jn1; echo -e \"1 red\\n2 yellow\" \u003e /tmp/jn2; join /tmp/jn1 /tmp/jn2",
-				"stdout": "1 apple red\n2 banana yellow\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/join.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "join-basic": [
+      {
+        "line": 2,
+        "command": "echo -e \"1 apple\\n2 banana\" > /tmp/jn1; echo -e \"1 red\\n2 yellow\" > /tmp/jn2; join /tmp/jn1 /tmp/jn2",
+        "stdout": "1 apple red\n2 banana yellow\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

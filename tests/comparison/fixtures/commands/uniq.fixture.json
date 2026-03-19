@@ -1,37 +1,36 @@
 {
-	"source": "tests/comparison/commands/uniq.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T13:02:24.825464+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"uniq-basic": [
-			{
-				"line": 2,
-				"command": "echo -e \"a\\na\\nb\\nb\\nc\" | uniq",
-				"stdout": "a\nb\nc\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 7,
-				"command": "echo -e \"a\\na\\nb\\nc\\nc\" | uniq",
-				"stdout": "a\nb\nc\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"uniq-count-format": [
-			{
-				"line": 13,
-				"command": "printf \"a\\na\\nb\\n\" | uniq -c",
-				"stdout": "   2 a\n   1 b\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/uniq.test",
+  "recorded_with": "/bin/bash",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "uniq-basic": [
+      {
+        "line": 2,
+        "command": "echo -e \"a\\na\\nb\\nb\\nc\" | uniq",
+        "stdout": "a\nb\nc\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 7,
+        "command": "echo -e \"a\\na\\nb\\nc\\nc\" | uniq",
+        "stdout": "a\nb\nc\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "uniq-count-format": [
+      {
+        "line": 13,
+        "command": "printf \"a\\na\\nb\\n\" | uniq -c",
+        "stdout": "   2 a\n   1 b\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }
