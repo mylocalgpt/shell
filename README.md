@@ -1,6 +1,6 @@
 # @mylocalgpt/shell
 
-Virtual bash interpreter for AI agents. Pure TypeScript, zero runtime dependencies. Runs in browsers, Node.js, Cloudflare Workers, and any JavaScript runtime. Ships with 60+ commands, a full jq implementation, and a 33KB gzipped entry point.
+Virtual bash interpreter for AI agents. Pure TypeScript, zero runtime dependencies. Runs in any JavaScript runtime - browsers, Node.js, Deno, Bun, and Cloudflare Workers. Ships with 60+ commands, a full jq implementation, and a 33KB gzipped entry point.
 
 - Pure JS, 33 KB gzipped, zero dependencies, runs anywhere
 - 60+ commands including grep, sed, awk, find, xargs, and a full jq implementation
@@ -269,4 +269,4 @@ const shell = new Shell({
 
 ## License
 
-MIT
+Apache-2.0
