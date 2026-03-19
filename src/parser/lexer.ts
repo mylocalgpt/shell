@@ -604,10 +604,14 @@ export class Lexer {
 				continue;
 			}
 
-			// Assignment detection: NAME= at start of command
+			// Assignment detection: NAME= or NAME[expr]= at start of command
 			if (ch === '=' && !seenEquals && this.commandStart && wordLen > 0) {
-				// Check the word so far is a valid variable name
-				if (isValidVarName(value) || isValidVarNamePlusEquals(value)) {
+				// Check the word so far is a valid variable name or array index (arr[N])
+				if (
+					isValidVarName(value) ||
+					isValidVarNamePlusEquals(value) ||
+					isValidArrayAssignName(value)
+				) {
 					seenEquals = true;
 					isAssignment = true;
 					value += this.advance();
@@ -926,6 +930,14 @@ function isValidVarNamePlusEquals(name: string): boolean {
 	if (name.length < 2) return false;
 	if (name[name.length - 1] !== '+') return false;
 	return isValidVarName(name.slice(0, -1));
+}
+
+/** Check if name matches arr[expr] pattern (array index assignment). */
+function isValidArrayAssignName(name: string): boolean {
+	const bracketIdx = name.indexOf('[');
+	if (bracketIdx < 1) return false;
+	if (name[name.length - 1] !== ']') return false;
+	return isValidVarName(name.slice(0, bracketIdx));
 }
 
 /** Check if ch can start a variable name. */

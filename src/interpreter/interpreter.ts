@@ -996,12 +996,20 @@ export class Interpreter {
 
 	/** Execute a brace group. */
 	private async executeBraceGroup(node: BraceGroup, stdin?: string): Promise<CommandResult> {
+		// Apply redirections (e.g., { ... } 2>&1 | sort)
+		const redirState = this.applyRedirections(node.redirections, stdin ?? '');
+		if (redirState.error) {
+			this.exitCode = 1;
+			return makeResult(1, '', redirState.error);
+		}
+
 		const savedPendingStdin = this.pendingStdin;
-		if (stdin) {
-			this.pendingStdin = stdin;
+		if (redirState.stdin) {
+			this.pendingStdin = redirState.stdin;
 		}
 		try {
-			return await this.executeList(node.body);
+			const result = await this.executeList(node.body);
+			return this.applyOutputRedirections(result, redirState);
 		} finally {
 			this.pendingStdin = savedPendingStdin;
 		}
@@ -1210,7 +1218,7 @@ export class Interpreter {
 					const resolved = this.resolvePath(target);
 					// noclobber check: > on an existing file is an error when set -C is active
 					if (this.options.noclobber && this.fs.exists(resolved)) {
-						state.error = `@mylocalgpt/shell: ${target}: cannot overwrite existing file\n`;
+						state.error = `bash: ${target}: cannot overwrite existing file\n`;
 						continue;
 					}
 					if (fd === 2) {

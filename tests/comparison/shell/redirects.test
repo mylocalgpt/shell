@@ -75,12 +75,12 @@ $ echo -e "3\n1\n2" > /tmp/shelltest7; sort -n /tmp/shelltest7
 $ echo "hello world" > /tmp/shelltest8; wc -w < /tmp/shelltest8
 (re)
 
-## set-noclobber (xfail: noclobber works but stderr prefix differs from bash)
-$ echo first > /tmp/noclobber_test; set -C; echo second > /tmp/noclobber_test 2>/dev/null; echo $?; cat /tmp/noclobber_test; set +C; rm -f /tmp/noclobber_test
+## set-noclobber
+$ echo first > /tmp/noclobber_test; set -C; { echo second > /tmp/noclobber_test; } 2>/dev/null; echo $?; cat /tmp/noclobber_test; set +C; rm -f /tmp/noclobber_test
 1
 first
 
-## stderr-through-pipe (xfail: 2>&1 | does not capture stderr in pipe)
+## stderr-through-pipe
 $ { echo "out"; echo "err" >&2; } 2>&1 | sort
 err
 out

@@ -167,15 +167,15 @@ a b c
 $ arr=(a b c); echo ${#arr[@]}
 3
 
-## array-index-assign (xfail: arr[N]=val not recognized as assignment)
+## array-index-assign
 $ arr=(a b c); arr[1]=B; echo ${arr[@]}
 a B c
 
-## command-sub-in-replacement (xfail: command substitution in replacement is empty)
+## command-sub-in-replacement
 $ x=hello; echo "${x/hel/$(echo good)}"
 goodlo
 
-## brace-expansion-with-var (xfail: variable inside brace expansion not resolved)
+## brace-expansion-with-var
 $ x=3; echo {1..$x}
 {1..3}
 

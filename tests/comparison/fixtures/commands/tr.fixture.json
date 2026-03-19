@@ -1,44 +1,44 @@
 {
-	"source": "tests/comparison/commands/tr.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.9459+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"tr-basic": [
-			{
-				"line": 2,
-				"command": "echo \"hello\" | tr 'a-z' 'A-Z'",
-				"stdout": "HELLO\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 5,
-				"command": "echo \"HELLO\" | tr 'A-Z' 'a-z'",
-				"stdout": "hello\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 8,
-				"command": "echo \"hello123world\" | tr -d '0-9'",
-				"stdout": "helloworld\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"tr-squeeze": [
-			{
-				"line": 12,
-				"command": "echo \"heeelllo\" | tr -s 'el'",
-				"stdout": "helo\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/tr.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.475644+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "tr-basic": [
+      {
+        "line": 2,
+        "command": "echo \"hello\" | tr 'a-z' 'A-Z'",
+        "stdout": "HELLO\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 5,
+        "command": "echo \"HELLO\" | tr 'A-Z' 'a-z'",
+        "stdout": "hello\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 8,
+        "command": "echo \"hello123world\" | tr -d '0-9'",
+        "stdout": "helloworld\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "tr-squeeze": [
+      {
+        "line": 12,
+        "command": "echo \"heeelllo\" | tr -s 'el'",
+        "stdout": "helo\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

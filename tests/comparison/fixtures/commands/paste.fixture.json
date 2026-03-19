@@ -1,21 +1,21 @@
 {
-	"source": "tests/comparison/commands/paste.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.70648+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"paste-basic": [
-			{
-				"line": 2,
-				"command": "echo -e \"a\\nb\\nc\" \u003e /tmp/ps1; echo -e \"1\\n2\\n3\" \u003e /tmp/ps2; paste /tmp/ps1 /tmp/ps2",
-				"stdout": "a\t1\nb\t2\nc\t3\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/paste.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.211656+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "paste-basic": [
+      {
+        "line": 2,
+        "command": "echo -e \"a\\nb\\nc\" \u003e /tmp/ps1; echo -e \"1\\n2\\n3\" \u003e /tmp/ps2; paste /tmp/ps1 /tmp/ps2",
+        "stdout": "a\t1\nb\t2\nc\t3\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

@@ -1,499 +1,499 @@
 {
-	"source": "tests/comparison/jq/builtins.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:10:09.656861+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"abs-builtin": [
-			{
-				"line": 200,
-				"command": "echo '-5' | jq 'fabs'",
-				"stdout": "5\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"add-builtin": [
-			{
-				"line": 96,
-				"command": "echo '[1,2,3,4,5]' | jq 'add'",
-				"stdout": "15\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 99,
-				"command": "echo '[\"a\",\"b\",\"c\"]' | jq 'add'",
-				"stdout": "\"abc\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"any-all": [
-			{
-				"line": 166,
-				"command": "echo '[1,2,3]' | jq 'any(. \u003e 2)'",
-				"stdout": "true\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 169,
-				"command": "echo '[1,2,3]' | jq 'all(. \u003e 0)'",
-				"stdout": "true\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 172,
-				"command": "echo '[1,2,3]' | jq 'all(. \u003e 2)'",
-				"stdout": "false\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"ascii-case": [
-			{
-				"line": 64,
-				"command": "echo '\"hello\"' | jq 'ascii_upcase'",
-				"stdout": "\"HELLO\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 67,
-				"command": "echo '\"HELLO\"' | jq 'ascii_downcase'",
-				"stdout": "\"hello\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"contains-builtin": [
-			{
-				"line": 53,
-				"command": "echo '[\"a\",\"b\",\"c\"]' | jq 'contains([\"a\",\"c\"])'",
-				"stdout": "true\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"del-builtin": [
-			{
-				"line": 183,
-				"command": "echo '{\"a\":1,\"b\":2,\"c\":3}' | jq 'del(.b)'",
-				"stdout": "{\n  \"a\": 1,\n  \"c\": 3\n}\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"empty-builtin": [
-			{
-				"line": 264,
-				"command": "echo 'null' | jq '[empty]'",
-				"stdout": "[]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"first-last": [
-			{
-				"line": 246,
-				"command": "echo '[1,2,3]' | jq 'first'",
-				"stdout": "1\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 249,
-				"command": "echo '[1,2,3]' | jq 'last'",
-				"stdout": "3\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"flatten-builtin": [
-			{
-				"line": 119,
-				"command": "echo '[[1,2],[3,[4,5]]]' | jq 'flatten'",
-				"stdout": "[\n  1,\n  2,\n  3,\n  4,\n  5\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"floor-ceil-round": [
-			{
-				"line": 190,
-				"command": "echo '3.7' | jq 'floor'",
-				"stdout": "3\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 193,
-				"command": "echo '3.2' | jq 'ceil'",
-				"stdout": "4\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 196,
-				"command": "echo '3.5' | jq 'round'",
-				"stdout": "4\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"getpath-setpath": [
-			{
-				"line": 223,
-				"command": "echo '{\"a\":{\"b\":1}}' | jq 'getpath([\"a\",\"b\"])'",
-				"stdout": "1\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"group-by-builtin": [
-			{
-				"line": 234,
-				"command": "echo '[{\"a\":1,\"b\":\"x\"},{\"a\":2,\"b\":\"y\"},{\"a\":1,\"b\":\"z\"}]' | jq 'group_by(.a) | length'",
-				"stdout": "2\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"has-builtin": [
-			{
-				"line": 46,
-				"command": "echo '{\"a\":1,\"b\":2}' | jq 'has(\"a\")'",
-				"stdout": "true\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 49,
-				"command": "echo '{\"a\":1}' | jq 'has(\"z\")'",
-				"stdout": "false\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"indices-builtin": [
-			{
-				"line": 214,
-				"command": "echo '\"abcabc\"' | jq '[indices(\"bc\")]'",
-				"stdout": "[\n  [\n    1,\n    4\n  ]\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"keys-builtin": [
-			{
-				"line": 31,
-				"command": "echo '{\"b\":2,\"a\":1,\"c\":3}' | jq 'keys'",
-				"stdout": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"length-builtin": [
-			{
-				"line": 21,
-				"command": "echo '\"hello\"' | jq 'length'",
-				"stdout": "5\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 24,
-				"command": "echo '[1,2,3]' | jq 'length'",
-				"stdout": "3\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 27,
-				"command": "echo '{\"a\":1,\"b\":2}' | jq 'length'",
-				"stdout": "2\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"limit-builtin": [
-			{
-				"line": 268,
-				"command": "echo 'null' | jq '[limit(3; range(10))]'",
-				"stdout": "[\n  0,\n  1,\n  2\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"ltrimstr-rtrimstr": [
-			{
-				"line": 82,
-				"command": "echo '\"hello world\"' | jq 'ltrimstr(\"hello \")'",
-				"stdout": "\"world\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 85,
-				"command": "echo '\"hello world\"' | jq 'rtrimstr(\" world\")'",
-				"stdout": "\"hello\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"map-builtin": [
-			{
-				"line": 151,
-				"command": "echo '[1,2,3]' | jq 'map(. * 2)'",
-				"stdout": "[\n  2,\n  4,\n  6\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"min-max": [
-			{
-				"line": 129,
-				"command": "echo '[3,1,2]' | jq 'min'",
-				"stdout": "1\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 132,
-				"command": "echo '[3,1,2]' | jq 'max'",
-				"stdout": "3\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"null-builtin": [
-			{
-				"line": 260,
-				"command": "echo 'null' | jq 'null'",
-				"stdout": "null\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"path-builtin": [
-			{
-				"line": 227,
-				"command": "echo '{\"a\":{\"b\":1}}' | jq 'path(.a.b)'",
-				"stdout": "[\n  \"a\",\n  \"b\"\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"range-builtin": [
-			{
-				"line": 204,
-				"command": "echo 'null' | jq '[range(5)]'",
-				"stdout": "[\n  0,\n  1,\n  2,\n  3,\n  4\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"reverse-builtin": [
-			{
-				"line": 136,
-				"command": "echo '[1,2,3]' | jq 'reverse'",
-				"stdout": "[\n  3,\n  2,\n  1\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"select-builtin": [
-			{
-				"line": 159,
-				"command": "echo '[1,2,3,4,5]' | jq '[.[] | select(. \u003e 3)]'",
-				"stdout": "[\n  4,\n  5\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"sort-builtin": [
-			{
-				"line": 103,
-				"command": "echo '[3,1,2]' | jq 'sort'",
-				"stdout": "[\n  1,\n  2,\n  3\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"sort-by-builtin": [
-			{
-				"line": 238,
-				"command": "echo '[{\"a\":3},{\"a\":1},{\"a\":2}]' | jq '[sort_by(.a)[] | .a]'",
-				"stdout": "[\n  1,\n  2,\n  3\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"split-join": [
-			{
-				"line": 71,
-				"command": "echo '\"a,b,c\"' | jq 'split(\",\")'",
-				"stdout": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 78,
-				"command": "echo '[\"a\",\"b\",\"c\"]' | jq 'join(\",\")'",
-				"stdout": "\"a,b,c\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"startswith-endswith": [
-			{
-				"line": 89,
-				"command": "echo '\"hello\"' | jq 'startswith(\"hel\")'",
-				"stdout": "true\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 92,
-				"command": "echo '\"hello\"' | jq 'endswith(\"llo\")'",
-				"stdout": "true\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"test-regex": [
-			{
-				"line": 176,
-				"command": "echo '\"hello123\"' | jq 'test(\"[0-9]+\")'",
-				"stdout": "true\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 179,
-				"command": "echo '\"hello\"' | jq 'test(\"[0-9]+\")'",
-				"stdout": "false\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"to-entries-from-entries": [
-			{
-				"line": 144,
-				"command": "echo '{\"a\":1,\"b\":2}' | jq '[to_entries[] | .key]'",
-				"stdout": "[\n  \"a\",\n  \"b\"\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"tojson-fromjson": [
-			{
-				"line": 253,
-				"command": "echo '{\"a\":1}' | jq 'tojson'",
-				"stdout": "\"{\\\"a\\\":1}\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 256,
-				"command": "echo '\"{\\\"a\\\":1}\"' | jq 'fromjson | .a'",
-				"stdout": "1\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"tostring-tonumber": [
-			{
-				"line": 57,
-				"command": "echo '42' | jq 'tostring'",
-				"stdout": "\"42\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 60,
-				"command": "echo '\"42\"' | jq 'tonumber'",
-				"stdout": "42\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"transpose-builtin": [
-			{
-				"line": 276,
-				"command": "echo '[[1,2],[3,4]]' | jq 'transpose'",
-				"stdout": "[\n  [\n    1,\n    3\n  ],\n  [\n    2,\n    4\n  ]\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"type-builtin": [
-			{
-				"line": 2,
-				"command": "echo '42' | jq 'type'",
-				"stdout": "\"number\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 5,
-				"command": "echo '\"hello\"' | jq 'type'",
-				"stdout": "\"string\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 8,
-				"command": "echo 'true' | jq 'type'",
-				"stdout": "\"boolean\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 11,
-				"command": "echo 'null' | jq 'type'",
-				"stdout": "\"null\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 14,
-				"command": "echo '[1,2]' | jq 'type'",
-				"stdout": "\"array\"\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 17,
-				"command": "echo '{\"a\":1}' | jq 'type'",
-				"stdout": "\"object\"\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"unique-builtin": [
-			{
-				"line": 111,
-				"command": "echo '[1,2,1,3,2]' | jq 'unique'",
-				"stdout": "[\n  1,\n  2,\n  3\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"values-builtin": [
-			{
-				"line": 39,
-				"command": "echo '{\"a\":1,\"b\":2}' | jq '[.[] ]'",
-				"stdout": "[\n  1,\n  2\n]\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/jq/builtins.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.93911+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "abs-builtin": [
+      {
+        "line": 200,
+        "command": "echo '-5' | jq 'fabs'",
+        "stdout": "5\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "add-builtin": [
+      {
+        "line": 96,
+        "command": "echo '[1,2,3,4,5]' | jq 'add'",
+        "stdout": "15\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 99,
+        "command": "echo '[\"a\",\"b\",\"c\"]' | jq 'add'",
+        "stdout": "\"abc\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "any-all": [
+      {
+        "line": 166,
+        "command": "echo '[1,2,3]' | jq 'any(. \u003e 2)'",
+        "stdout": "true\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 169,
+        "command": "echo '[1,2,3]' | jq 'all(. \u003e 0)'",
+        "stdout": "true\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 172,
+        "command": "echo '[1,2,3]' | jq 'all(. \u003e 2)'",
+        "stdout": "false\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "ascii-case": [
+      {
+        "line": 64,
+        "command": "echo '\"hello\"' | jq 'ascii_upcase'",
+        "stdout": "\"HELLO\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 67,
+        "command": "echo '\"HELLO\"' | jq 'ascii_downcase'",
+        "stdout": "\"hello\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "contains-builtin": [
+      {
+        "line": 53,
+        "command": "echo '[\"a\",\"b\",\"c\"]' | jq 'contains([\"a\",\"c\"])'",
+        "stdout": "true\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "del-builtin": [
+      {
+        "line": 183,
+        "command": "echo '{\"a\":1,\"b\":2,\"c\":3}' | jq 'del(.b)'",
+        "stdout": "{\n  \"a\": 1,\n  \"c\": 3\n}\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "empty-builtin": [
+      {
+        "line": 264,
+        "command": "echo 'null' | jq '[empty]'",
+        "stdout": "[]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "first-last": [
+      {
+        "line": 246,
+        "command": "echo '[1,2,3]' | jq 'first'",
+        "stdout": "1\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 249,
+        "command": "echo '[1,2,3]' | jq 'last'",
+        "stdout": "3\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "flatten-builtin": [
+      {
+        "line": 119,
+        "command": "echo '[[1,2],[3,[4,5]]]' | jq 'flatten'",
+        "stdout": "[\n  1,\n  2,\n  3,\n  4,\n  5\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "floor-ceil-round": [
+      {
+        "line": 190,
+        "command": "echo '3.7' | jq 'floor'",
+        "stdout": "3\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 193,
+        "command": "echo '3.2' | jq 'ceil'",
+        "stdout": "4\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 196,
+        "command": "echo '3.5' | jq 'round'",
+        "stdout": "4\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "getpath-setpath": [
+      {
+        "line": 223,
+        "command": "echo '{\"a\":{\"b\":1}}' | jq 'getpath([\"a\",\"b\"])'",
+        "stdout": "1\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "group-by-builtin": [
+      {
+        "line": 234,
+        "command": "echo '[{\"a\":1,\"b\":\"x\"},{\"a\":2,\"b\":\"y\"},{\"a\":1,\"b\":\"z\"}]' | jq 'group_by(.a) | length'",
+        "stdout": "2\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "has-builtin": [
+      {
+        "line": 46,
+        "command": "echo '{\"a\":1,\"b\":2}' | jq 'has(\"a\")'",
+        "stdout": "true\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 49,
+        "command": "echo '{\"a\":1}' | jq 'has(\"z\")'",
+        "stdout": "false\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "indices-builtin": [
+      {
+        "line": 214,
+        "command": "echo '\"abcabc\"' | jq '[indices(\"bc\")]'",
+        "stdout": "[\n  [\n    1,\n    4\n  ]\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "keys-builtin": [
+      {
+        "line": 31,
+        "command": "echo '{\"b\":2,\"a\":1,\"c\":3}' | jq 'keys'",
+        "stdout": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "length-builtin": [
+      {
+        "line": 21,
+        "command": "echo '\"hello\"' | jq 'length'",
+        "stdout": "5\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 24,
+        "command": "echo '[1,2,3]' | jq 'length'",
+        "stdout": "3\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 27,
+        "command": "echo '{\"a\":1,\"b\":2}' | jq 'length'",
+        "stdout": "2\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "limit-builtin": [
+      {
+        "line": 268,
+        "command": "echo 'null' | jq '[limit(3; range(10))]'",
+        "stdout": "[\n  0,\n  1,\n  2\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "ltrimstr-rtrimstr": [
+      {
+        "line": 82,
+        "command": "echo '\"hello world\"' | jq 'ltrimstr(\"hello \")'",
+        "stdout": "\"world\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 85,
+        "command": "echo '\"hello world\"' | jq 'rtrimstr(\" world\")'",
+        "stdout": "\"hello\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "map-builtin": [
+      {
+        "line": 151,
+        "command": "echo '[1,2,3]' | jq 'map(. * 2)'",
+        "stdout": "[\n  2,\n  4,\n  6\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "min-max": [
+      {
+        "line": 129,
+        "command": "echo '[3,1,2]' | jq 'min'",
+        "stdout": "1\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 132,
+        "command": "echo '[3,1,2]' | jq 'max'",
+        "stdout": "3\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "null-builtin": [
+      {
+        "line": 260,
+        "command": "echo 'null' | jq 'null'",
+        "stdout": "null\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "path-builtin": [
+      {
+        "line": 227,
+        "command": "echo '{\"a\":{\"b\":1}}' | jq 'path(.a.b)'",
+        "stdout": "[\n  \"a\",\n  \"b\"\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "range-builtin": [
+      {
+        "line": 204,
+        "command": "echo 'null' | jq '[range(5)]'",
+        "stdout": "[\n  0,\n  1,\n  2,\n  3,\n  4\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "reverse-builtin": [
+      {
+        "line": 136,
+        "command": "echo '[1,2,3]' | jq 'reverse'",
+        "stdout": "[\n  3,\n  2,\n  1\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "select-builtin": [
+      {
+        "line": 159,
+        "command": "echo '[1,2,3,4,5]' | jq '[.[] | select(. \u003e 3)]'",
+        "stdout": "[\n  4,\n  5\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "sort-builtin": [
+      {
+        "line": 103,
+        "command": "echo '[3,1,2]' | jq 'sort'",
+        "stdout": "[\n  1,\n  2,\n  3\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "sort-by-builtin": [
+      {
+        "line": 238,
+        "command": "echo '[{\"a\":3},{\"a\":1},{\"a\":2}]' | jq '[sort_by(.a)[] | .a]'",
+        "stdout": "[\n  1,\n  2,\n  3\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "split-join": [
+      {
+        "line": 71,
+        "command": "echo '\"a,b,c\"' | jq 'split(\",\")'",
+        "stdout": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 78,
+        "command": "echo '[\"a\",\"b\",\"c\"]' | jq 'join(\",\")'",
+        "stdout": "\"a,b,c\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "startswith-endswith": [
+      {
+        "line": 89,
+        "command": "echo '\"hello\"' | jq 'startswith(\"hel\")'",
+        "stdout": "true\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 92,
+        "command": "echo '\"hello\"' | jq 'endswith(\"llo\")'",
+        "stdout": "true\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "test-regex": [
+      {
+        "line": 176,
+        "command": "echo '\"hello123\"' | jq 'test(\"[0-9]+\")'",
+        "stdout": "true\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 179,
+        "command": "echo '\"hello\"' | jq 'test(\"[0-9]+\")'",
+        "stdout": "false\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "to-entries-from-entries": [
+      {
+        "line": 144,
+        "command": "echo '{\"a\":1,\"b\":2}' | jq '[to_entries[] | .key]'",
+        "stdout": "[\n  \"a\",\n  \"b\"\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "tojson-fromjson": [
+      {
+        "line": 253,
+        "command": "echo '{\"a\":1}' | jq 'tojson'",
+        "stdout": "\"{\\\"a\\\":1}\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 256,
+        "command": "echo '\"{\\\"a\\\":1}\"' | jq 'fromjson | .a'",
+        "stdout": "1\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "tostring-tonumber": [
+      {
+        "line": 57,
+        "command": "echo '42' | jq 'tostring'",
+        "stdout": "\"42\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 60,
+        "command": "echo '\"42\"' | jq 'tonumber'",
+        "stdout": "42\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "transpose-builtin": [
+      {
+        "line": 276,
+        "command": "echo '[[1,2],[3,4]]' | jq 'transpose'",
+        "stdout": "[\n  [\n    1,\n    3\n  ],\n  [\n    2,\n    4\n  ]\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "type-builtin": [
+      {
+        "line": 2,
+        "command": "echo '42' | jq 'type'",
+        "stdout": "\"number\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 5,
+        "command": "echo '\"hello\"' | jq 'type'",
+        "stdout": "\"string\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 8,
+        "command": "echo 'true' | jq 'type'",
+        "stdout": "\"boolean\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 11,
+        "command": "echo 'null' | jq 'type'",
+        "stdout": "\"null\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 14,
+        "command": "echo '[1,2]' | jq 'type'",
+        "stdout": "\"array\"\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 17,
+        "command": "echo '{\"a\":1}' | jq 'type'",
+        "stdout": "\"object\"\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "unique-builtin": [
+      {
+        "line": 111,
+        "command": "echo '[1,2,1,3,2]' | jq 'unique'",
+        "stdout": "[\n  1,\n  2,\n  3\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "values-builtin": [
+      {
+        "line": 39,
+        "command": "echo '{\"a\":1,\"b\":2}' | jq '[.[] ]'",
+        "stdout": "[\n  1,\n  2\n]\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

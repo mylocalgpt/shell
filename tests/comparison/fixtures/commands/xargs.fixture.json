@@ -1,21 +1,21 @@
 {
-	"source": "tests/comparison/commands/xargs.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:46.018037+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"xargs-basic": [
-			{
-				"line": 2,
-				"command": "echo \"a b c\" | xargs echo",
-				"stdout": "a b c\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/xargs.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.550404+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "xargs-basic": [
+      {
+        "line": 2,
+        "command": "echo \"a b c\" | xargs echo",
+        "stdout": "a b c\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

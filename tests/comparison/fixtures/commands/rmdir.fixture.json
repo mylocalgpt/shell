@@ -1,30 +1,30 @@
 {
-	"source": "tests/comparison/commands/rmdir.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.784791+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"rmdir-basic": [
-			{
-				"line": 2,
-				"command": "mkdir -p /tmp/rmd1; rmdir /tmp/rmd1; test -d /tmp/rmd1 \u0026\u0026 echo exists || echo gone",
-				"stdout": "gone\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"rmdir-non-empty": [
-			{
-				"line": 6,
-				"command": "mkdir -p /tmp/rmd2; echo x \u003e /tmp/rmd2/file; rmdir /tmp/rmd2 2\u003e\u00261; echo $?; rm -rf /tmp/rmd2",
-				"stdout": "rmdir: /tmp/rmd2: Directory not empty\n1\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/rmdir.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.310831+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "rmdir-basic": [
+      {
+        "line": 2,
+        "command": "mkdir -p /tmp/rmd1; rmdir /tmp/rmd1; test -d /tmp/rmd1 \u0026\u0026 echo exists || echo gone",
+        "stdout": "gone\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "rmdir-non-empty": [
+      {
+        "line": 6,
+        "command": "mkdir -p /tmp/rmd2; echo x \u003e /tmp/rmd2/file; rmdir /tmp/rmd2 2\u003e\u00261; echo $?; rm -rf /tmp/rmd2",
+        "stdout": "rmdir: /tmp/rmd2: Directory not empty\n1\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

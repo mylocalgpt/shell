@@ -1,21 +1,21 @@
 {
-	"source": "tests/comparison/commands/sha1sum.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.851308+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"sha1sum-basic": [
-			{
-				"line": 2,
-				"command": "echo -n \"hello\" | sha1sum",
-				"stdout": "aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d  -\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/sha1sum.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.382326+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "sha1sum-basic": [
+      {
+        "line": 2,
+        "command": "echo -n \"hello\" | sha1sum",
+        "stdout": "aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d  -\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

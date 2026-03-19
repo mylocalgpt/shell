@@ -136,8 +136,19 @@ async function expandSingleWord(
 		case 'QuotedWord':
 			return expandQuotedWord(word, state, opts);
 
-		case 'VariableWord':
-			return expandVariable(word, state, opts);
+		case 'VariableWord': {
+			// Pre-expand the operand to resolve command substitutions in
+			// patterns like ${var/pattern/$(cmd)}
+			let varWord = word;
+			if (word.operand) {
+				const expandedOperand = await expandSingleWord(word.operand, state, opts);
+				varWord = {
+					...word,
+					operand: { type: 'LiteralWord', value: expandedOperand, pos: word.pos },
+				};
+			}
+			return expandVariable(varWord, state, opts);
+		}
 
 		case 'CommandSubstitution': {
 			const body = await expandCommandSubstitution(word, opts);

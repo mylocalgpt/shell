@@ -1345,7 +1345,13 @@ class Parser {
 				const braceEnd = this.findBraceEnd(raw, i);
 				if (braceEnd > i) {
 					const braceContent = raw.slice(i + 1, braceEnd);
-					if (braceContent.includes(',') || braceContent.includes('..')) {
+					// Comma-separated list: always recognize as brace expansion
+					// Range pattern (..): skip if endpoints contain $ (bash 3.2
+					// does not expand variables in ranges; the $ will be expanded
+					// as a normal variable reference after the brace is left as literal)
+					const isRange = braceContent.includes('..');
+					const hasDollar = isRange && braceContent.includes('$');
+					if ((braceContent.includes(',') || isRange) && !hasDollar) {
 						flushLiteral();
 						parts.push(this.parseBraceExpansion(braceContent, pos));
 						i = braceEnd + 1;
@@ -1761,8 +1767,24 @@ class Parser {
 	/** Parse any trailing redirections after a compound command. */
 	private parseTrailingRedirections(): Redirection[] {
 		const redirections: Redirection[] = [];
-		while (isRedirectionOp(this.current.type)) {
-			redirections.push(this.parseRedirection(null));
+		while (true) {
+			if (isRedirectionOp(this.current.type)) {
+				redirections.push(this.parseRedirection(null));
+				continue;
+			}
+			// FD number before redirection (e.g., 2>&1)
+			if (
+				isWordToken(this.current.type) &&
+				isAllDigits(this.current.value) &&
+				this.current.value.length <= 2 &&
+				isRedirectionOp(this.peek(0).type)
+			) {
+				const fdStr = this.current.value;
+				this.advance();
+				redirections.push(this.parseRedirection(Number.parseInt(fdStr, 10)));
+				continue;
+			}
+			break;
 		}
 		return redirections;
 	}

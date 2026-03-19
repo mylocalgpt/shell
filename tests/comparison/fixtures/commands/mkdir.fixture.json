@@ -1,39 +1,39 @@
 {
-	"source": "tests/comparison/commands/mkdir.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.659954+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"mkdir-basic": [
-			{
-				"line": 2,
-				"command": "mkdir -p /tmp; mkdir /tmp/mkd1; test -d /tmp/mkd1 \u0026\u0026 echo ok; rmdir /tmp/mkd1",
-				"stdout": "ok\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"mkdir-existing": [
-			{
-				"line": 10,
-				"command": "mkdir -p /tmp; mkdir /tmp/mkd3; mkdir /tmp/mkd3 2\u003e\u00261; echo $?; rmdir /tmp/mkd3",
-				"stdout": "mkdir: /tmp/mkd3: File exists\n1\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"mkdir-parents": [
-			{
-				"line": 6,
-				"command": "mkdir -p /tmp/mkd2/a/b/c; test -d /tmp/mkd2/a/b/c \u0026\u0026 echo ok; rm -rf /tmp/mkd2",
-				"stdout": "ok\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/mkdir.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.169744+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "mkdir-basic": [
+      {
+        "line": 2,
+        "command": "mkdir -p /tmp; mkdir /tmp/mkd1; test -d /tmp/mkd1 \u0026\u0026 echo ok; rmdir /tmp/mkd1",
+        "stdout": "ok\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "mkdir-existing": [
+      {
+        "line": 10,
+        "command": "mkdir -p /tmp; mkdir /tmp/mkd3; mkdir /tmp/mkd3 2\u003e\u00261; echo $?; rmdir /tmp/mkd3",
+        "stdout": "mkdir: /tmp/mkd3: File exists\n1\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "mkdir-parents": [
+      {
+        "line": 6,
+        "command": "mkdir -p /tmp/mkd2/a/b/c; test -d /tmp/mkd2/a/b/c \u0026\u0026 echo ok; rm -rf /tmp/mkd2",
+        "stdout": "ok\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

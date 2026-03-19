@@ -1,39 +1,39 @@
 {
-	"source": "tests/comparison/commands/cat.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.415073+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"cat-basic": [
-			{
-				"line": 2,
-				"command": "echo \"hello\" \u003e /tmp/ct1; cat /tmp/ct1",
-				"stdout": "hello\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"cat-multiple-files": [
-			{
-				"line": 6,
-				"command": "echo \"a\" \u003e /tmp/ct2a; echo \"b\" \u003e /tmp/ct2b; cat /tmp/ct2a /tmp/ct2b",
-				"stdout": "a\nb\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"cat-number-lines": [
-			{
-				"line": 11,
-				"command": "printf \"a\\nb\\nc\\n\" | cat -n",
-				"stdout": "     1\ta\n     2\tb\n     3\tc\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/cat.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:13.895758+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "cat-basic": [
+      {
+        "line": 2,
+        "command": "echo \"hello\" \u003e /tmp/ct1; cat /tmp/ct1",
+        "stdout": "hello\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "cat-multiple-files": [
+      {
+        "line": 6,
+        "command": "echo \"a\" \u003e /tmp/ct2a; echo \"b\" \u003e /tmp/ct2b; cat /tmp/ct2a /tmp/ct2b",
+        "stdout": "a\nb\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "cat-number-lines": [
+      {
+        "line": 11,
+        "command": "printf \"a\\nb\\nc\\n\" | cat -n",
+        "stdout": "     1\ta\n     2\tb\n     3\tc\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

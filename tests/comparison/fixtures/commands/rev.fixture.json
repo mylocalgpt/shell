@@ -1,21 +1,21 @@
 {
-	"source": "tests/comparison/commands/rev.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.767952+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"rev": [
-			{
-				"line": 2,
-				"command": "echo \"hello\" | rev",
-				"stdout": "olleh\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/rev.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.288389+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "rev": [
+      {
+        "line": 2,
+        "command": "echo \"hello\" | rev",
+        "stdout": "olleh\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

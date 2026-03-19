@@ -1,21 +1,21 @@
 {
-	"source": "tests/comparison/commands/realpath.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.762614+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"realpath-basic": [
-			{
-				"line": 2,
-				"command": "realpath /tmp",
-				"stdout": "/private/tmp\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/realpath.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.283471+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "realpath-basic": [
+      {
+        "line": 2,
+        "command": "realpath /tmp",
+        "stdout": "/private/tmp\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

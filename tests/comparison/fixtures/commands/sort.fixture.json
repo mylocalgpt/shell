@@ -1,78 +1,78 @@
 {
-	"source": "tests/comparison/commands/sort.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.869152+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"sort-advanced": [
-			{
-				"line": 24,
-				"command": "echo -e \"banana\\napple\\ncherry\\napple\" | sort -u",
-				"stdout": "apple\nbanana\ncherry\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 29,
-				"command": "echo -e \"10\\n2\\n1\\n20\" | sort -n",
-				"stdout": "1\n2\n10\n20\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"sort-basic": [
-			{
-				"line": 2,
-				"command": "echo -e \"banana\\napple\\ncherry\" | sort",
-				"stdout": "apple\nbanana\ncherry\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 7,
-				"command": "echo -e \"3\\n1\\n2\" | sort -n",
-				"stdout": "1\n2\n3\n",
-				"stderr": "",
-				"exit_code": 0
-			},
-			{
-				"line": 12,
-				"command": "echo -e \"1\\n2\\n3\" | sort -rn",
-				"stdout": "3\n2\n1\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"sort-delimiter": [
-			{
-				"line": 42,
-				"command": "printf \"c:3\\na:1\\nb:2\\n\" | sort -t: -k2 -n",
-				"stdout": "a:1\nb:2\nc:3\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"sort-field": [
-			{
-				"line": 18,
-				"command": "printf \"apple 3\\nbanana 1\\ncherry 2\\n\" | sort -k2 -n",
-				"stdout": "banana 1\ncherry 2\napple 3\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"sort-ignore-case": [
-			{
-				"line": 36,
-				"command": "printf \"Banana\\napple\\nCherry\\n\" | sort -f",
-				"stdout": "apple\nBanana\nCherry\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/sort.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.399842+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "sort-advanced": [
+      {
+        "line": 24,
+        "command": "echo -e \"banana\\napple\\ncherry\\napple\" | sort -u",
+        "stdout": "apple\nbanana\ncherry\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 29,
+        "command": "echo -e \"10\\n2\\n1\\n20\" | sort -n",
+        "stdout": "1\n2\n10\n20\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "sort-basic": [
+      {
+        "line": 2,
+        "command": "echo -e \"banana\\napple\\ncherry\" | sort",
+        "stdout": "apple\nbanana\ncherry\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 7,
+        "command": "echo -e \"3\\n1\\n2\" | sort -n",
+        "stdout": "1\n2\n3\n",
+        "stderr": "",
+        "exit_code": 0
+      },
+      {
+        "line": 12,
+        "command": "echo -e \"1\\n2\\n3\" | sort -rn",
+        "stdout": "3\n2\n1\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "sort-delimiter": [
+      {
+        "line": 42,
+        "command": "printf \"c:3\\na:1\\nb:2\\n\" | sort -t: -k2 -n",
+        "stdout": "a:1\nb:2\nc:3\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "sort-field": [
+      {
+        "line": 18,
+        "command": "printf \"apple 3\\nbanana 1\\ncherry 2\\n\" | sort -k2 -n",
+        "stdout": "banana 1\ncherry 2\napple 3\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "sort-ignore-case": [
+      {
+        "line": 36,
+        "command": "printf \"Banana\\napple\\nCherry\\n\" | sort -f",
+        "stdout": "apple\nBanana\nCherry\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

@@ -1,21 +1,21 @@
 {
-	"source": "tests/comparison/commands/touch.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.939387+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"touch-basic": [
-			{
-				"line": 2,
-				"command": "touch /tmp/tch1; test -f /tmp/tch1 \u0026\u0026 echo exists; rm /tmp/tch1",
-				"stdout": "exists\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/touch.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.469663+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "touch-basic": [
+      {
+        "line": 2,
+        "command": "touch /tmp/tch1; test -f /tmp/tch1 \u0026\u0026 echo exists; rm /tmp/tch1",
+        "stdout": "exists\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }

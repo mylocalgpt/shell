@@ -1,39 +1,39 @@
 {
-	"source": "tests/comparison/commands/rm.test",
-	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T12:07:45.773701+03:00",
-	"platform": {
-		"os": "darwin",
-		"arch": "arm64",
-		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
-	},
-	"sections": {
-		"rm-basic": [
-			{
-				"line": 2,
-				"command": "echo \"x\" \u003e /tmp/rm1; rm /tmp/rm1; test -f /tmp/rm1 \u0026\u0026 echo exists || echo gone",
-				"stdout": "gone\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"rm-force-missing": [
-			{
-				"line": 11,
-				"command": "rm -f /tmp/nonexistent_rm_xyz; echo $?",
-				"stdout": "0\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		],
-		"rm-missing-file": [
-			{
-				"line": 6,
-				"command": "rm /tmp/nonexistent_rm_xyz 2\u003e\u00261; echo $?",
-				"stdout": "rm: /tmp/nonexistent_rm_xyz: No such file or directory\n1\n",
-				"stderr": "",
-				"exit_code": 0
-			}
-		]
-	}
+  "source": "tests/comparison/commands/rm.test",
+  "recorded_with": "/bin/bash",
+  "recorded_at": "2026-03-19T12:53:14.2955+03:00",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64",
+    "shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "sections": {
+    "rm-basic": [
+      {
+        "line": 2,
+        "command": "echo \"x\" \u003e /tmp/rm1; rm /tmp/rm1; test -f /tmp/rm1 \u0026\u0026 echo exists || echo gone",
+        "stdout": "gone\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "rm-force-missing": [
+      {
+        "line": 11,
+        "command": "rm -f /tmp/nonexistent_rm_xyz; echo $?",
+        "stdout": "0\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ],
+    "rm-missing-file": [
+      {
+        "line": 6,
+        "command": "rm /tmp/nonexistent_rm_xyz 2\u003e\u00261; echo $?",
+        "stdout": "rm: /tmp/nonexistent_rm_xyz: No such file or directory\n1\n",
+        "stderr": "",
+        "exit_code": 0
+      }
+    ]
+  }
 }
