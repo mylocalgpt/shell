@@ -228,7 +228,7 @@ export const curl: Command = {
           let reqHeaders = headers;
           if (extractHostname(finalUrl) !== extractHostname(url)) {
             const filtered: Record<string, string> = {};
-            const skip = new Set(['authorization', 'cookie']);
+            const skip = new Set(['authorization', 'cookie', 'proxy-authorization']);
             for (const key of Object.keys(headers)) {
               if (!skip.has(key.toLowerCase())) {
                 filtered[key] = headers[key];

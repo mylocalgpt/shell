@@ -113,7 +113,7 @@ export class OverlayFs implements FileSystem {
     }
     const resolvedNorm = nodePath.normalize(resolved);
     const rootNorm = nodePath.normalize(this.root);
-    if (resolvedNorm !== rootNorm && !resolvedNorm.startsWith(`${rootNorm}/`)) {
+    if (resolvedNorm !== rootNorm && !resolvedNorm.startsWith(`${rootNorm}${nodePath.sep}`)) {
       throw new FsError('EACCES', virtualPath, `path escapes overlay root: ${virtualPath}`);
     }
     return resolved;
@@ -442,7 +442,7 @@ export class OverlayFs implements FileSystem {
       const resolved = nodeFs.realpathSync(this.hostPath(p));
       const resolvedNorm = nodePath.normalize(resolved);
       const rootNorm = nodePath.normalize(this.root);
-      if (resolvedNorm !== rootNorm && !resolvedNorm.startsWith(`${rootNorm}/`)) {
+      if (resolvedNorm !== rootNorm && !resolvedNorm.startsWith(`${rootNorm}${nodePath.sep}`)) {
         throw new FsError('EACCES', p, `realpath: resolved path escapes root: ${p}`);
       }
       // Return canonical virtual path (resolved host path relative to root)
