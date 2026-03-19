@@ -1,0 +1,8 @@
+## rmdir-basic
+$ mkdir -p /tmp/rmd1; rmdir /tmp/rmd1; test -d /tmp/rmd1 && echo exists || echo gone
+gone
+
+## rmdir-non-empty
+$ mkdir -p /tmp/rmd2; echo x > /tmp/rmd2/file; rmdir /tmp/rmd2 2>&1; echo $?; rm -rf /tmp/rmd2
+.+ (re)
+1

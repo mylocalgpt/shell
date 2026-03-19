@@ -1,0 +1,7 @@
+## diff-identical
+$ echo "same" > /tmp/df1; echo "same" > /tmp/df2; diff /tmp/df1 /tmp/df2; echo $?
+0
+
+## diff-different
+$ echo "a" > /tmp/df3; echo "b" > /tmp/df4; diff /tmp/df3 /tmp/df4 > /dev/null 2>&1; echo $?
+1

@@ -1,0 +1,21 @@
+{
+	"source": "tests/comparison/commands/comm.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T12:07:45.443077+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"comm-basic": [
+			{
+				"line": 2,
+				"command": "echo -e \"a\\nb\\nc\" \u003e /tmp/cm1; echo -e \"b\\nc\\nd\" \u003e /tmp/cm2; comm /tmp/cm1 /tmp/cm2",
+				"stdout": "a\n\t\tb\n\t\tc\n\td\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

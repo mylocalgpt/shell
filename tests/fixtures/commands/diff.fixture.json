@@ -1,0 +1,30 @@
+{
+	"source": "tests/comparison/commands/diff.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T12:07:45.482782+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"diff-different": [
+			{
+				"line": 6,
+				"command": "echo \"a\" \u003e /tmp/df3; echo \"b\" \u003e /tmp/df4; diff /tmp/df3 /tmp/df4 \u003e /dev/null 2\u003e\u00261; echo $?",
+				"stdout": "1\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"diff-identical": [
+			{
+				"line": 2,
+				"command": "echo \"same\" \u003e /tmp/df1; echo \"same\" \u003e /tmp/df2; diff /tmp/df1 /tmp/df2; echo $?",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

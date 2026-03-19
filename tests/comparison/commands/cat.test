@@ -1,0 +1,14 @@
+## cat-basic
+$ echo "hello" > /tmp/ct1; cat /tmp/ct1
+hello
+
+## cat-multiple-files
+$ echo "a" > /tmp/ct2a; echo "b" > /tmp/ct2b; cat /tmp/ct2a /tmp/ct2b
+a
+b
+
+## cat-number-lines
+$ printf "a\nb\nc\n" | cat -n
+     1	a (re)
+     2	b (re)
+     3	c (re)

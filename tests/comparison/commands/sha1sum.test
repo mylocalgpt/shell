@@ -1,0 +1,3 @@
+## sha1sum-basic
+$ echo -n "hello" | sha1sum
+aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d (re)

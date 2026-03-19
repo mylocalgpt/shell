@@ -1,0 +1,5 @@
+## paste-basic
+$ echo -e "a\nb\nc" > /tmp/ps1; echo -e "1\n2\n3" > /tmp/ps2; paste /tmp/ps1 /tmp/ps2
+a	1 (re)
+b	2 (re)
+c	3 (re)

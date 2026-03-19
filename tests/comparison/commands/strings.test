@@ -1,0 +1,3 @@
+## strings-basic
+$ echo "hello world" | strings
+hello world

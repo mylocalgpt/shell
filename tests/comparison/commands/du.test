@@ -1,0 +1,3 @@
+## du-basic (xfail: du output format differs from coreutils)
+$ echo "hello" > /tmp/duf; du /tmp/duf
+.+ (re)

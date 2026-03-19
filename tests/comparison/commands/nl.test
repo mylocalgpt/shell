@@ -1,0 +1,3 @@
+## nl-basic
+$ printf "a\nb\nc\n" | nl
+.+ (re)

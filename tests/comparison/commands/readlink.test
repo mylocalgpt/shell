@@ -1,0 +1,3 @@
+## readlink-basic
+$ echo "x" > /tmp/rlt; ln -s /tmp/rlt /tmp/rll; readlink /tmp/rll; rm /tmp/rll /tmp/rlt
+/tmp/rlt

@@ -1,0 +1,21 @@
+{
+	"source": "tests/comparison/commands/chmod.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T12:07:45.427778+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"chmod-octal": [
+			{
+				"line": 2,
+				"command": "echo \"x\" \u003e /tmp/chm1; chmod 755 /tmp/chm1; echo $?; rm /tmp/chm1",
+				"stdout": "0\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

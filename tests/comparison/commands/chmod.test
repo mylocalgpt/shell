@@ -1,0 +1,3 @@
+## chmod-octal
+$ echo "x" > /tmp/chm1; chmod 755 /tmp/chm1; echo $?; rm /tmp/chm1
+0

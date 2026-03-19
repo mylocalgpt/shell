@@ -1,0 +1,8 @@
+## mv-basic
+$ echo "data" > /tmp/mv1; mv /tmp/mv1 /tmp/mv2; cat /tmp/mv2
+data
+
+## mv-missing-source
+$ mv /tmp/nonexistent_mv_xyz /tmp/mv3 2>&1; echo $?
+.+ (re)
+1

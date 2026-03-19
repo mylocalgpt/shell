@@ -1,0 +1,12 @@
+## mkdir-basic
+$ mkdir -p /tmp; mkdir /tmp/mkd1; test -d /tmp/mkd1 && echo ok; rmdir /tmp/mkd1
+ok
+
+## mkdir-parents
+$ mkdir -p /tmp/mkd2/a/b/c; test -d /tmp/mkd2/a/b/c && echo ok; rm -rf /tmp/mkd2
+ok
+
+## mkdir-existing
+$ mkdir -p /tmp; mkdir /tmp/mkd3; mkdir /tmp/mkd3 2>&1; echo $?; rmdir /tmp/mkd3
+.+ (re)
+1

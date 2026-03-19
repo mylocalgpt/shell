@@ -1,0 +1,3 @@
+## unexpand-basic
+$ printf "        hello\n" | unexpand
+	hello (re)

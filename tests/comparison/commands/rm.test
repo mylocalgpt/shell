@@ -1,0 +1,12 @@
+## rm-basic
+$ echo "x" > /tmp/rm1; rm /tmp/rm1; test -f /tmp/rm1 && echo exists || echo gone
+gone
+
+## rm-missing-file
+$ rm /tmp/nonexistent_rm_xyz 2>&1; echo $?
+.+ (re)
+1
+
+## rm-force-missing
+$ rm -f /tmp/nonexistent_rm_xyz; echo $?
+0

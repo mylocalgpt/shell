@@ -1,0 +1,3 @@
+## touch-basic
+$ touch /tmp/tch1; test -f /tmp/tch1 && echo exists; rm /tmp/tch1
+exists

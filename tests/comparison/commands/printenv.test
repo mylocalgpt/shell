@@ -1,0 +1,7 @@
+## printenv-single
+$ export TESTVAR123=hello; printenv TESTVAR123
+hello
+
+## printenv-missing
+$ printenv NONEXISTENT_VAR_XYZ 2>/dev/null; echo $?
+1

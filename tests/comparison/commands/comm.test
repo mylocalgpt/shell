@@ -1,0 +1,6 @@
+## comm-basic
+$ echo -e "a\nb\nc" > /tmp/cm1; echo -e "b\nc\nd" > /tmp/cm2; comm /tmp/cm1 /tmp/cm2
+a
+		b (re)
+		c (re)
+	d (re)

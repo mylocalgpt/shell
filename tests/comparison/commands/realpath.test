@@ -1,0 +1,3 @@
+## realpath-basic (xfail: virtual fs has no /tmp by default)
+$ realpath /tmp
+/private/tmp (re)

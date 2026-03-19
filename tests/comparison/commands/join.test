@@ -1,0 +1,4 @@
+## join-basic
+$ echo -e "1 apple\n2 banana" > /tmp/jn1; echo -e "1 red\n2 yellow" > /tmp/jn2; join /tmp/jn1 /tmp/jn2
+1 apple red
+2 banana yellow

@@ -1,0 +1,3 @@
+## tree-basic (xfail: tree output format differs from coreutils)
+$ mkdir -p /tmp/treedir/sub; touch /tmp/treedir/file.txt /tmp/treedir/sub/nested.txt; tree /tmp/treedir
+.+ (re)

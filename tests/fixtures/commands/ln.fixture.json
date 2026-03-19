@@ -1,0 +1,21 @@
+{
+	"source": "tests/comparison/commands/ln.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T12:07:45.629174+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"ln-symbolic": [
+			{
+				"line": 2,
+				"command": "echo \"target\" \u003e /tmp/lnt; ln -s /tmp/lnt /tmp/lnl; cat /tmp/lnl; rm /tmp/lnl /tmp/lnt",
+				"stdout": "target\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

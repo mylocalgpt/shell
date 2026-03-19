@@ -1,0 +1,3 @@
+## od-basic
+$ echo -n "AB" | od -A x -t x1
+.+ (re)

@@ -1,0 +1,6 @@
+## fold-default
+$ echo "hello world this is a long line" | fold -w 10
+hello worl
+d this is
+a long lin
+e

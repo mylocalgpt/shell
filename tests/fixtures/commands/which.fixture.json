@@ -1,0 +1,21 @@
+{
+	"source": "tests/comparison/commands/which.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T12:07:46.00796+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"which-basic": [
+			{
+				"line": 2,
+				"command": "which echo",
+				"stdout": "/bin/echo\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

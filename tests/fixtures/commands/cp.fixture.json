@@ -1,0 +1,30 @@
+{
+	"source": "tests/comparison/commands/cp.test",
+	"recorded_with": "/bin/bash",
+	"recorded_at": "2026-03-19T12:07:45.44836+03:00",
+	"platform": {
+		"os": "darwin",
+		"arch": "arm64",
+		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+	},
+	"sections": {
+		"cp-basic": [
+			{
+				"line": 2,
+				"command": "echo \"data\" \u003e /tmp/cp1; cp /tmp/cp1 /tmp/cp2; cat /tmp/cp2",
+				"stdout": "data\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"cp-missing-source": [
+			{
+				"line": 6,
+				"command": "cp /tmp/nonexistent_cp_xyz /tmp/cp3 2\u003e\u00261; echo $?",
+				"stdout": "cp: /tmp/nonexistent_cp_xyz: No such file or directory\n1\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		]
+	}
+}

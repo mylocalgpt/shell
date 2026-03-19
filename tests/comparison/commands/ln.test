@@ -1,0 +1,3 @@
+## ln-symbolic
+$ echo "target" > /tmp/lnt; ln -s /tmp/lnt /tmp/lnl; cat /tmp/lnl; rm /tmp/lnl /tmp/lnt
+target

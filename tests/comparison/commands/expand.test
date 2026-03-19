@@ -1,0 +1,3 @@
+## expand-basic
+$ printf "\thello\n" | expand
+        hello
