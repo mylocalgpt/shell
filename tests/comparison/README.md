@@ -1,40 +1,30 @@
 # Comparison Tests
 
-These tests compare our shell's output against real bash 5.x output using [smokepod](https://github.com/peteretelej/smokepod).
+Compare our shell's output against real bash using [smokepod](https://github.com/peteretelej/smokepod).
 
-## How it works
-
-1. **Record**: Run `pnpm test:record-fixtures` to execute each test command against real bash and save the output as JSONL fixtures.
-2. **Verify**: Run `pnpm test:comparison` to execute the same commands against our shell via the JSONL adapter and compare results against recorded fixtures.
-
-## File format
-
-Test files use the `.test` extension with this format:
+## Structure
 
 ```
-## test-name
-$ command to run
-expected stdout line 1
-expected stdout line 2
-
-## another-test
-$ another command
-[exit:0]
+shell/      # Shell language features (arithmetic, control flow, pipes, quoting, etc.)
+commands/   # One file per command (awk.test, grep.test, sort.test, etc.)
+jq/         # jq processor tests (basics, builtins, advanced)
 ```
 
-- `## name` - Section header (test name)
-- `$ command` - The shell command to execute
-- Lines after `$` - Expected stdout output
-- `[exit:N]` - Assert exit code is N
-- `(re)` suffix on a line - Match that line as a regex
+Shell builtins (`test`, `[`, `set`, `cd`, `export`) go in `shell/`, not `commands/`.
 
-## Adding tests
+## Quick Reference
 
-1. Add test cases to a `.test` file in this directory
+```bash
+pnpm test:all              # Unit + comparison + lint + typecheck
+pnpm test:comparison       # Comparison tests only (requires build first)
+pnpm test:record-fixtures  # Record bash output as fixtures
+```
+
+## Adding Tests
+
+1. Add sections to `commands/<cmd>.test` or `shell/<feature>.test`
 2. Record fixtures: `pnpm test:record-fixtures`
-3. Verify: `pnpm test:comparison`
-4. Commit both the `.test` file and the recorded fixtures
+3. Verify: `pnpm build && pnpm test:comparison`
+4. If it fails: fix code or mark `(xfail: reason)`
 
-## Re-recording fixtures
-
-Run `pnpm test:record-fixtures` whenever test cases change. This requires bash 5.x on the system.
+See [`docs/3rd-party/testing-with-smokepod.md`](../../docs/3rd-party/testing-with-smokepod.md) for full reference.

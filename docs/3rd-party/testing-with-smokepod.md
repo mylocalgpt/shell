@@ -10,21 +10,42 @@ Smokepod is our comparison test runner. It runs commands through real bash and o
 
 Comparison tests are the primary correctness signal. Prefer them over unit tests for anything bash defines.
 
+## Directory Structure
+
+```
+tests/comparison/
+  shell/        # Shell behavior: arithmetic, control flow, expansion, pipes, quoting, redirects, variables
+  commands/     # One file per command: awk.test, grep.test, sed.test, etc.
+  jq/           # jq processor tests: basics.test, builtins.test, advanced.test
+```
+
+- `shell/` - tests for shell language features (loops, conditionals, variable expansion, piping, quoting, redirects)
+- `commands/` - one file per command, following the uutils/coreutils convention
+- `jq/` - jq expression processor tests organized by complexity level
+
+Shell builtins (`test`, `[`, `set` options, `cd`, `export`) go in `shell/`, not `commands/`.
+
 ## Commands
 
 ```bash
+# Run everything: unit tests + comparison tests + lint + typecheck
+pnpm test:all
+
 # Record fixtures from real bash
 pnpm test:record-fixtures
 
 # Verify our shell matches recorded fixtures
 pnpm test:comparison
+
+# Re-record with --update to overwrite existing fixtures
+npx smokepod record --target /bin/bash --tests tests/comparison/ --fixtures tests/fixtures/ --update
 ```
 
-**Adapter:** `scripts/smokepod-adapter.mjs` bridges smokepod and our shell. Reads JSONL commands from stdin, executes each via `Shell.exec()`, outputs JSONL results.
+**Adapter:** `scripts/smokepod-adapter.mjs` bridges smokepod and our shell. Reads JSONL commands from stdin, executes each via `Shell.exec()`, outputs JSONL results. It uses the built dist, so always run `pnpm build` before comparison tests.
 
 ## Test File Format
 
-Test files live in `tests/comparison/*.test`. Plain text format:
+Test files use `.test` extension. Plain text format:
 
 ```
 ## section-name
@@ -45,27 +66,32 @@ hello
 - `$ command` is a command to execute
 - Lines after `$` are expected stdout (until next `$`, `##`, or blank line)
 - `[exit:CODE]` specifies expected exit code
-- `(xfail: reason)` in section name marks known failures
 
-**xfail example:**
-```
-## declare-integer (xfail: declare -i does not evaluate arithmetic)
-$ declare -i num=5+3; echo $num
-8
-```
+### Markers
+
+- `(re)` suffix: match the line as a regex instead of exact string
+  - Bare `(re)` matches any output line
+  - `\d{4}-\d{2}-\d{2} (re)` matches a date pattern
+  - Use for dates, whitespace-padded numbers, checksums, platform-dependent output
+
+- `(stderr)` suffix: match against stderr instead of stdout
+
+- `(xfail: reason)` in section name: marks a known failure. The test runs but failure is expected.
+  ```
+  ## my-test (xfail: feature X not implemented)
+  $ some-command
+  expected-output
+  ```
+
+## How to Add a Test
+
+1. Create or edit `tests/comparison/commands/<command>.test` (or `shell/<feature>.test`)
+2. Write `## section-name` with `$ command` and expected output
+3. Record: `pnpm test:record-fixtures` (or with `--update` to overwrite)
+4. Verify: `pnpm build && pnpm test:comparison`
+5. If it fails: fix the code, or mark `(xfail: reason)` for known limitations
+6. Run `pnpm test:all` before committing
 
 ## Fixture Files
 
-Recorded fixtures live in `tests/fixtures/*.fixture.json`. Each contains:
-- Source test file reference
-- Recording metadata (bash version, platform, timestamp)
-- Per-section arrays of `{ command, stdout, stderr, exit_code }`
-
-14 test files covering: smoke, arithmetic, variables, control flow, pipes/logic, quoting, text processing, and edge cases for arithmetic, commands, control flow, expansion, jq, redirects, and variables.
-
-## Adding a Test
-
-1. Add test case to appropriate `tests/comparison/*.test` file (or create new one)
-2. Run `pnpm test:record-fixtures` to record bash output
-3. Run `pnpm test:comparison` to verify our shell matches
-4. If it fails, fix the code (or mark `(xfail: reason)` if it's a known limitation)
+Recorded fixtures live in `tests/fixtures/{shell,commands,jq}/*.fixture.json`, mirroring the test directory structure. Each file contains recording metadata and per-section arrays of `{ command, stdout, stderr, exit_code }`.

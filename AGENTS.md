@@ -14,7 +14,11 @@ Virtual bash interpreter for AI agents. Pure ECMAScript, zero runtime dependenci
 ## Testing
 
 - **Unit:** Vitest
-- **Comparison:** smokepod v1 (`peteretelej/smokepod@v1`) - record bash 5.x fixtures, verify via JSONL adapter
+- **Comparison:** smokepod v1 (`peteretelej/smokepod@v1`) - record bash fixtures, verify via JSONL adapter
+  - `tests/comparison/shell/` - shell language features (arithmetic, control flow, pipes, quoting, etc.)
+  - `tests/comparison/commands/` - one file per command
+  - `tests/comparison/jq/` - jq processor tests
+- **Validation gate:** `pnpm test:all` runs unit + comparison + lint + typecheck
 - **CI:** macOS + Linux + Windows
 
 ## Docs
