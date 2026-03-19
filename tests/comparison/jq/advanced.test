@@ -1,0 +1,144 @@
+## if-then-else
+$ echo '5' | jq 'if . > 3 then "big" else "small" end'
+"big"
+
+$ echo '1' | jq 'if . > 3 then "big" else "small" end'
+"small"
+
+## if-elif
+$ echo '2' | jq 'if . == 1 then "one" elif . == 2 then "two" else "other" end'
+"two"
+
+## try-catch
+$ echo 'null' | jq 'try error("oops") catch .'
+"oops"
+
+## try-without-catch
+$ echo '"hello"' | jq 'try tonumber'
+
+## reduce
+$ echo '[1,2,3,4,5]' | jq 'reduce .[] as $x (0; . + $x)'
+15
+
+## variable-binding
+$ echo '5' | jq '. as $x | $x * $x'
+25
+
+## update-assign
+$ echo '{"a":1}' | jq '.a |= . + 10'
+{
+  "a": 11
+}
+
+## update-add
+$ echo '{"a":1}' | jq '.a += 5'
+{
+  "a": 6
+}
+
+## def-simple
+$ echo '5' | jq 'def double: . * 2; double'
+10
+
+## def-params
+$ echo 'null' | jq 'def greet(name): "Hello, " + name; greet("world")'
+"Hello, world"
+
+## def-recursive
+$ echo '5' | jq 'def fact: if . <= 1 then 1 else . * ((. - 1) | fact) end; fact'
+120
+
+## optional-operator
+$ echo '{}' | jq '.missing?'
+
+## optional-field
+$ echo '{}' | jq '.a // "default"'
+"default"
+
+## format-base64
+$ echo '"hello"' | jq '@base64'
+"aGVsbG8="
+
+## format-base64d
+$ echo '"aGVsbG8="' | jq '@base64d'
+"hello"
+
+## format-uri
+$ echo '"hello world"' | jq '@uri'
+"hello%20world"
+
+## format-csv (xfail: @csv format escaping differs)
+$ echo '[["a","b"],[1,2]]' | jq '.[] | @csv'
+"\"a\",\"b\""
+"1,2"
+
+## format-tsv
+$ echo '[["a","b"],[1,2]]' | jq '.[] | @tsv'
+"a\tb"
+"1\t2"
+
+## format-html
+$ echo '"<b>bold</b>"' | jq '@html'
+"&lt;b&gt;bold&lt;/b&gt;"
+
+## env-access (xfail: env object access not passed through to jq)
+$ export JQ_TEST_VAR=hello; echo 'null' | jq -n 'env.JQ_TEST_VAR'
+"hello"
+
+## input-null
+$ echo '' | jq -n '1 + 1'
+2
+
+## recurse-builtin
+$ echo '{"a":{"b":{"c":1}}}' | jq '[recurse | .c? // empty]'
+[
+  1
+]
+
+## walk-builtin
+$ echo '{"a":1,"b":2}' | jq 'walk(if type == "number" then . * 2 else . end)'
+{
+  "a": 2,
+  "b": 4
+}
+
+## any-all-with-generator
+$ echo '[1,2,3,4]' | jq '[.[] | . > 2]'
+[
+  false,
+  false,
+  true,
+  true
+]
+
+## object-from-entries
+$ echo '[{"key":"a","value":1},{"key":"b","value":2}]' | jq 'from_entries'
+{
+  "a": 1,
+  "b": 2
+}
+
+## with-entries
+$ echo '{"a":1,"b":2}' | jq 'with_entries(.value += 10)'
+{
+  "a": 11,
+  "b": 12
+}
+
+## map-values
+$ echo '{"a":1,"b":2}' | jq 'map_values(. + 10)'
+{
+  "a": 11,
+  "b": 12
+}
+
+## ascii-operations
+$ echo '"abc"' | jq 'explode'
+[
+  97,
+  98,
+  99
+]
+
+$ echo '[97,98,99]' | jq 'implode'
+"abc"

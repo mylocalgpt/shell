@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/jq/basics.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T11:57:59.996988+03:00",
+	"recorded_at": "2026-03-19T12:10:09.420048+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -13,6 +13,54 @@
 				"line": 118,
 				"command": "echo '{}' | jq '.b // \"default\"'",
 				"stdout": "\"default\"\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"arithmetic-ops": [
+			{
+				"line": 185,
+				"command": "echo 'null' | jq '2 + 3'",
+				"stdout": "5\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 188,
+				"command": "echo 'null' | jq '10 - 3'",
+				"stdout": "7\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 191,
+				"command": "echo 'null' | jq '4 * 5'",
+				"stdout": "20\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 194,
+				"command": "echo 'null' | jq '10 / 3'",
+				"stdout": "3.3333333333333335\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"array-construction": [
+			{
+				"line": 178,
+				"command": "echo '{\"a\":1,\"b\":2}' | jq '[.a, .b]'",
+				"stdout": "[\n  1,\n  2\n]\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"array-iteration": [
+			{
+				"line": 159,
+				"command": "echo '[1,2,3]' | jq '.[]'",
+				"stdout": "1\n2\n3\n",
 				"stderr": "",
 				"exit_code": 0
 			}
@@ -63,6 +111,42 @@
 				"exit_code": 0
 			}
 		],
+		"cli-arg": [
+			{
+				"line": 240,
+				"command": "echo 'null' | jq -n --arg name \"alice\" '$name'",
+				"stdout": "\"alice\"\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"cli-null-input": [
+			{
+				"line": 229,
+				"command": "echo '' | jq -n '1 + 2'",
+				"stdout": "3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"cli-slurp": [
+			{
+				"line": 221,
+				"command": "echo -e '1\\n2\\n3' | jq -s '.'",
+				"stdout": "[\n  1,\n  2,\n  3\n]\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"cli-sort-keys": [
+			{
+				"line": 233,
+				"command": "echo '{\"b\":2,\"a\":1}' | jq -S '.'",
+				"stdout": "{\n  \"a\": 1,\n  \"b\": 2\n}\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"comma-multi-output": [
 			{
 				"line": 143,
@@ -77,6 +161,29 @@
 				"line": 62,
 				"command": "echo '{\"a\": 1, \"b\": 2}' | jq -c '.'",
 				"stdout": "{\"a\":1,\"b\":2}\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"comparison-ops": [
+			{
+				"line": 198,
+				"command": "echo 'null' | jq '5 \u003e 3'",
+				"stdout": "true\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 201,
+				"command": "echo 'null' | jq '5 == 5'",
+				"stdout": "true\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 204,
+				"command": "echo 'null' | jq '5 != 3'",
+				"stdout": "true\n",
 				"stderr": "",
 				"exit_code": 0
 			}
@@ -115,11 +222,50 @@
 				"exit_code": 0
 			}
 		],
+		"identity": [
+			{
+				"line": 155,
+				"command": "echo '42' | jq '.'",
+				"stdout": "42\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"keys-and-values": [
 			{
 				"line": 50,
 				"command": "echo '{\"b\":2,\"a\":1,\"c\":3}' | jq 'keys'",
 				"stdout": "[\n  \"a\",\n  \"b\",\n  \"c\"\n]\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"logic-ops": [
+			{
+				"line": 208,
+				"command": "echo 'null' | jq 'true and true'",
+				"stdout": "true\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 211,
+				"command": "echo 'null' | jq 'true and false'",
+				"stdout": "false\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 214,
+				"command": "echo 'null' | jq 'false or true'",
+				"stdout": "true\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 217,
+				"command": "echo 'null' | jq 'true | not'",
+				"stdout": "false\n",
 				"stderr": "",
 				"exit_code": 0
 			}
@@ -138,6 +284,15 @@
 				"line": 122,
 				"command": "echo '[1,2,3]' | jq 'map(. + 10)'",
 				"stdout": "[\n  11,\n  12,\n  13\n]\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"negative-index": [
+			{
+				"line": 165,
+				"command": "echo '[1,2,3]' | jq '.[-1]'",
+				"stdout": "3\n",
 				"stderr": "",
 				"exit_code": 0
 			}
@@ -176,6 +331,15 @@
 				"exit_code": 0
 			}
 		],
+		"recursive-descent": [
+			{
+				"line": 169,
+				"command": "echo '{\"a\":{\"b\":1},\"c\":2}' | jq '.. | numbers'",
+				"stdout": "1\n2\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"select-with-pipe": [
 			{
 				"line": 136,
@@ -206,6 +370,15 @@
 				"line": 87,
 				"command": "echo '[\"banana\",\"apple\",\"cherry\"]' | jq 'sort'",
 				"stdout": "[\n  \"apple\",\n  \"banana\",\n  \"cherry\"\n]\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"string-interpolation": [
+			{
+				"line": 174,
+				"command": "echo '{\"name\":\"alice\"}' | jq '\"Hello, \\(.name)!\"'",
+				"stdout": "\"Hello, alice!\"\n",
 				"stderr": "",
 				"exit_code": 0
 			}

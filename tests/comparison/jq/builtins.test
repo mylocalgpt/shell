@@ -1,0 +1,286 @@
+## type-builtin
+$ echo '42' | jq 'type'
+"number"
+
+$ echo '"hello"' | jq 'type'
+"string"
+
+$ echo 'true' | jq 'type'
+"boolean"
+
+$ echo 'null' | jq 'type'
+"null"
+
+$ echo '[1,2]' | jq 'type'
+"array"
+
+$ echo '{"a":1}' | jq 'type'
+"object"
+
+## length-builtin
+$ echo '"hello"' | jq 'length'
+5
+
+$ echo '[1,2,3]' | jq 'length'
+3
+
+$ echo '{"a":1,"b":2}' | jq 'length'
+2
+
+## keys-builtin
+$ echo '{"b":2,"a":1,"c":3}' | jq 'keys'
+[
+  "a",
+  "b",
+  "c"
+]
+
+## values-builtin
+$ echo '{"a":1,"b":2}' | jq '[.[] ]'
+[
+  1,
+  2
+]
+
+## has-builtin
+$ echo '{"a":1,"b":2}' | jq 'has("a")'
+true
+
+$ echo '{"a":1}' | jq 'has("z")'
+false
+
+## contains-builtin
+$ echo '["a","b","c"]' | jq 'contains(["a","c"])'
+true
+
+## tostring-tonumber
+$ echo '42' | jq 'tostring'
+"42"
+
+$ echo '"42"' | jq 'tonumber'
+42
+
+## ascii-case
+$ echo '"hello"' | jq 'ascii_upcase'
+"HELLO"
+
+$ echo '"HELLO"' | jq 'ascii_downcase'
+"hello"
+
+## split-join
+$ echo '"a,b,c"' | jq 'split(",")'
+[
+  "a",
+  "b",
+  "c"
+]
+
+$ echo '["a","b","c"]' | jq 'join(",")'
+"a,b,c"
+
+## ltrimstr-rtrimstr
+$ echo '"hello world"' | jq 'ltrimstr("hello ")'
+"world"
+
+$ echo '"hello world"' | jq 'rtrimstr(" world")'
+"hello"
+
+## startswith-endswith
+$ echo '"hello"' | jq 'startswith("hel")'
+true
+
+$ echo '"hello"' | jq 'endswith("llo")'
+true
+
+## add-builtin
+$ echo '[1,2,3,4,5]' | jq 'add'
+15
+
+$ echo '["a","b","c"]' | jq 'add'
+"abc"
+
+## sort-builtin
+$ echo '[3,1,2]' | jq 'sort'
+[
+  1,
+  2,
+  3
+]
+
+## unique-builtin
+$ echo '[1,2,1,3,2]' | jq 'unique'
+[
+  1,
+  2,
+  3
+]
+
+## flatten-builtin
+$ echo '[[1,2],[3,[4,5]]]' | jq 'flatten'
+[
+  1,
+  2,
+  3,
+  4,
+  5
+]
+
+## min-max
+$ echo '[3,1,2]' | jq 'min'
+1
+
+$ echo '[3,1,2]' | jq 'max'
+3
+
+## reverse-builtin
+$ echo '[1,2,3]' | jq 'reverse'
+[
+  3,
+  2,
+  1
+]
+
+## to-entries-from-entries
+$ echo '{"a":1,"b":2}' | jq '[to_entries[] | .key]'
+[
+  "a",
+  "b"
+]
+
+## map-builtin
+$ echo '[1,2,3]' | jq 'map(. * 2)'
+[
+  2,
+  4,
+  6
+]
+
+## select-builtin
+$ echo '[1,2,3,4,5]' | jq '[.[] | select(. > 3)]'
+[
+  4,
+  5
+]
+
+## any-all
+$ echo '[1,2,3]' | jq 'any(. > 2)'
+true
+
+$ echo '[1,2,3]' | jq 'all(. > 0)'
+true
+
+$ echo '[1,2,3]' | jq 'all(. > 2)'
+false
+
+## test-regex
+$ echo '"hello123"' | jq 'test("[0-9]+")'
+true
+
+$ echo '"hello"' | jq 'test("[0-9]+")'
+false
+
+## del-builtin
+$ echo '{"a":1,"b":2,"c":3}' | jq 'del(.b)'
+{
+  "a": 1,
+  "c": 3
+}
+
+## floor-ceil-round
+$ echo '3.7' | jq 'floor'
+3
+
+$ echo '3.2' | jq 'ceil'
+4
+
+$ echo '3.5' | jq 'round'
+4
+
+## abs-builtin
+$ echo '-5' | jq 'fabs'
+5
+
+## range-builtin
+$ echo 'null' | jq '[range(5)]'
+[
+  0,
+  1,
+  2,
+  3,
+  4
+]
+
+## indices-builtin
+$ echo '"abcabc"' | jq '[indices("bc")]'
+[
+  [
+    1,
+    4
+  ]
+]
+
+## getpath-setpath
+$ echo '{"a":{"b":1}}' | jq 'getpath(["a","b"])'
+1
+
+## path-builtin
+$ echo '{"a":{"b":1}}' | jq 'path(.a.b)'
+[
+  "a",
+  "b"
+]
+
+## group-by-builtin
+$ echo '[{"a":1,"b":"x"},{"a":2,"b":"y"},{"a":1,"b":"z"}]' | jq 'group_by(.a) | length'
+2
+
+## sort-by-builtin
+$ echo '[{"a":3},{"a":1},{"a":2}]' | jq '[sort_by(.a)[] | .a]'
+[
+  1,
+  2,
+  3
+]
+
+## first-last
+$ echo '[1,2,3]' | jq 'first'
+1
+
+$ echo '[1,2,3]' | jq 'last'
+3
+
+## tojson-fromjson
+$ echo '{"a":1}' | jq 'tojson'
+"{\"a\":1}"
+
+$ echo '"{\"a\":1}"' | jq 'fromjson | .a'
+1
+
+## null-builtin
+$ echo 'null' | jq 'null'
+null
+
+## empty-builtin
+$ echo 'null' | jq '[empty]'
+[]
+
+## limit-builtin
+$ echo 'null' | jq '[limit(3; range(10))]'
+[
+  0,
+  1,
+  2
+]
+
+## transpose-builtin
+$ echo '[[1,2],[3,4]]' | jq 'transpose'
+[
+  [
+    1,
+    3
+  ],
+  [
+    2,
+    4
+  ]
+]

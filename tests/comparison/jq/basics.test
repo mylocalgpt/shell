@@ -150,3 +150,92 @@ $ echo '{"a":1,"b":2,"c":3}' | jq 'del(.b)'
   "a": 1,
   "c": 3
 }
+
+## identity
+$ echo '42' | jq '.'
+42
+
+## array-iteration
+$ echo '[1,2,3]' | jq '.[]'
+1
+2
+3
+
+## negative-index
+$ echo '[1,2,3]' | jq '.[-1]'
+3
+
+## recursive-descent
+$ echo '{"a":{"b":1},"c":2}' | jq '.. | numbers'
+1
+2
+
+## string-interpolation
+$ echo '{"name":"alice"}' | jq '"Hello, \(.name)!"'
+"Hello, alice!"
+
+## array-construction
+$ echo '{"a":1,"b":2}' | jq '[.a, .b]'
+[
+  1,
+  2
+]
+
+## arithmetic-ops
+$ echo 'null' | jq '2 + 3'
+5
+
+$ echo 'null' | jq '10 - 3'
+7
+
+$ echo 'null' | jq '4 * 5'
+20
+
+$ echo 'null' | jq '10 / 3'
+3.3333333333333335
+
+## comparison-ops
+$ echo 'null' | jq '5 > 3'
+true
+
+$ echo 'null' | jq '5 == 5'
+true
+
+$ echo 'null' | jq '5 != 3'
+true
+
+## logic-ops
+$ echo 'null' | jq 'true and true'
+true
+
+$ echo 'null' | jq 'true and false'
+false
+
+$ echo 'null' | jq 'false or true'
+true
+
+$ echo 'null' | jq 'true | not'
+false
+
+## cli-slurp
+$ echo -e '1\n2\n3' | jq -s '.'
+[
+  1,
+  2,
+  3
+]
+
+## cli-null-input
+$ echo '' | jq -n '1 + 2'
+3
+
+## cli-sort-keys
+$ echo '{"b":2,"a":1}' | jq -S '.'
+{
+  "a": 1,
+  "b": 2
+}
+
+## cli-arg
+$ echo 'null' | jq -n --arg name "alice" '$name'
+"alice"
