@@ -120,19 +120,14 @@ Custom commands participate fully in pipes, redirections, and all shell features
 
 awk, base64, basename, cat, chmod, column, comm, cp, curl, cut, date, diff, dirname, du, echo, env, expand, expr, file, find, fold, grep, head, hostname, join, jq, ln, ls, md5sum, mkdir, mv, nl, od, paste, printenv, printf, pwd, readlink, realpath, rev, rm, rmdir, sed, seq, sha1sum, sha256sum, sleep, sort, stat, strings, tac, tail, tee, timeout, touch, tr, tree, unexpand, uniq, wc, which, whoami, xargs, xxd, yes
 
-## New in v0.1.0
+## Commands with Non-obvious Behavior
 
-### curl
-Network requests via consumer-provided handler. Core stays network-free. Supports `-X`, `-H`, `-d`, `-o`, `-O`, `-s`, `-L`, `-f`, `-w`. Body from file with `-d @path`. Hostname allowlist via glob matching. Exit 7 on allowlist rejection.
-
-### timeout
-Races `ctx.exec(cmd)` against `setTimeout`. Exit 124 on timeout. Duration 0 means no timeout.
-
-### yes
-Repeats a string (default `y`) up to `SHELL_MAX_OUTPUT` limit. Output capped to prevent unbounded growth.
-
-### xxd
-Basic hex dump: 16 bytes per line, 8-digit offset, paired hex bytes, ASCII sidebar. Supports `-l` (limit) and `-s` (offset).
+| Command | Behavior |
+|---------|----------|
+| `curl` | Delegates to `ShellOptions.network.handler` callback; core stays network-free. Flags: `-X`, `-H`, `-d`, `-o`, `-O`, `-s`, `-L`, `-f`, `-w`. Hostname allowlist via glob. Exit 7 on rejection |
+| `timeout` | `Promise.race` between `ctx.exec()` and `setTimeout`. Exit 124 on expiry. Duration 0 means no timeout. Virtual `sleep` returns instantly, so `timeout 5 sleep 100` completes immediately rather than timing out |
+| `yes` | Output capped by `SHELL_MAX_OUTPUT` env var (default 10MB) to prevent unbounded string growth |
+| `xxd` | Basic hex dump only (no `-r` reverse). `-l` limit, `-s` offset |
 
 ## Gotchas
 

@@ -44,7 +44,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^25.5.0",
-    "smokepod": "^1.1.2",
+    "smokepod": "^1.1.3",
     "tsdown": "^0.21.0",
     "tsx": "^4.19.4",
     "typescript": "^5.8.2",
