@@ -1,6 +1,6 @@
 {
   "source": "tests/comparison/commands/timeout.test",
-  "recorded_with": "bash",
+  "recorded_with": "/bin/bash",
   "platform": {
     "os": "darwin",
     "arch": "arm64",
