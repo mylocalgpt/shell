@@ -6,7 +6,7 @@
   "keywords": ["bash", "shell", "interpreter", "virtual", "sandbox", "agent", "ai", "jq"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mylocalgpt/shell"
+    "url": "git+https://github.com/mylocalgpt/shell.git"
   },
   "author": "Peter Etelej",
   "exports": {
