@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/shell/redirects.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T11:58:00.521575+03:00",
+	"recorded_at": "2026-03-19T12:02:33.773107+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
