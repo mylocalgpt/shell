@@ -237,7 +237,7 @@ got: hello
 $ echo "a b c" | { read x y z; echo "$x|$y|$z"; }
 a|b|c
 
-## double-bracket-string-compare (xfail: < and > in [[ ]] parsed as redirects)
+## double-bracket-string-compare
 $ if [[ "abc" < "def" ]]; then echo yes; fi
 yes
 

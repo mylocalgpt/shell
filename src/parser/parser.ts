@@ -929,6 +929,8 @@ class Parser {
 
 	/** Check if current token is a conditional binary operator. */
 	private isConditionalBinaryOp(): boolean {
+		// Inside [[ ]], < and > are comparison operators, not redirections
+		if (this.current.type === 'Less' || this.current.type === 'Great') return true;
 		if (!isWordToken(this.current.type)) return false;
 		const v = this.current.value;
 		return (

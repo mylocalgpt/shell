@@ -776,9 +776,31 @@ export function evaluateConditionalExpr(expr: ConditionalExpr, ctx: InterpreterC
 	}
 }
 
-function getWordValue(word: { type: string; value?: string; name?: string }): string {
+function getWordValue(word: {
+	type: string;
+	value?: string;
+	name?: string;
+	parts?: Array<{ type: string; value?: string }>;
+}): string {
 	if ('value' in word && typeof word.value === 'string') return word.value;
 	if ('name' in word && typeof word.name === 'string') return word.name;
+	if (word.type === 'QuotedWord' && 'parts' in word && Array.isArray(word.parts)) {
+		let result = '';
+		for (let i = 0; i < word.parts.length; i++) {
+			const part = word.parts[i];
+			if (part.type === 'LiteralWord' && typeof part.value === 'string') {
+				result += part.value;
+			}
+		}
+		return result;
+	}
+	if (word.type === 'ConcatWord' && 'parts' in word && Array.isArray(word.parts)) {
+		let result = '';
+		for (let i = 0; i < word.parts.length; i++) {
+			result += getWordValue(word.parts[i] as typeof word);
+		}
+		return result;
+	}
 	return '';
 }
 
