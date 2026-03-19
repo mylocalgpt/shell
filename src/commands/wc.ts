@@ -31,7 +31,9 @@ function countContent(content: string): {
 
   // bytes is content.length for ASCII; for UTF-8 we approximate with string length
   const bytes = content.length;
-  const chars = content.length;
+  // Count Unicode characters via string iterator (handles surrogate pairs)
+  let chars = 0;
+  for (const _ of content) chars++;
 
   return { lines, words, bytes, chars };
 }

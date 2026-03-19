@@ -1,0 +1,11 @@
+## xxd-basic
+$ echo -n "Hello" | xxd
+00000000: 4865 6c6c 6f                             Hello
+
+## xxd-limit
+$ echo -n "Hello, World!" | xxd -l 5
+00000000: 4865 6c6c 6f                             Hello
+
+## xxd-offset
+$ echo -n "Hello, World!" | xxd -s 7
+00000007: 576f 726c 6421                           World!

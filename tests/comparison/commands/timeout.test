@@ -1,0 +1,7 @@
+## timeout-basic
+$ timeout 10 echo hello
+hello
+
+## timeout-printf
+$ timeout 10 printf "ok"
+ok
