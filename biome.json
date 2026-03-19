@@ -45,6 +45,18 @@
       "semicolons": "always"
     }
   },
+  "overrides": [
+    {
+      "include": ["src/overlay/**", "tests/overlay/**"],
+      "linter": {
+        "rules": {
+          "nursery": {
+            "noRestrictedImports": "off"
+          }
+        }
+      }
+    }
+  ],
   "files": {
     "ignore": ["dist/", "node_modules/", "_docs/", "scripts/", "*.tsbuildinfo"]
   }
