@@ -26,9 +26,9 @@
 	"scripts": {
 		"build": "tsdown",
 		"test": "vitest run",
-		"test:all": "vitest run && smokepod verify --target node --target-arg scripts/smokepod-adapter.mjs --mode process --tests tests/comparison/ --fixtures tests/fixtures/ && biome check . && tsc --noEmit",
-		"test:comparison": "smokepod verify --target node --target-arg scripts/smokepod-adapter.mjs --mode process --tests tests/comparison/ --fixtures tests/fixtures/",
-		"test:record-fixtures": "smokepod record --target /bin/bash --tests tests/comparison/ --fixtures tests/fixtures/",
+		"test:all": "vitest run && smokepod verify --target node --target-arg scripts/smokepod-adapter.mjs --mode process --tests tests/comparison/ --fixtures tests/comparison/fixtures/ && biome check . && tsc --noEmit",
+		"test:comparison": "smokepod verify --target node --target-arg scripts/smokepod-adapter.mjs --mode process --tests tests/comparison/ --fixtures tests/comparison/fixtures/",
+		"test:record-fixtures": "smokepod record --target /bin/bash --tests tests/comparison/ --fixtures tests/comparison/fixtures/",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
 		"typecheck": "tsc --noEmit",

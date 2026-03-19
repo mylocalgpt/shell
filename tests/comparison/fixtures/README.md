@@ -12,7 +12,7 @@ Each fixture file contains the expected output from running test commands agains
 pnpm test:record-fixtures
 ```
 
-This runs each command in `tests/comparison/*.test` against `/bin/bash` and saves the output.
+This runs each command in the comparison test files against `/bin/bash` and saves the output here.
 
 ## When to re-record
 
