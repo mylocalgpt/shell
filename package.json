@@ -1,6 +1,6 @@
 {
   "name": "@mylocalgpt/shell",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "type": "module",
   "description": "Virtual bash interpreter for AI agents. Pure TypeScript, zero dependencies.",
   "keywords": ["bash", "shell", "interpreter", "virtual", "sandbox", "agent", "ai", "jq"],
