@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/commands/grep.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T11:57:59.798414+03:00",
+	"recorded_at": "2026-03-19T12:03:37.015837+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -47,6 +47,24 @@
 				"exit_code": 0
 			}
 		],
+		"grep-line-number": [
+			{
+				"line": 48,
+				"command": "echo -e \"foo\\nbar\\nbaz\" | grep -n bar",
+				"stdout": "2:bar\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"grep-multiple-patterns": [
+			{
+				"line": 43,
+				"command": "echo -e \"apple\\nbanana\\ncherry\" | grep -e apple -e cherry",
+				"stdout": "apple\ncherry\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"grep-regex": [
 			{
 				"line": 22,
@@ -73,6 +91,15 @@
 				"line": 33,
 				"command": "echo \"hello world\" | grep -oE '[a-z]+'",
 				"stdout": "hello\nworld\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"grep-word-match": [
+			{
+				"line": 38,
+				"command": "echo -e \"cat\\nconcatenate\\nthe cat sat\" | grep -w cat",
+				"stdout": "cat\nthe cat sat\n",
 				"stderr": "",
 				"exit_code": 0
 			}

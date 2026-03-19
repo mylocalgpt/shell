@@ -1,13 +1,110 @@
 {
 	"source": "tests/comparison/commands/awk.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T11:57:59.71017+03:00",
+	"recorded_at": "2026-03-19T12:03:36.871232+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
 		"shell_version": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
 	},
 	"sections": {
+		"awk-begin-end": [
+			{
+				"line": 10,
+				"command": "echo \"\" | awk 'BEGIN {print \"start\"} END {print \"end\"}'",
+				"stdout": "start\nend\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-builtin-length": [
+			{
+				"line": 27,
+				"command": "echo \"hello\" | awk '{print length($0)}'",
+				"stdout": "5\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-builtin-substr": [
+			{
+				"line": 31,
+				"command": "echo \"hello world\" | awk '{print substr($0, 7)}'",
+				"stdout": "world\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-builtin-tolower": [
+			{
+				"line": 39,
+				"command": "echo \"HELLO\" | awk '{print tolower($0)}'",
+				"stdout": "hello\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-builtin-toupper": [
+			{
+				"line": 35,
+				"command": "echo \"hello\" | awk '{print toupper($0)}'",
+				"stdout": "HELLO\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-field-separator": [
+			{
+				"line": 15,
+				"command": "echo \"a:b:c\" | awk -F: '{print $2}'",
+				"stdout": "b\n",
+				"stderr": "",
+				"exit_code": 0
+			},
+			{
+				"line": 18,
+				"command": "echo \"one,two,three\" | awk -F, '{print $3}'",
+				"stdout": "three\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-if-else": [
+			{
+				"line": 43,
+				"command": "echo \"5\" | awk '{if ($1 \u003e 3) print \"big\"; else print \"small\"}'",
+				"stdout": "big\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-nr-nf": [
+			{
+				"line": 59,
+				"command": "printf \"a b\\nc d e\\n\" | awk '{print NR, NF}'",
+				"stdout": "1 2\n2 3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-ofs": [
+			{
+				"line": 64,
+				"command": "echo \"a b c\" | awk 'BEGIN {OFS=\",\"} {print $1, $2, $3}'",
+				"stdout": "a,b,c\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-pattern-matching": [
+			{
+				"line": 22,
+				"command": "printf \"foo 1\\nbar 2\\nfoo 3\\n\" | awk '/foo/ {print $2}'",
+				"stdout": "1\n3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"awk-print-field": [
 			{
 				"line": 2,
@@ -17,11 +114,38 @@
 				"exit_code": 0
 			}
 		],
+		"awk-string-concat": [
+			{
+				"line": 51,
+				"command": "echo \"hello\" | awk '{print $0 \" world\"}'",
+				"stdout": "hello world\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"awk-sum-field": [
 			{
 				"line": 6,
 				"command": "printf \"a 1\\nb 2\\nc 3\\n\" | awk '{sum += $2} END {print sum}'",
 				"stdout": "6\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-ternary": [
+			{
+				"line": 55,
+				"command": "echo \"5\" | awk '{print ($1 \u003e 3 ? \"yes\" : \"no\")}'",
+				"stdout": "yes\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"awk-variables": [
+			{
+				"line": 47,
+				"command": "printf \"a\\nb\\nc\\n\" | awk '{count++} END {print count}'",
+				"stdout": "3\n",
 				"stderr": "",
 				"exit_code": 0
 			}

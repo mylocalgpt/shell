@@ -33,3 +33,17 @@ $ echo -e "hello\nworld" | grep -c 'o'
 $ echo "hello world" | grep -oE '[a-z]+'
 hello
 world
+
+## grep-word-match
+$ echo -e "cat\nconcatenate\nthe cat sat" | grep -w cat
+cat
+the cat sat
+
+## grep-multiple-patterns
+$ echo -e "apple\nbanana\ncherry" | grep -e apple -e cherry
+apple
+cherry
+
+## grep-line-number
+$ echo -e "foo\nbar\nbaz" | grep -n bar
+2:bar

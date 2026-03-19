@@ -31,3 +31,15 @@ $ echo -e "10\n2\n1\n20" | sort -n
 2
 10
 20
+
+## sort-ignore-case
+$ printf "Banana\napple\nCherry\n" | sort -f
+apple
+Banana
+Cherry
+
+## sort-delimiter
+$ printf "c:3\na:1\nb:2\n" | sort -t: -k2 -n
+a:1
+b:2
+c:3

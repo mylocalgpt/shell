@@ -11,3 +11,7 @@ $ echo -e "one two three\nfour five" | wc -w
 
 $ echo -n "hello" | wc -c
 (re)
+
+## wc-char-count
+$ echo -n "hello" | wc -m
+(re)

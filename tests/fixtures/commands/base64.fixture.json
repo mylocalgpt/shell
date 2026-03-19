@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/commands/base64.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T11:57:59.721261+03:00",
+	"recorded_at": "2026-03-19T12:03:36.930259+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",

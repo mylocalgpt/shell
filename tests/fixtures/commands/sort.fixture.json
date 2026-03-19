@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/commands/sort.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T11:57:59.914769+03:00",
+	"recorded_at": "2026-03-19T12:03:37.158612+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -47,11 +47,29 @@
 				"exit_code": 0
 			}
 		],
+		"sort-delimiter": [
+			{
+				"line": 42,
+				"command": "printf \"c:3\\na:1\\nb:2\\n\" | sort -t: -k2 -n",
+				"stdout": "a:1\nb:2\nc:3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
 		"sort-field": [
 			{
 				"line": 18,
 				"command": "printf \"apple 3\\nbanana 1\\ncherry 2\\n\" | sort -k2 -n",
 				"stdout": "banana 1\ncherry 2\napple 3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"sort-ignore-case": [
+			{
+				"line": 36,
+				"command": "printf \"Banana\\napple\\nCherry\\n\" | sort -f",
+				"stdout": "apple\nBanana\nCherry\n",
 				"stderr": "",
 				"exit_code": 0
 			}

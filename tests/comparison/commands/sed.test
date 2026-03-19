@@ -32,3 +32,21 @@ xyz
 ## sed-global-flag
 $ echo "foo:bar:baz" | sed 's/:/ /g'
 foo bar baz
+
+## sed-multiple-expressions
+$ echo "hello world" | sed -e 's/hello/hi/' -e 's/world/earth/'
+hi earth
+
+## sed-address-ranges
+$ echo -e "a\nb\nc\nd\ne" | sed '2,4d'
+a
+e
+
+$ echo -e "a\nb\nc\nd\ne" | sed -n '2,4p'
+b
+c
+d
+
+## sed-print-line-number (xfail: sed = command not implemented)
+$ echo -e "foo\nbar\nbaz" | sed -n '/bar/='
+2

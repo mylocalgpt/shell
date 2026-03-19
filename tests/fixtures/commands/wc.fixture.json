@@ -1,7 +1,7 @@
 {
 	"source": "tests/comparison/commands/wc.test",
 	"recorded_with": "/bin/bash",
-	"recorded_at": "2026-03-19T11:57:59.982153+03:00",
+	"recorded_at": "2026-03-19T12:03:37.226681+03:00",
 	"platform": {
 		"os": "darwin",
 		"arch": "arm64",
@@ -20,6 +20,15 @@
 				"line": 5,
 				"command": "echo -e \"a\\nb\\nc\" | wc -l",
 				"stdout": "       3\n",
+				"stderr": "",
+				"exit_code": 0
+			}
+		],
+		"wc-char-count": [
+			{
+				"line": 16,
+				"command": "echo -n \"hello\" | wc -m",
+				"stdout": "       5\n",
 				"stderr": "",
 				"exit_code": 0
 			}
